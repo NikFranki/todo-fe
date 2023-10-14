@@ -67,15 +67,15 @@ const Edit = ({ todoDetail, mode, onSubmit, onCancel }) => {
       >
         <Form.Item
           name="content"
-          label="Title"
+          label="Content"
           rules={[
             {
               required: true,
-              message: 'Please input the title.',
+              message: 'Content should not be empty!',
             },
           ]}
         >
-          <TextArea rows={4} />
+          <TextArea placeholder="Please input the content" rows={4} />
         </Form.Item>
         <Form.Item
           name="date"
@@ -83,7 +83,7 @@ const Edit = ({ todoDetail, mode, onSubmit, onCancel }) => {
           rules={[
             {
               required: true,
-              message: 'Please select the date.',
+              message: 'Date should not be empty!',
             },
           ]}
         >
@@ -99,7 +99,7 @@ const Edit = ({ todoDetail, mode, onSubmit, onCancel }) => {
         >
           <Cascader
             options={options}
-            placeholder="Please select"
+            placeholder="Please select position"
             showSearch={{
               filter: (inputValue, path) => {
                 return path.some((option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);

@@ -77,7 +77,7 @@ const SiderBar = () => {
   return (
     <Space className="sider-bar-wrapper" direction="vertical" size="small" style={{ display: 'flex' }}>
       <Search
-        placeholder="site search"
+        placeholder="Site search"
         allowClear
         onSearch={onSearch}
       />
@@ -85,7 +85,7 @@ const SiderBar = () => {
         style={{ margin: '5px 0' }}
       />
       <div className="search-site-all">
-        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="all-icon" />}>全部</Button>
+        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="all-icon" />}>All</Button>
       </div>
       <Divider
         style={{ margin: '5px 0' }}

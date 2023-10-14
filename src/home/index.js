@@ -16,6 +16,10 @@ const headerStyle = {
   lineHeight: '64px',
   backgroundColor: '#7dbcea',
 };
+const titleStyle = {
+  fontSize: 16,
+  fontWeight: 600,
+};
 const siderStyle = {
   flex: '0 0 300px',
   maxWidth: '300px',
@@ -45,7 +49,7 @@ function Home() {
       <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
         <Layout>
           <Header style={headerStyle}>
-            <span>Todo</span>
+            <span style={titleStyle}>Todo</span>
             <Menu />
           </Header>
           <Layout>

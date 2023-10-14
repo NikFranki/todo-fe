@@ -174,7 +174,7 @@ const Todo = () => {
   const renderAddItem = () => {
     return (
       <div className="add-item-wrapper">
-        <span className="prompt">Try it. </span><Button type="primary" onClick={onAdd}>Add todo</Button>
+        <Button type="primary" onClick={onAdd}>Add todo</Button>
       </div>
     );
   };

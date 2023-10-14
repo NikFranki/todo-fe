@@ -51,10 +51,10 @@
 
 .add-file-list-wrapper {
   position: absolute;
+  left: 15px;
   bottom: 0;
   width: 100%;
   line-height: 30px;
-  text-align: center;
   cursor: pointer;
 }
 
