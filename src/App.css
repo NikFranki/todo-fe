@@ -1,0 +1,93 @@
+.menu-side-bar {
+  flex: 0 0 300px !important;
+  max-width: 300px !important;
+  width: 300px !important;
+  height: calc(100vh - 129px);
+}
+
+.menu-side-bar .ant-tree-list .ant-tree-title {
+  display: inline-block;
+  width: 150px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ant-space .ant-layout-content {
+  height: calc(100vh - 129px);
+  line-height: 60px !important;
+  overflow: auto;
+}
+
+.Todo-wrapper {
+  position: relative;
+}
+
+.belong-to-wrapper h3 {
+  padding-left: 15px;
+  text-align: left;
+  color: #1b82f1;
+}
+
+.Todo-wrapper h1 {
+  height: 60px;
+  line-height: 60px;
+  margin: 0;
+}
+
+.search-wrapper {
+  width: 60%;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.search-wrapper label {
+  margin-right: 8px;
+}
+
+.add-item-wrapper {
+  padding-left: 80px;
+  text-align: left;
+}
+
+.add-item-wrapper .prompt {
+  color: #000;
+}
+
+.add-item-wrapper .ant-picker {
+  width: 35% !important;
+}
+
+.export-and-import-todos-wrapper {
+  position: absolute;
+  top: 0;
+  right: 15px;
+}
+
+.export-and-import-todos-wrapper .export-btn {
+  margin-right: 10px;
+}
+
+.ant-list-item-content {
+  display: flex;
+  align-items: center;
+}
+
+.ant-list-item-content .date {
+  position: absolute;
+  right: 200px;
+}
+
+.ant-list-item-content .author {
+  position: absolute;
+  right: 300px;
+}
+
+.ant-list-item-content .folder {
+  position: absolute;
+  right: 450px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

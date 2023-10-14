@@ -1,0 +1,14 @@
+.header-menu-wrapper {
+  position: absolute;
+  right: 15px;
+  display: inline-block;
+}
+
+.header-menu-wrapper .home-url {
+  margin-right: 8px;
+}
+
+.header-menu-wrapper .avater-dropdown {
+  margin-right: 8px;
+  cursor: pointer;
+}

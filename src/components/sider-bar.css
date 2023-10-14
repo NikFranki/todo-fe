@@ -1,0 +1,63 @@
+.sider-bar-wrapper .ant-space-item:nth-child(1) {
+  line-height: 30px;
+  padding: 30px 10px 0;
+}
+
+.sider-bar-wrapper .ant-space-item:nth-child(3) {
+  height: 30px;
+  line-height: 30px;
+}
+
+.search-site-all {
+  width: 100%;
+}
+
+.search-site-all button {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  color: #fff;
+}
+
+.search-site-all button .all-icon {
+  font-size: 18px;
+}
+
+.sider-bar-wrapper .ant-space-item:nth-child(5) {
+  height: calc(100vh - 310px);
+  max-width: 280px;
+  padding: 0 10px;
+  overflow: auto;
+  padding-bottom: 30px;
+}
+
+.sider-bar-wrapper .ant-space-item:nth-child(5) {
+  position: relative;
+}
+
+.sider-bar-wrapper .ant-tree-node-content-wrapper {
+  white-space: nowrap;
+}
+
+.folder-wrapper {
+  background-color: inherit;
+  color: #fff;
+}
+
+.folder-wrapper .ant-tree-node-content-wrapper {
+  text-align: left;
+}
+
+.add-file-list-wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.add-file-list-wrapper .add-icon {
+  margin-right: 5px;
+}
