@@ -6,6 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import _ from 'lodash';
 
 import request from '../utils/request';
+import { fetchTodoListById, addTodo, editTodo, deleteodo, importTodo, exportTodo } from '../api/todo';
 import useContextInfo from '../hooks/use-context-info';
 import Edit from './edit-form-modal';
 import downloadFile from '../utils/download-file';
@@ -30,7 +31,6 @@ const Todo = () => {
   const bodyWidth = document.body.getBoundingClientRect().width;
   const ListItemMaxWidth = bodyWidth - 950;
   const textRate = getPerTextWidth();
-  console.log(textRate);
 
   const {
     list,
@@ -51,12 +51,7 @@ const Todo = () => {
   }, []);
 
   const getTodoById = async (id) => {
-    const res = await request(
-      `http://localhost:8000/get_list_by_id`,
-      JSON.stringify({
-        id
-      }),
-    );
+    const res = await fetchTodoListById({ id });
     return res.data;
   };
 
@@ -101,10 +96,11 @@ const Todo = () => {
     values.position_id = Array.isArray(values.position_id) && values.position_id.length > 0 ? values.position_id : [1];
     values.folder_id = values.position_id[values.position_id.length - 1];
 
-    await request(
-      `http://localhost:8000/${mode === 'add' ? 'add' : 'update'}`,
-      JSON.stringify(values),
-    );
+    if (mode === 'add') {
+      await addTodo(values);
+    } else {
+      await editTodo(values);
+    }
     message.success(`${mode[0].toUpperCase()}${mode.slice(1).toLowerCase()} successfully`);
     getList();
     onFetchFolders();
@@ -115,13 +111,8 @@ const Todo = () => {
   };
 
   const onExport = async () => {
-    const res = await fetch(
-      'http://localhost:8000/export',
-      {
-        method: 'get',
-        credentials: 'include',
-      }
-    ).then(res => res.blob());
+    const res = await exportTodo();
+
     downloadFile(res);
   };
 
@@ -137,12 +128,7 @@ const Todo = () => {
   };
 
   const handleDelete = async (id) => {
-    await request(
-      'http://localhost:8000/delete',
-      JSON.stringify({
-        id,
-      })
-    );
+    await deleteodo({ id });
     getList();
   };
 
@@ -182,7 +168,6 @@ const Todo = () => {
   const renderExportAndImport = () => {
     const props = {
       name: 'file',
-      // action: 'http://localhost:8000/import',
       showUploadList: false,
       maxCount: 1,
       accept: '.xlsx',
@@ -191,12 +176,7 @@ const Todo = () => {
         if (file) {
           const formData = new FormData();
           formData.append('todos', file);
-          await request(
-            'http://localhost:8000/import',
-            formData,
-            'post',
-            {}
-          );
+          await importTodo(formData);
           message.success(`${file.name} file uploaded successfully`);
           getList();
         }

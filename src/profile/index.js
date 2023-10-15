@@ -7,7 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Upload, message } from 'antd';
 
 import TodoContext from '../utils/todo-context';
-import request from '../utils/request';
+import { updateUser } from '../api/user';
 
 import './index.css';
 
@@ -57,12 +57,7 @@ const Profile = () => {
     if (values.avatar) {
       formData.append('avatar', values.avatar);
     }
-    const res = await request(
-      'http://localhost:8000/user/update',
-      formData,
-      'post',
-      {}
-    );
+    const res = await updateUser(formData);
     if (res.code !== 200) {
       message.error(res.message);
       return { ok: false };

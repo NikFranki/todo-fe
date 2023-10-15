@@ -3,7 +3,7 @@ import React from 'react';
 import { PlusCircleOutlined, InboxOutlined } from '@ant-design/icons';
 import { Tree, Space, Input, Divider, Modal, Form, Cascader, Button, message } from 'antd';
 
-import request from '../utils/request';
+import { addGroup } from '../api/group';
 import generateNestedFolders from '../utils/generate-nested-folders';
 import useContextInfo from '../hooks/use-context-info';
 import './sider-bar.css';
@@ -120,10 +120,7 @@ const SiderBar = () => {
               if (values.parent_id) {
                 values.parent_id = values.parent_id[values.parent_id.length - 1];
               }
-              await request(
-                `http://localhost:8000/folders/add`,
-                JSON.stringify(values),
-              );
+              await addGroup(values);
               onFetchFolders();
               message.success('Add folder success.');
               setOpen(false);

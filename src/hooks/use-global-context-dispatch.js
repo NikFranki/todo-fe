@@ -1,6 +1,7 @@
 import React from 'react';
 
-import request from '../utils/request';
+import { fetchTodoList } from '../api/todo';
+import { searchUser } from '../api/user';
 import useFolders from '../hooks/use-folders';
 import { DEFAULT_PAGENO, DEFAULT_PAGESIZE, DEFAULT_FOLDER_SEQUENCE } from '../constant';
 
@@ -17,13 +18,9 @@ const useGlobalContextDispatch = () => {
     onUserInfoChange();
   }, []);
 
-  const onUserInfoChange = () => {
-    request(
-      'http://localhost:8000/user/searchUser',
-      JSON.stringify({})
-    ).then((user) => {
-      setUserInfo(user.data || {});
-    });
+  const onUserInfoChange = async() => {
+    const res = await searchUser({});
+    setUserInfo(res.data || {});
   };
 
   const onFetchTodo = async (params) => {
@@ -34,11 +31,7 @@ const useGlobalContextDispatch = () => {
       pageNo: DEFAULT_PAGENO,
       pageSize: DEFAULT_PAGESIZE,
     };
-
-    const res = await request(
-      'http://localhost:8000/list',
-      JSON.stringify(params),
-    );
+    const res = await fetchTodoList(params);
     setList(res.list);
     setPager({
       pageNo: res.pageNo,

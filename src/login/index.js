@@ -9,6 +9,7 @@ import { Button, Checkbox, Form, Input, message } from 'antd';
 
 import TodoContext from '../utils/todo-context';
 import request from '../utils/request';
+import { login } from '../api/user';
 
 import './index.css';
 
@@ -18,14 +19,14 @@ const Register = () => {
   const { onUserInfoChange } = React.useContext(TodoContext);
 
   const onFinish = async (values) => {
-    const res = await request(
-      'http://localhost:8000/user/login',
-      JSON.stringify(values),
-    );
+    const res = await login(values);
     if (res.code !== 200) {
       message.error(res.message);
       return { ok: false };
     }
+    
+    localStorage.setItem('token', res.token);
+
     navigate('/', { replace: true });
     // 查询用户，更新用户信息，使得 context 传递 userInfo 给其他组件
     onUserInfoChange();

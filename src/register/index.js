@@ -7,7 +7,7 @@ import {
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Upload, message } from 'antd';
 
-import request from '../utils/request';
+import { register } from '../api/user';
 
 import './index.css';
 
@@ -56,12 +56,7 @@ const Register = () => {
     if (values.avatar) {
       formData.append('avatar', values.avatar);
     }
-    const res = await request(
-      'http://localhost:8000/user/register',
-      formData,
-      'post',
-      {}
-    );
+    const res = await register(formData);
     if (res.code !== 200) {
       message.error(res.message);
       return { ok: false };
@@ -73,28 +68,6 @@ const Register = () => {
 
   return (
     <div className="register-wrapper">
-      {/* <form method="post" encType="multipart/form-data" action="http://localhost:8000/user/register">
-        <p>
-          <label>Username</label>
-          <input type="text" name="username" placeholder="please input your username" />
-        </p>
-        <p>
-          <label>Password</label>
-          <input type="password" name="password" placeholder="please input your password" />
-        </p>
-        <p>
-          <label>Identity Password</label>
-          <input type="password" name="repassword" placeholder="please input your username again" />
-        </p>
-        <p>
-          <label>Avatar</label>
-          <input type="file" name="image" accept="image/*" />
-        </p>
-        <p>
-          <button type="submit">Submit</button>
-        </p>
-      </form> */}
-
       <div className="register-wrapper">
         <Form
           {...formItemLayout}

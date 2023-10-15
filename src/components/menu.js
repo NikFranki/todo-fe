@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown, Space, Avatar, message } from 'antd';
 
-import request from '../utils/request';
+import { logout } from '../api/user';
 import TodoContext from '../utils/todo-context';
 
 import './menu.css';
@@ -18,10 +18,7 @@ const Menu = () => {
 
   const handleLogout = async () => {
     try {
-      await request(
-        'http://localhost:8000/user/logout',
-        JSON.stringify({})
-      );
+      await logout({});
       navigate('/login', { replace: true });
     } catch (error) {
       message.error(error.message);
