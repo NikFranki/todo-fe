@@ -2,12 +2,12 @@ import React from 'react';
 
 import { fetchTodoList } from '../api/todo';
 import { searchUser } from '../api/user';
-import useFolders from '../hooks/use-folders';
+import useGroups from '../hooks/use-groups';
 import { DEFAULT_PAGENO, DEFAULT_PAGESIZE, DEFAULT_FOLDER_SEQUENCE } from '../constant';
 
 const useGlobalContextDispatch = () => {
   const [userInfo, setUserInfo] = React.useState({});
-  const { folders, onFetchFolders } = useFolders();
+  const { groups, onFetchGroups } = useGroups();
   const [list, setList] = React.useState([]);
   const [pager, setPager] = React.useState({ pageNo: DEFAULT_PAGENO, pageSize: DEFAULT_PAGESIZE, total: 0 });
   const [folderParentId, setFolderParentId] = React.useState(DEFAULT_FOLDER_SEQUENCE);
@@ -55,7 +55,7 @@ const useGlobalContextDispatch = () => {
 
   const values = {
     userInfo,
-    folders,
+    groups,
     list,
     pager,
     folderParentId,
@@ -63,7 +63,7 @@ const useGlobalContextDispatch = () => {
     folderParentName,
     authenticated,
     onUserInfoChange,
-    onFetchFolders,
+    onFetchGroups,
     onFetchTodo,
     onSetFolderParentId,
     onSetTodoId,

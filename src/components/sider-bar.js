@@ -4,7 +4,7 @@ import { PlusCircleOutlined, InboxOutlined } from '@ant-design/icons';
 import { Tree, Space, Input, Divider, Modal, Form, Cascader, Button, message } from 'antd';
 
 import { addGroup } from '../api/group';
-import generateNestedFolders from '../utils/generate-nested-folders';
+import generateNestedGroups from '../utils/generate-nested-groups';
 import useContextInfo from '../hooks/use-context-info';
 import './sider-bar.css';
 
@@ -16,17 +16,17 @@ const SiderBar = () => {
   const [form] = Form.useForm();
 
   const {
-    folders,
-    onFetchFolders,
+    groups,
+    onFetchGroups,
     onFetchTodo,
     onSetFolderParentId,
     onSetTodoId,
     onSetFolderParentName,
   } = useContextInfo();
   const [open, setOpen] = React.useState(false);
-  const treeData = generateNestedFolders(folders);
+  const treeData = generateNestedGroups(groups);
 
-  const options = generateNestedFolders(folders, true);
+  const options = generateNestedGroups(groups, true);
 
   const onSearch = () => {
     console.log('search');
@@ -121,7 +121,7 @@ const SiderBar = () => {
                 values.parent_id = values.parent_id[values.parent_id.length - 1];
               }
               await addGroup(values);
-              onFetchFolders();
+              onFetchGroups();
               message.success('Add folder success.');
               setOpen(false);
             })

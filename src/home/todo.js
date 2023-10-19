@@ -35,7 +35,7 @@ const Todo = () => {
     list,
     pager,
     folderParentName,
-    onFetchFolders,
+    onFetchGroups,
     onFetchTodo,
     onSetFolderParentId,
     onSetTodoId,
@@ -102,7 +102,7 @@ const Todo = () => {
     }
     message.success(`${mode[0].toUpperCase()}${mode.slice(1).toLowerCase()} successfully`);
     getList();
-    onFetchFolders();
+    onFetchGroups();
   };
 
   const onAdd = () => {

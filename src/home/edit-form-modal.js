@@ -4,7 +4,7 @@ import { Modal, Input, DatePicker, Form, Cascader } from 'antd';
 import dayjs from 'dayjs';
 // import qs from 'qs';
 
-import generateNestedFolders from '../utils/generate-nested-folders';
+import generateNestedGroups from '../utils/generate-nested-groups';
 import useContextInfo from '../hooks/use-context-info';
 
 const { TextArea } = Input;
@@ -13,8 +13,8 @@ const Edit = ({ todoDetail, mode, onSubmit, onCancel }) => {
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [form] = Form.useForm();
 
-  const { folders } = useContextInfo();
-  const options = generateNestedFolders(folders, true);
+  const { groups } = useContextInfo();
+  const options = generateNestedGroups(groups, true);
 
   React.useEffect(() => {
     if (todoDetail.id) {

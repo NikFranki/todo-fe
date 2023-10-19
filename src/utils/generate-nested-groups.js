@@ -1,12 +1,12 @@
 /**
- * generate strategy folders from origin folders
- * @param {*} folders
- * @param {*} ignoreLeaf if true, will ignore all the leaf's file, and only return folders
+ * generate strategy groups from origin groups
+ * @param {*} groups
+ * @param {*} ignoreLeaf if true, will ignore all the leaf's file, and only return groups
  * @returns 
  */
-const generateNestedFolders = (folders, ignoreLeaf = false) => {
+const generateNestedGroups = (groups, ignoreLeaf = false) => {
   const map = {};
-  for (const item of folders) {
+  for (const item of groups) {
     map[item.id] = { ...item };
   }
 
@@ -24,7 +24,7 @@ const generateNestedFolders = (folders, ignoreLeaf = false) => {
   const loop = (data = [], prefix = '') => {
     return data.map((item) => {
       const isLeaf = item.isLeaf;
-      const title = isLeaf ? (item.name.length > 10 ? `${item.name.slice(0, 10)}...` : item.name) : item.name;
+      const title = item.name;
       const id = item.id;
       const newItem = ignoreLeaf
         ? { label: title, value: id }
@@ -44,11 +44,11 @@ const generateNestedFolders = (folders, ignoreLeaf = false) => {
     });
   };
 
-  const rootFolders = Object.keys(map)
+  const rootGroups = Object.keys(map)
     .filter((key) => map[key].parent_id === null)
     .map((key) => map[key]);
 
-  return loop(rootFolders);
+  return loop(rootGroups);
 };
 
-export default generateNestedFolders;
+export default generateNestedGroups;
