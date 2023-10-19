@@ -5,7 +5,6 @@ import { UploadOutlined, DownloadOutlined } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import _ from 'lodash';
 
-import request from '../utils/request';
 import { fetchTodoListById, addTodo, editTodo, deleteodo, importTodo, exportTodo } from '../api/todo';
 import useContextInfo from '../hooks/use-context-info';
 import Edit from './edit-form-modal';

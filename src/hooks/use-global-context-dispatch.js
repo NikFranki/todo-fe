@@ -13,6 +13,7 @@ const useGlobalContextDispatch = () => {
   const [folderParentId, setFolderParentId] = React.useState(DEFAULT_FOLDER_SEQUENCE);
   const [todoId, setTodoId] = React.useState(undefined);
   const [folderParentName, setFolderParentName] = React.useState('');
+  const [authenticated, setAuthenticated] = React.useState(false);
 
   React.useEffect(() => {
     onUserInfoChange();
@@ -60,12 +61,14 @@ const useGlobalContextDispatch = () => {
     folderParentId,
     todoId,
     folderParentName,
+    authenticated,
     onUserInfoChange,
     onFetchFolders,
     onFetchTodo,
     onSetFolderParentId,
     onSetTodoId,
     onSetFolderParentName,
+    setAuthenticated
   };
 
   return values;

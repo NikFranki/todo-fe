@@ -1,7 +1,10 @@
 import React from 'react';
 import {
-  createBrowserRouter,
-  RouterProvider,
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
 } from "react-router-dom";
 
 import TodoContext from './utils/todo-context';
@@ -11,35 +14,74 @@ import Home from './home';
 import Profile from './profile';
 import ErrorPage from "./error-page";
 import useGlobalContextDispatch from './hooks/use-global-context-dispatch';
+import { validateToken } from './api/user';
 
 import './App.css';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-  },
-]);
+const ProtectedRoute = ({
+  isAllowed,
+  children,
+  redirectPath = '/login',
+}) => {
+  if (!isAllowed) {
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  return children ? children : <Outlet />;
+};
 
 function App() {
   const values = useGlobalContextDispatch();
+  const [authenticatedLoading, setAuthenticatedLoading] = React.useState(true);
+  const { authenticated, setAuthenticated } = values;
+
+  const doValidateToken = async () => {
+    setAuthenticatedLoading(true);
+    const res = await validateToken({ token: localStorage.getItem('token') });
+    setAuthenticated(res.code === 200);
+    setAuthenticatedLoading(false);
+  };
+
+  React.useEffect(() => {
+    doValidateToken();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (authenticatedLoading) {
+    console.log('authenticatedLoading...')
+    return null;
+  }
+
+  // Using protect routes, relative link: https://www.robinwieruch.de/react-router-private-routes/
+
+  // Make more compatable with applying permission and roles on protect routes for the fucture
+  const permissions = ['analyze'];
+  const roles = ['admin'];
 
   return (
     <TodoContext.Provider value={values}>
-      <RouterProvider router={router} />
+      <Router>
+        <Routes>
+          <Route element={<ProtectedRoute isAllowed={authenticated} />}>
+            <Route path='/' element={<Home />} errorElement={<ErrorPage />} />
+          </Route>
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute
+                redirectPath="/"
+                isAllowed={
+                  authenticated && permissions.includes('analyze') && roles.includes('admin')
+                }
+              >
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route path='login' element={<Login />} />
+          <Route path='register' element={<Register />} />
+        </Routes>
+      </Router>
     </TodoContext.Provider>
   );
 }

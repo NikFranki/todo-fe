@@ -8,7 +8,6 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 
 import TodoContext from '../utils/todo-context';
-import request from '../utils/request';
 import { login } from '../api/user';
 
 import './index.css';
@@ -16,7 +15,7 @@ import './index.css';
 const Register = () => {
   const navigate = useNavigate();
 
-  const { onUserInfoChange } = React.useContext(TodoContext);
+  const { onUserInfoChange, setAuthenticated } = React.useContext(TodoContext);
 
   const onFinish = async (values) => {
     const res = await login(values);
@@ -27,6 +26,7 @@ const Register = () => {
     
     localStorage.setItem('token', res.token);
 
+    setAuthenticated(true);
     navigate('/', { replace: true });
     // 查询用户，更新用户信息，使得 context 传递 userInfo 给其他组件
     onUserInfoChange();
