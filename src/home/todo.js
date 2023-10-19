@@ -121,7 +121,8 @@ const Todo = () => {
     setTodoDetail(res);
   };
 
-  const handleSearch = async (content) => {
+  const handleSearch = async (e) => {
+    const content = e.target.value;
     setSearchText(content);
     getList({ content });
   };
@@ -151,7 +152,7 @@ const Todo = () => {
   const renderSearch = () => {
     return (
       <div className="search-wrapper">
-        <Search placeholder="Area search" onSearch={handleSearch} enterButton allowClear />
+        <Search placeholder="Area search" onChange={_.debounce(handleSearch, 100)} prefix="search" enterButton={false} allowClear />
       </div>
     );
   };

@@ -10,10 +10,6 @@ const useGroups = () => {
     setGroups(res.list);
   };
 
-  React.useEffect(() => {
-    fetchGroups();
-  }, []);
-
   return {
     groups,
     onFetchGroups: fetchGroups,

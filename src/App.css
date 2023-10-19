@@ -45,6 +45,14 @@
   margin-right: 8px;
 }
 
+.search-wrapper .ant-input-group-addon {
+  display: none;
+}
+
+.search-wrapper .ant-input-affix-wrapper:not(:last-child) {
+  border-radius: 6px;
+}
+
 .add-item-wrapper {
   padding-left: 80px;
   text-align: left;

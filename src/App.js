@@ -33,23 +33,25 @@ const ProtectedRoute = ({
 function App() {
   const values = useGlobalContextDispatch();
   const [authenticatedLoading, setAuthenticatedLoading] = React.useState(true);
-  const { authenticated, setAuthenticated } = values;
+  const { authenticated, onAuthenticated, onFetchGroups, onUserInfoChange } = values;
 
   const doValidateToken = async () => {
     setAuthenticatedLoading(true);
     const res = await validateToken({ token: localStorage.getItem('token') });
-    setAuthenticated(res.code === 200);
+    onAuthenticated(res.code === 200);
     setAuthenticatedLoading(false);
   };
 
   React.useEffect(() => {
     doValidateToken();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    onFetchGroups();
+    onUserInfoChange();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (authenticatedLoading) {
     console.log('authenticatedLoading...')
-    return null;
+    return <div>loading...</div>;
   }
 
   // Using protect routes, relative link: https://www.robinwieruch.de/react-router-private-routes/

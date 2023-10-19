@@ -15,10 +15,6 @@ const useGlobalContextDispatch = () => {
   const [folderParentName, setFolderParentName] = React.useState('');
   const [authenticated, setAuthenticated] = React.useState(false);
 
-  React.useEffect(() => {
-    onUserInfoChange();
-  }, []);
-
   const onUserInfoChange = async() => {
     const res = await searchUser({});
     setUserInfo(res.data || {});
@@ -53,7 +49,11 @@ const useGlobalContextDispatch = () => {
     setTodoId(todoId);
   };
 
-  const values = {
+  const onAuthenticated = (authenticated) => {
+    setAuthenticated(authenticated);
+  };
+
+  return {
     userInfo,
     groups,
     list,
@@ -68,10 +68,9 @@ const useGlobalContextDispatch = () => {
     onSetFolderParentId,
     onSetTodoId,
     onSetFolderParentName,
-    setAuthenticated
+    setAuthenticated,
+    onAuthenticated
   };
-
-  return values;
 };
 
 export default useGlobalContextDispatch;
