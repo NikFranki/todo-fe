@@ -2,9 +2,11 @@
 import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
-import { Dropdown, Space, Avatar, message } from 'antd';
+import { Dropdown, Space, Avatar, message, Upload } from 'antd';
 
 import { logout } from '../api/user';
+import { importTodo, exportTodo } from '../api/todo';
+import downloadFile from '../utils/download-file';
 import TodoContext from '../utils/todo-context';
 
 import './menu.css';
@@ -16,6 +18,12 @@ const Menu = () => {
   const { username, avatar } = userInfo;
   const userLogined = userInfo.username;
 
+  const onExport = async () => {
+    const res = await exportTodo();
+
+    downloadFile(res);
+  };
+
   const handleLogout = async () => {
     try {
       await logout({});
@@ -25,23 +33,60 @@ const Menu = () => {
     }
   };
 
-  const items = [
-    ...!userLogined ? [{
+  const renderImport = () => {
+    const props = {
+      name: 'file',
+      showUploadList: false,
+      maxCount: 1,
+      accept: '.xlsx',
+      withCredentials: true,
+      beforeUpload: async (file) => {
+        if (file) {
+          const formData = new FormData();
+          formData.append('todos', file);
+          await importTodo(formData);
+          message.success(`${file.name} file uploaded successfully`);
+          // getList();
+        }
+        return false;
+      },
+    };
+
+    return (
+      <div style={{ display: 'inline-block', height: 22 }} className="import-todo">
+        <Upload {...props}>
+          <a style={{ color: 'inherit' }}>Import Todo</a>
+        </Upload>
+      </div>
+    );
+  };
+
+  const items = !userLogined
+    ? [{
       label: <Link to="/login">Login</Link>,
       key: '0',
-    }] : [],
-    ...userLogined ? [{
-      label: <a onClick={handleLogout}>Logout</a>,
-      key: '1',
-    }] : [],
-    {
-      type: 'divider',
-    },
-    {
-      label: <Link to="/profile">Profile</Link>,
-      key: '3',
-    },
-  ];
+    }]
+    : [
+      {
+        label: <a onClick={handleLogout}>Logout</a>,
+        key: '1',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        label: renderImport(),
+        key: '2',
+      },
+      {
+        label: <a onClick={onExport}>Export Todo</a>,
+        key: '3',
+      },
+      {
+        label: <Link to="/profile">Profile</Link>,
+        key: '4',
+      },
+    ];
 
   return (
     <div className="header-menu-wrapper">
