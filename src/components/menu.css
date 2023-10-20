@@ -1,7 +1,5 @@
 .header-menu-wrapper {
-  position: absolute;
-  right: 15px;
-  display: inline-block;
+  padding-right: 15px;
 }
 
 .header-menu-wrapper .home-url {

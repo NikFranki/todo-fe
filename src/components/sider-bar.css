@@ -1,11 +1,5 @@
 .sider-bar-wrapper .ant-space-item:nth-child(1) {
-  line-height: 30px;
-  padding: 30px 10px 0;
-}
-
-.sider-bar-wrapper .ant-space-item:nth-child(3) {
-  height: 30px;
-  line-height: 30px;
+  margin-top: 8px;
 }
 
 .shortcut-menu {
@@ -37,15 +31,23 @@
   font-size: 18px;
 }
 
-.sider-bar-wrapper .ant-space-item:nth-child(9) {
-  height: calc(100vh - 466px);
+.sider-bar-wrapper .ant-space-item .list-wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  line-height: 1;
+  padding-left: 8px;
+}
+
+.sider-bar-wrapper .ant-space-item:nth-child(7) {
+  height: calc(100vh - 377px);
   max-width: 280px;
   padding: 0 10px;
   overflow: auto;
-  padding-bottom: 30px;
+  padding-bottom: 10px;
 }
 
-.sider-bar-wrapper .ant-space-item:nth-child(9) {
+.sider-bar-wrapper .ant-space-item:nth-child(7) {
   position: relative;
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Input, Button, Radio, Divider, List, Skeleton, Upload, Tooltip, message } from 'antd';
-import { SearchOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
+import { Button, Radio, Divider, List, Skeleton, Upload, Tooltip, message } from 'antd';
+import { UploadOutlined, DownloadOutlined } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import _ from 'lodash';
 
@@ -19,7 +19,6 @@ const FILTER_TODO = 2;
 const FILTER_DONE = 3;
 
 const Todo = () => {
-  const [searchText, setSearchText] = React.useState('');
   const [status, setStatus] = React.useState(FILTER_ALL);
   const [filteredStatus, setFilteredStatus] = React.useState(FILTER_ALL);
   const [mode, setMode] = React.useState('');
@@ -33,6 +32,7 @@ const Todo = () => {
     list,
     pager,
     folderParentName,
+    searchText,
     onFetchGroups,
     onFetchTodo,
     onSetFolderParentId,
@@ -67,15 +67,6 @@ const Todo = () => {
       pageSize,
     });
   };
-
-  React.useEffect(() => {
-    getList();
-
-    window.addEventListener('resize', _.debounce(function() {
-      getList();
-    }, 300), false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const onSubmit = async (mode, values) => {
     setMode('');
@@ -119,12 +110,6 @@ const Todo = () => {
     setTodoDetail(res);
   };
 
-  const handleSearch = async (e) => {
-    const content = e.target.value;
-    setSearchText(content);
-    getList({ content });
-  };
-
   const handleDelete = async (id) => {
     await deleteodo({ id });
     getList();
@@ -143,14 +128,6 @@ const Todo = () => {
     return (
       <div className="belong-to-wrapper">
         <h3>{folderParentName}</h3>
-      </div>
-    );
-  };
-
-  const renderSearch = () => {
-    return (
-      <div className="search-wrapper">
-        <Input placeholder="Area search" onChange={_.debounce(handleSearch, 100)} prefix={<SearchOutlined />} allowClear />
       </div>
     );
   };
@@ -281,7 +258,6 @@ const Todo = () => {
   return (
     <div className="Todo-wrapper">
       {renderPosition()}
-      {renderSearch()}
       {renderAddItem()}
       {renderExportAndImport()}
       {renderList()}

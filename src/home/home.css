@@ -1,0 +1,17 @@
+.todo-layout header {
+  padding: 0;
+}
+
+.todo-layout header .logo {
+  width: 100px;
+  padding-left: 15px;
+}
+
+.global-search-wrapper {
+  flex: 1 1 0;
+  text-align: center;
+}
+
+.global-search-wrapper .ant-input-affix-wrapper {
+  width: 500px;
+}

@@ -9,6 +9,7 @@ const useGlobalContextDispatch = () => {
   const [userInfo, setUserInfo] = React.useState({});
   const { groups, onFetchGroups } = useGroups();
   const [list, setList] = React.useState([]);
+  const [searchText, setSearchText] = React.useState('');
   const [pager, setPager] = React.useState({ pageNo: DEFAULT_PAGENO, pageSize: DEFAULT_PAGESIZE, total: 0 });
   const [folderParentId, setFolderParentId] = React.useState(DEFAULT_FOLDER_SEQUENCE);
   const [todoId, setTodoId] = React.useState(undefined);
@@ -25,8 +26,8 @@ const useGlobalContextDispatch = () => {
       id: todoId,
       parent_id: folderParentId,
       ...params,
-      pageNo: DEFAULT_PAGENO,
-      pageSize: DEFAULT_PAGESIZE,
+      pageNo: pager.pageNo,
+      pageSize: pager.pageSize,
     };
     const res = await fetchTodoList(params);
     setList(res.list);
@@ -53,6 +54,10 @@ const useGlobalContextDispatch = () => {
     setAuthenticated(authenticated);
   };
 
+  const onSetSearchText = (searchText) => {
+    setSearchText(searchText);
+  };
+
   return {
     userInfo,
     groups,
@@ -62,6 +67,7 @@ const useGlobalContextDispatch = () => {
     todoId,
     folderParentName,
     authenticated,
+    searchText,
     onUserInfoChange,
     onFetchGroups,
     onFetchTodo,
@@ -69,7 +75,8 @@ const useGlobalContextDispatch = () => {
     onSetTodoId,
     onSetFolderParentName,
     setAuthenticated,
-    onAuthenticated
+    onAuthenticated,
+    onSetSearchText,
   };
 };
 

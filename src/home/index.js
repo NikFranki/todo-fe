@@ -1,18 +1,23 @@
 import React from 'react';
 
-import { Layout, Space } from 'antd';
+import { Layout, Space, Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
+import _ from 'lodash';
 
 import Menu from '../components/menu';
 import Todo from './todo';
 import SiderBar from '../components/sider-bar';
+import useContextInfo from '../hooks/use-context-info';
+
+import "./home.css";
 
 const { Header, Footer, Sider, Content } = Layout;
 
 const headerStyle = {
+  display: 'flex',
   color: '#fff',
   height: 64,
-  paddingInline: 50,
   lineHeight: '64px',
   backgroundColor: '#7dbcea',
 };
@@ -43,13 +48,66 @@ const footerStyle = {
   backgroundColor: '#7dbcea',
 };
 
+const FILTER_ALL = 1;
+const FILTER_TODO = 2;
+const FILTER_DONE = 3;
+
 function Home() {
+  const [filteredStatus, setFilteredStatus] = React.useState(FILTER_ALL);
+
+  const {
+    pager,
+    searchText,
+    onFetchTodo,
+    onSetSearchText,
+  } = useContextInfo();
+
+  React.useEffect(() => {
+    getList();
+
+    window.addEventListener('resize', _.debounce(function() {
+      getList();
+    }, 300), false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getList = async (params = {}) => {
+    const {
+      status = filteredStatus,
+      content = searchText,
+      pageNo = pager.pageNo,
+      pageSize = pager.pageSize,
+    } = params;
+
+    onFetchTodo({
+      status,
+      content,
+      pageNo,
+      pageSize,
+    });
+  };
+
+  const handleSearch = async (e) => {
+    const content = e.target.value;
+    onSetSearchText(content);
+    getList({ content });
+  };
+
+  const renderSearch = () => {
+    return (
+      <div className="global-search-wrapper">
+        <Input placeholder="Area search" onChange={_.debounce(handleSearch, 100)} prefix={<SearchOutlined />} allowClear />
+      </div>
+    );
+  };
+
   return (
     <div className="App">
       <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
-        <Layout>
-          <Header style={headerStyle}>
-            <span style={titleStyle}>Todo</span>
+        <Layout className="todo-layout">
+          <Header className="header" style={headerStyle}>
+            <div className="logo" style={titleStyle}>Todo</div>
+            {renderSearch()}
             <Menu />
           </Header>
           <Layout>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PlusCircleOutlined, InboxOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, UnorderedListOutlined, HomeOutlined, ScheduleOutlined, UserOutlined, FireOutlined, RocketOutlined } from '@ant-design/icons';
 import { Tree, Space, Input, Divider, Modal, Form, Cascader, Button, message } from 'antd';
 
 import { addGroup } from '../api/group';
@@ -8,8 +8,17 @@ import generateNestedGroups from '../utils/generate-nested-groups';
 import useContextInfo from '../hooks/use-context-info';
 import './sider-bar.css';
 
-const { Search } = Input;
 const { DirectoryTree } = Tree;
+
+const lists = new Array(30).fill(null).map((item, index) => {
+  return {
+    id: index,
+    name: 'list' + index,
+    createTime: 1697787627,
+    updateTime: 1697787630,
+    color: 0,
+  };
+});
 
 const SiderBar = () => {
   const [confirmLoading, setConfirmLoading] = React.useState(false);
@@ -27,10 +36,6 @@ const SiderBar = () => {
   const treeData = generateNestedGroups(groups);
 
   const options = generateNestedGroups(groups, true);
-
-  const onSearch = () => {
-    console.log('search');
-  };
 
   const onSelect = async (keys, infos) => {
     const {
@@ -76,39 +81,44 @@ const SiderBar = () => {
 
   return (
     <Space className="sider-bar-wrapper" direction="vertical" size="small" style={{ display: 'flex' }}>
-      <Search
-        placeholder="Site search"
-        allowClear
-        onSearch={onSearch}
-      />
-      <Divider
-        style={{ margin: '5px 0' }}
-      />
       <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="today-icon" />}>Today</Button>
+        <Button onClick={onSearchAll} type="link" icon={<FireOutlined className="today-icon" />}>Today</Button>
       </div>
       <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="important-icon" />}>Important</Button>
+        <Button onClick={onSearchAll} type="link" icon={<RocketOutlined className="important-icon" />}>Important</Button>
       </div>
       <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="planned-icon" />}>Planned</Button>
+        <Button onClick={onSearchAll} type="link" icon={<ScheduleOutlined className="planned-icon" />}>Planned</Button>
       </div>
       <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="assigned-icon" />}>Assigned to me</Button>
+        <Button onClick={onSearchAll} type="link" icon={<UserOutlined className="assigned-icon" />}>Assigned to me</Button>
       </div>
       <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="tasks-icon" />}>Tasks</Button>
+        <Button onClick={onSearchAll} type="link" icon={<HomeOutlined className="tasks-icon" />}>Tasks</Button>
       </div>
       <Divider
-        style={{ margin: '5px 0' }}
+        style={{ margin: 0 }}
       />
-      <DirectoryTree
+      {/* <DirectoryTree
         rootClassName="group-wrapper"
         multiple
         defaultExpandAll
         onSelect={onSelect}
         treeData={treeData}
-      />
+      /> */}
+      {/* TODO: replace DirectoryTree to a simple list map */}
+      <div className="list-wrapper">
+        {
+          lists.map(item => {
+            return (
+              <div className="list-item">
+                <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
+                {item.name}
+              </div>
+            );
+          })
+        }
+      </div>
       <div className="add-file-list-wrapper" onClick={onAddFolder}>
         <PlusCircleOutlined className="add-icon" />
         Group
