@@ -84,14 +84,26 @@ const SiderBar = () => {
       <Divider
         style={{ margin: '5px 0' }}
       />
-      <div className="search-site-all">
-        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="all-icon" />}>All</Button>
+      <div className="shortcut-menu">
+        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="today-icon" />}>Today</Button>
+      </div>
+      <div className="shortcut-menu">
+        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="important-icon" />}>Important</Button>
+      </div>
+      <div className="shortcut-menu">
+        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="planned-icon" />}>Planned</Button>
+      </div>
+      <div className="shortcut-menu">
+        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="assigned-icon" />}>Assigned to me</Button>
+      </div>
+      <div className="shortcut-menu">
+        <Button onClick={onSearchAll} type="link" icon={<InboxOutlined className="tasks-icon" />}>Tasks</Button>
       </div>
       <Divider
         style={{ margin: '5px 0' }}
       />
       <DirectoryTree
-        rootClassName="folder-wrapper"
+        rootClassName="group-wrapper"
         multiple
         defaultExpandAll
         onSelect={onSelect}

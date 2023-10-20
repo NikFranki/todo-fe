@@ -8,11 +8,12 @@
   line-height: 30px;
 }
 
-.search-site-all {
+.shortcut-menu {
   width: 100%;
+  line-height: 1;
 }
 
-.search-site-all button {
+.shortcut-menu button {
   display: inline-flex;
   align-items: center;
   width: 100%;
@@ -20,19 +21,31 @@
   color: #fff;
 }
 
-.search-site-all button .all-icon {
+.shortcut-menu button .today-icon {
+  font-size: 18px;
+}
+.shortcut-menu button .important-icon {
+  font-size: 18px;
+}
+.shortcut-menu button .planned-icon {
+  font-size: 18px;
+}
+.shortcut-menu button .assigned-icon {
+  font-size: 18px;
+}
+.shortcut-menu button .tasks-icon {
   font-size: 18px;
 }
 
-.sider-bar-wrapper .ant-space-item:nth-child(5) {
-  height: calc(100vh - 310px);
+.sider-bar-wrapper .ant-space-item:nth-child(9) {
+  height: calc(100vh - 466px);
   max-width: 280px;
   padding: 0 10px;
   overflow: auto;
   padding-bottom: 30px;
 }
 
-.sider-bar-wrapper .ant-space-item:nth-child(5) {
+.sider-bar-wrapper .ant-space-item:nth-child(9) {
   position: relative;
 }
 
@@ -40,12 +53,12 @@
   white-space: nowrap;
 }
 
-.folder-wrapper {
+.group-wrapper {
   background-color: inherit;
   color: #fff;
 }
 
-.folder-wrapper .ant-tree-node-content-wrapper {
+.group-wrapper .ant-tree-node-content-wrapper {
   text-align: left;
 }
 
@@ -53,7 +66,7 @@
   position: absolute;
   left: 15px;
   bottom: 0;
-  width: 100%;
+  width: calc(100% - 15px);
   line-height: 30px;
   cursor: pointer;
 }

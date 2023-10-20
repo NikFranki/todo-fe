@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Input, Button, Radio, Divider, List, Skeleton, Upload, Tooltip, message } from 'antd';
-import { UploadOutlined, DownloadOutlined } from '@ant-design/icons';
+import { SearchOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import _ from 'lodash';
 
@@ -17,8 +17,6 @@ import getMaxNumberOfText from '../utils/get-max-number-of-text';
 const FILTER_ALL = 1;
 const FILTER_TODO = 2;
 const FILTER_DONE = 3;
-
-const { Search } = Input;
 
 const Todo = () => {
   const [searchText, setSearchText] = React.useState('');
@@ -152,7 +150,7 @@ const Todo = () => {
   const renderSearch = () => {
     return (
       <div className="search-wrapper">
-        <Search placeholder="Area search" onChange={_.debounce(handleSearch, 100)} prefix="search" enterButton={false} allowClear />
+        <Input placeholder="Area search" onChange={_.debounce(handleSearch, 100)} prefix={<SearchOutlined />} allowClear />
       </div>
     );
   };

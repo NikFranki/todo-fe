@@ -1,3 +1,11 @@
+.user-authentication-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .menu-side-bar {
   flex: 0 0 300px !important;
   max-width: 300px !important;
@@ -43,14 +51,6 @@
 
 .search-wrapper label {
   margin-right: 8px;
-}
-
-.search-wrapper .ant-input-group-addon {
-  display: none;
-}
-
-.search-wrapper .ant-input-affix-wrapper:not(:last-child) {
-  border-radius: 6px;
 }
 
 .add-item-wrapper {

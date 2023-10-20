@@ -7,6 +7,7 @@ import {
   Navigate,
 } from "react-router-dom";
 
+import { LoadingOutlined } from '@ant-design/icons';
 import TodoContext from './utils/todo-context';
 import Register from './register';
 import Login from './login';
@@ -50,8 +51,10 @@ function App() {
   }, []);
 
   if (authenticatedLoading) {
-    console.log('authenticatedLoading...')
-    return <div>loading...</div>;
+    return <div className="page-init user-authentication-loading">
+      <LoadingOutlined style={{ fontSize: 30, marginBottom: 15 }} />
+      loading...
+    </div>;
   }
 
   // Using protect routes, relative link: https://www.robinwieruch.de/react-router-private-routes/
