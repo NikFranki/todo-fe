@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PlusCircleOutlined, UnorderedListOutlined, HomeOutlined, ScheduleOutlined, UserOutlined, FireOutlined, RocketOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, UnorderedListOutlined, HomeOutlined, ScheduleOutlined, UserOutlined, FireOutlined, StarOutlined } from '@ant-design/icons';
 import { Tree, Space, Input, Divider, Modal, Form, Cascader, Button, message } from 'antd';
 
 import { addGroup } from '../api/group';
@@ -85,7 +85,7 @@ const SiderBar = () => {
         <Button onClick={onSearchAll} type="link" icon={<FireOutlined className="today-icon" />}>Today</Button>
       </div>
       <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<RocketOutlined className="important-icon" />}>Important</Button>
+        <Button onClick={onSearchAll} type="link" icon={<StarOutlined className="important-icon" />}>Important</Button>
       </div>
       <div className="shortcut-menu">
         <Button onClick={onSearchAll} type="link" icon={<ScheduleOutlined className="planned-icon" />}>Planned</Button>

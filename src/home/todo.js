@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Button, Radio, Divider, List, Skeleton, Tooltip, message } from 'antd';
+import { Button, Radio, Divider, List, Skeleton, Tooltip, message, Checkbox, Input } from 'antd';
+import { StarOutlined } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { fetchTodoListById, addTodo, editTodo, deleteodo } from '../api/todo';
@@ -175,7 +176,7 @@ const Todo = () => {
                     <Button type="primary" danger key="list-loadmore-more" onClick={() => handleDelete(item.id)}>delete</Button>
                   ]}
                 >
-                  <div className="ant-list-item-content">
+                  <div className="ant-todo-list-item-content">
                     <Radio
                       name="check"
                       checked={item.status === FILTER_DONE}
@@ -207,6 +208,62 @@ const Todo = () => {
     );
   };
 
+  const [addedContent, setAddedContent] = React.useState('');
+  const [lists, setLists] = React.useState([]);
+
+  const handleInput = (e) => {
+    setAddedContent(e.target.value);
+  };
+
+  const handleClick = () => {
+    const newLists = [...lists, { id: lists.length, content: addedContent }];
+    setLists(newLists);
+    setAddedContent('');
+  };
+
+  const renderAddListItem = () => {
+    return (
+      <div className="addition-wrapper">
+        <div className="addition-content">
+          <Checkbox checked={checked} onChange={onChange} />
+          <Input value={addedContent} placeholder="Add a task" onChange={handleInput} />
+        </div>
+        <div className="add-btn">
+          <Button onClick={handleClick}>Add</Button>
+        </div>
+      </div>
+    );
+  };
+
+  const [checked, setChecked] = React.useState(true);
+  const onChange = (e) => {
+    console.log('checked = ', e.target.checked);
+    setChecked(e.target.checked);
+  };
+  const renderList1 = () => {
+    return (
+      <ul className="todo-list-wrapper">
+        {/* first item is always as additive */}
+        <li className="todo-list-item add-item">
+          {renderAddListItem()}
+        </li>
+        {
+          lists.map(item => {
+            return (
+              <li key={item.id} className="todo-list-item">
+                <Checkbox checked={checked} onChange={onChange} />
+                <div className="content">
+                  {item.content}
+                </div>
+                <StarOutlined />
+              </li>
+            );
+          })
+        }
+      </ul>
+    );
+  };
+
   const renderFilter = () => {
     return (
       <Radio.Group className="filter-menu-wrapper" value={status} onChange={handleFilter}>
@@ -220,9 +277,10 @@ const Todo = () => {
   return (
     <div className="Todo-wrapper">
       {renderPosition()}
-      {renderAddItem()}
-      {renderList()}
-      {renderFilter()}
+      {/* {renderAddItem()} */}
+      {/* {renderList()} */}
+      {renderList1()}
+      {/* {renderFilter()} */}
       <Edit
         todoDetail={todoDetail}
         mode={mode}

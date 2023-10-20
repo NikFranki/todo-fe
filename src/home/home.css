@@ -15,3 +15,66 @@
 .global-search-wrapper .ant-input-affix-wrapper {
   width: 500px;
 }
+
+.todo-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  padding: 0 15px;
+  list-style: none;
+}
+
+.todo-list-item {
+  display: flex;
+  width: 100%;
+  line-height: 32px;
+  color: #000;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+}
+
+.add-item .addition-wrapper {
+  width: 100%;
+}
+
+.add-item .addition-wrapper .addition-content {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+}
+
+.add-item .addition-wrapper .add-btn {
+  padding: 6px;
+  text-align: right;
+}
+
+.addition-wrapper .anticon-plus {
+  margin-right: 8px;
+}
+
+.addition-wrapper .ant-input {
+  flex: 1 1 0;
+  border: none;
+  outline: none;
+  background: inherit;
+}
+
+.addition-wrapper .ant-input:focus {
+  box-shadow: none;
+}
+
+.todo-list-item .ant-checkbox-wrapper {
+  margin: 0 20px;
+}
+
+.todo-list-item .content {
+  flex: 1;
+  text-align: left;
+}
+
+.todo-list-item .anticon-star {
+  justify-content: center;
+  width: 50px;
+}
