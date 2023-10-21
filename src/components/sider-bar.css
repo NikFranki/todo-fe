@@ -55,15 +55,6 @@
   white-space: nowrap;
 }
 
-.group-wrapper {
-  background-color: inherit;
-  color: #fff;
-}
-
-.group-wrapper .ant-tree-node-content-wrapper {
-  text-align: left;
-}
-
 .add-file-list-wrapper {
   position: absolute;
   left: 15px;

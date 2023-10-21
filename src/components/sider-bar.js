@@ -3,7 +3,7 @@ import React from 'react';
 import { PlusCircleOutlined, UnorderedListOutlined, HomeOutlined, ScheduleOutlined, UserOutlined, FireOutlined, StarOutlined } from '@ant-design/icons';
 import { Space, Input, Divider, Modal, Form, Button, message } from 'antd';
 
-import { addGroup } from '../api/group';
+import { addList } from '../api/list';
 import useContextInfo from '../hooks/use-context-info';
 import './sider-bar.css';
 
@@ -23,7 +23,7 @@ const SiderBar = () => {
   const [form] = Form.useForm();
 
   const {
-    onFetchGroups,
+    onFetchLists,
     onFetchTodo,
     onSetTodoId,
   } = useContextInfo();
@@ -75,11 +75,11 @@ const SiderBar = () => {
       </div>
       <div className="add-file-list-wrapper" onClick={onAddFolder}>
         <PlusCircleOutlined className="add-icon" />
-        Group
+        List
       </div>
       <Modal
         open={open}
-        title={'Add group'}
+        title={'Add list'}
         okText="Ok"
         cancelText="Cancel"
         confirmLoading={confirmLoading}
@@ -93,8 +93,8 @@ const SiderBar = () => {
             .validateFields()
             .then(async (values) => {
               form.resetFields();
-              await addGroup(values);
-              onFetchGroups();
+              await addList(values);
+              onFetchLists();
               message.success('Add list success.');
               setOpen(false);
             })

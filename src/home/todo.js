@@ -15,7 +15,7 @@ const Todo = () => {
     pager,
     folderParentName,
     searchText,
-    onFetchGroups,
+    onFetchLists,
     onFetchTodo,
     onSetTodoId,
   } = useContextInfo();
@@ -62,7 +62,7 @@ const Todo = () => {
     }
     message.success(`${mode[0].toUpperCase()}${mode.slice(1).toLowerCase()} successfully`);
     getList();
-    onFetchGroups();
+    onFetchLists();
   };
 
   const renderPosition = () => {

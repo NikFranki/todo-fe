@@ -2,12 +2,12 @@ import React from 'react';
 
 import { fetchTodoList } from '../api/todo';
 import { searchUser } from '../api/user';
-import useGroups from '../hooks/use-groups';
+import useLists from '../hooks/use-list';
 import { DEFAULT_PAGENO, DEFAULT_PAGESIZE } from '../constant';
 
 const useGlobalContextDispatch = () => {
   const [userInfo, setUserInfo] = React.useState({});
-  const { groups, onFetchGroups } = useGroups();
+  const { lists, onFetchLists } = useLists();
   const [list, setList] = React.useState([]);
   const [searchText, setSearchText] = React.useState('');
   const [pager, setPager] = React.useState({ pageNo: DEFAULT_PAGENO, pageSize: DEFAULT_PAGESIZE, total: 0 });
@@ -49,14 +49,14 @@ const useGlobalContextDispatch = () => {
 
   return {
     userInfo,
-    groups,
+    lists,
     list,
     pager,
     todoId,
     authenticated,
     searchText,
     onUserInfoChange,
-    onFetchGroups,
+    onFetchLists,
     onFetchTodo,
     onSetTodoId,
     setAuthenticated,
