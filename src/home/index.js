@@ -31,14 +31,11 @@ const siderStyle = {
   minWidth: '200px',
   width: '300px',
   textAlign: 'left',
-  lineHeight: '120px',
   color: '#fff',
   backgroundColor: '#3ba0e9',
 };
 const contentStyle = {
-  textAlign: 'center',
   minHeight: 120,
-  lineHeight: '120px',
   color: '#fff',
   backgroundColor: '#f5f5d5',
 };

@@ -23,7 +23,6 @@
 
 .ant-space .ant-layout-content {
   height: calc(100vh - 129px);
-  line-height: 60px !important;
   overflow: auto;
 }
 

@@ -7,28 +7,45 @@ import { addList } from '../api/list';
 import useContextInfo from '../hooks/use-context-info';
 import './sider-bar.css';
 
-
-const lists = new Array(30).fill(null).map((item, index) => {
-  return {
-    id: index,
-    name: 'list' + index,
-    createTime: 1697787627,
-    updateTime: 1697787630,
-    color: 0,
-  };
-});
-
 const SiderBar = () => {
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [fixedList, setFixedlist] = React.useState([]);
+  const [otherList, setOtherlist] = React.useState([]);
   const [form] = Form.useForm();
 
   const {
-    onFetchLists,
+    list,
+    onFetchList,
     onFetchTodo,
     onSetTodoId,
   } = useContextInfo();
   const [open, setOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    if (!list.length) return;
+    const icons = [
+      <FireOutlined className="today-icon" />,
+      <StarOutlined className="important-icon" />,
+      <ScheduleOutlined className="planned-icon" />,
+      <UserOutlined className="assigned-icon" />,
+      <HomeOutlined className="tasks-icon" />
+    ];
+    const newFixedList = list.slice(0, 5).map((item, index) => {
+      return {
+        ...item,
+        icon: icons[index],
+      };
+    });
+    setFixedlist(newFixedList);
+    const newOtherList = list.slice(5).map((item, index) => {
+      return {
+        ...item,
+        icon: <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />,
+      };
+    });
+    setOtherlist(newOtherList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list.length]);
 
   const onAddFolder = () => {
     setOpen(true);
@@ -43,27 +60,21 @@ const SiderBar = () => {
 
   return (
     <Space className="sider-bar-wrapper" direction="vertical" size="small" style={{ display: 'flex' }}>
-      <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<FireOutlined className="today-icon" />}>Today</Button>
-      </div>
-      <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<StarOutlined className="important-icon" />}>Important</Button>
-      </div>
-      <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<ScheduleOutlined className="planned-icon" />}>Planned</Button>
-      </div>
-      <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<UserOutlined className="assigned-icon" />}>Assigned to me</Button>
-      </div>
-      <div className="shortcut-menu">
-        <Button onClick={onSearchAll} type="link" icon={<HomeOutlined className="tasks-icon" />}>Tasks</Button>
-      </div>
+      {
+        fixedList.map(item => {
+          return (
+            <div key={item.id} className="shortcut-menu">
+              <Button onClick={onSearchAll} type="link" icon={item.icon}>{item.name}</Button>
+            </div>
+          );
+        })
+      }
       <Divider
         style={{ margin: 0 }}
       />
       <div className="list-wrapper">
         {
-          lists.map(item => {
+          otherList.map(item => {
             return (
               <div key={item.id} className="list-item">
                 <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
@@ -94,7 +105,7 @@ const SiderBar = () => {
             .then(async (values) => {
               form.resetFields();
               await addList(values);
-              onFetchLists();
+              onFetchList();
               message.success('Add list success.');
               setOpen(false);
             })

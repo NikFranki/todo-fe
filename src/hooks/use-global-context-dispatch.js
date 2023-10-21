@@ -2,13 +2,13 @@ import React from 'react';
 
 import { fetchTodoList } from '../api/todo';
 import { searchUser } from '../api/user';
-import useLists from '../hooks/use-list';
+import { fetchList } from '../api/list';
 import { DEFAULT_PAGENO, DEFAULT_PAGESIZE } from '../constant';
 
 const useGlobalContextDispatch = () => {
   const [userInfo, setUserInfo] = React.useState({});
-  const { lists, onFetchLists } = useLists();
   const [list, setList] = React.useState([]);
+  const [todo, setTodo] = React.useState([]);
   const [searchText, setSearchText] = React.useState('');
   const [pager, setPager] = React.useState({ pageNo: DEFAULT_PAGENO, pageSize: DEFAULT_PAGESIZE, total: 0 });
   const [todoId, setTodoId] = React.useState(undefined);
@@ -27,7 +27,7 @@ const useGlobalContextDispatch = () => {
       pageSize: pager.pageSize,
     };
     const res = await fetchTodoList(params);
-    setList(res.list);
+    setTodo(res.list);
     setPager({
       pageNo: res.pageNo,
       pageSize: res.pageSize,
@@ -47,16 +47,21 @@ const useGlobalContextDispatch = () => {
     setSearchText(searchText);
   };
 
+  const onFetchList = async () => {
+    const res = await fetchList({});
+    setList(res.list);
+  };
+
   return {
     userInfo,
-    lists,
     list,
+    todo,
     pager,
     todoId,
     authenticated,
     searchText,
     onUserInfoChange,
-    onFetchLists,
+    onFetchList,
     onFetchTodo,
     onSetTodoId,
     setAuthenticated,

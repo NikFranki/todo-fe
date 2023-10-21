@@ -1,21 +1,36 @@
 import React from 'react';
 
-import { Button, message, Checkbox, Input } from 'antd';
+import { Button, Checkbox, Input, Menu } from 'antd';
 import { StarOutlined } from '@ant-design/icons';
 
-import { addTodo, editTodo } from '../api/todo';
+import { addTodo } from '../api/todo';
+import { FIXED_LIST_ITEM_TASKS } from '../constant/index';
 import useContextInfo from '../hooks/use-context-info';
-import Edit from './edit-form-modal';
+
+function getItem(label, key, icon, children, type) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  };
+}
 
 const Todo = () => {
-  const [mode, setMode] = React.useState('');
-  const [todoDetail, setTodoDetail] = React.useState({});
+  const [addedContent, setAddedContent] = React.useState('');
+  const [visible, setVisible] = React.useState(false);
+  const inputRef = React.useRef(null);
+  const [points, setPoints] = React.useState({
+    x: 0,
+    y: 0,
+  });
 
   const {
+    todo,
     pager,
     folderParentName,
     searchText,
-    onFetchLists,
     onFetchTodo,
     onSetTodoId,
   } = useContextInfo();
@@ -42,29 +57,6 @@ const Todo = () => {
     });
   };
 
-  const onSubmit = async (mode, values) => {
-    setMode('');
-    setTodoDetail({});
-
-    if (!values.content) {
-      alert('content can not be empty!');
-      return;
-    }
-    if (!values.date) {
-      alert('date can not be empty!');
-      return;
-    };
-
-    if (mode === 'add') {
-      await addTodo(values);
-    } else {
-      await editTodo(values);
-    }
-    message.success(`${mode[0].toUpperCase()}${mode.slice(1).toLowerCase()} successfully`);
-    getList();
-    onFetchLists();
-  };
-
   const renderPosition = () => {
     return (
       <div className="belong-to-wrapper">
@@ -73,17 +65,23 @@ const Todo = () => {
     );
   };
 
-  const [addedContent, setAddedContent] = React.useState('');
-  const [lists, setLists] = React.useState([]);
-
   const handleInput = (e) => {
     setAddedContent(e.target.value);
   };
 
-  const handleClick = () => {
-    const newLists = [...lists, { id: lists.length, content: addedContent }];
-    setLists(newLists);
+  const handleClick = async () => {
+    if (!addedContent) {
+      alert('content can not be empty!');
+      return;
+    }
+
+    await addTodo({
+      content: addedContent,
+      list_id: FIXED_LIST_ITEM_TASKS,
+    });
     setAddedContent('');
+    getList();
+    inputRef.current.focus();
   };
 
   const renderAddListItem = () => {
@@ -91,7 +89,7 @@ const Todo = () => {
       <div className="addition-wrapper">
         <div className="addition-content">
           <Checkbox checked={checked} onChange={onChange} />
-          <Input value={addedContent} placeholder="Add a task" onChange={handleInput} />
+          <Input ref={inputRef} value={addedContent} placeholder="Add a task" onChange={handleInput} />
         </div>
         <div className="add-btn">
           <Button onClick={handleClick}>Add</Button>
@@ -100,22 +98,30 @@ const Todo = () => {
     );
   };
 
+  const handleTodoItemRightClick = (e) => {
+    e.preventDefault();
+    setVisible(true);
+    setPoints({
+      x: e.pageX,
+      y: e.pageY,
+    });
+  };
+
   const [checked, setChecked] = React.useState(true);
   const onChange = (e) => {
-    console.log('checked = ', e.target.checked);
     setChecked(e.target.checked);
   };
   const renderList = () => {
     return (
-      <ul className="todo-list-wrapper">
+      <ul className="todo-wrapper">
         {/* first item is always as additive */}
-        <li className="todo-list-item add-item">
+        <li className="todo-item add-item">
           {renderAddListItem()}
         </li>
         {
-          lists.map(item => {
+          todo.map(item => {
             return (
-              <li key={item.id} className="todo-list-item">
+              <li key={item.id} className="todo-item" onContextMenu={handleTodoItemRightClick}>
                 <Checkbox checked={checked} onChange={onChange} />
                 <div className="content">
                   {item.content}
@@ -129,18 +135,31 @@ const Todo = () => {
     );
   };
 
+  const items = [
+    getItem('Delete', 'sub1'),
+  ];
+
+  const renderContextMenu = () => {
+    return visible && (
+      <Menu
+        // onClick={onClick}
+        style={{
+          position: 'absolute',
+          width: 256,
+          left: points.x,
+          top: points.y,
+        }}
+        mode="vertical"
+        items={items}
+      />
+    );
+  };
+
   return (
     <div className="Todo-wrapper">
       {renderPosition()}
       {renderList()}
-      <Edit
-        todoDetail={todoDetail}
-        mode={mode}
-        onSubmit={onSubmit}
-        onCancel={() => {
-          setMode('');
-        }}
-      />
+      {renderContextMenu()}
     </div>
   );
 };
