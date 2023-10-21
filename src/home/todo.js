@@ -3,8 +3,8 @@ import React from 'react';
 import { Button, Checkbox, Input, Menu } from 'antd';
 import { StarOutlined } from '@ant-design/icons';
 
-import { addTodo } from '../api/todo';
-import { FIXED_LIST_ITEM_TASKS } from '../constant/index';
+import { addTodo, editTodo, deleteodo } from '../api/todo';
+import { FIXED_LIST_ITEM_TASKS, FIXED_LIST_ITEM_IMPORTANT } from '../constant/index';
 import useContextInfo from '../hooks/use-context-info';
 
 function getItem(label, key, icon, children, type) {
@@ -19,6 +19,7 @@ function getItem(label, key, icon, children, type) {
 
 const Todo = () => {
   const [addedContent, setAddedContent] = React.useState('');
+  const [clikedId, setClickedId] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const inputRef = React.useRef(null);
   const [points, setPoints] = React.useState({
@@ -28,7 +29,6 @@ const Todo = () => {
 
   const {
     todo,
-    pager,
     folderParentName,
     searchText,
     onFetchTodo,
@@ -37,6 +37,13 @@ const Todo = () => {
 
   React.useEffect(() => {
     onSetTodoId(undefined);
+
+    document.addEventListener('click', (e) => {
+      const target = document.querySelector('.todo-context-menu');
+      if (visible && !target.contains(e.target)) {
+        setVisible(false);
+      }
+    }, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -45,15 +52,11 @@ const Todo = () => {
       // TODO: temporarily set 1(todo status)
       status = 1,
       content = searchText,
-      pageNo = pager.pageNo,
-      pageSize = pager.pageSize,
     } = params;
 
     onFetchTodo({
       status,
       content,
-      pageNo,
-      pageSize,
     });
   };
 
@@ -67,6 +70,11 @@ const Todo = () => {
 
   const handleInput = (e) => {
     setAddedContent(e.target.value);
+  };
+
+  const handleEnter = (e) => {
+    console.log(111, e.target.value)
+    handleClick();
   };
 
   const handleClick = async () => {
@@ -89,7 +97,7 @@ const Todo = () => {
       <div className="addition-wrapper">
         <div className="addition-content">
           <Checkbox checked={checked} onChange={onChange} />
-          <Input ref={inputRef} value={addedContent} placeholder="Add a task" onChange={handleInput} />
+          <Input ref={inputRef} value={addedContent} placeholder="Add a task" onChange={handleInput} onPressEnter={handleEnter} />
         </div>
         <div className="add-btn">
           <Button onClick={handleClick}>Add</Button>
@@ -98,8 +106,9 @@ const Todo = () => {
     );
   };
 
-  const handleTodoItemRightClick = (e) => {
+  const handleContextMenu = (e, id) => {
     e.preventDefault();
+    setClickedId(id);
     setVisible(true);
     setPoints({
       x: e.pageX,
@@ -107,10 +116,20 @@ const Todo = () => {
     });
   };
 
+  const handleTodoItemClick = async (id) => {
+    await editTodo({
+      id,
+      status: FIXED_LIST_ITEM_IMPORTANT,
+    });
+    getList();
+  };
+
   const [checked, setChecked] = React.useState(true);
+
   const onChange = (e) => {
     setChecked(e.target.checked);
   };
+
   const renderList = () => {
     return (
       <ul className="todo-wrapper">
@@ -121,7 +140,7 @@ const Todo = () => {
         {
           todo.map(item => {
             return (
-              <li key={item.id} className="todo-item" onContextMenu={handleTodoItemRightClick}>
+              <li key={item.id} className="todo-item" onContextMenu={(e) => handleContextMenu(e, item.id)} onClick={() => handleTodoItemClick(item.id)}>
                 <Checkbox checked={checked} onChange={onChange} />
                 <div className="content">
                   {item.content}
@@ -136,15 +155,27 @@ const Todo = () => {
   };
 
   const items = [
-    getItem('Delete', 'sub1'),
+    getItem('Delete', 'delete'),
   ];
+
+  const onMenuClick =  async (e) => {
+    e.domEvent.stopPropagation();
+    if (e.key === 'delete') {
+      setVisible(false);
+      await deleteodo({
+        id: clikedId,
+      });
+      await getList();
+    }
+  };
 
   const renderContextMenu = () => {
     return visible && (
       <Menu
-        // onClick={onClick}
+        className="todo-context-menu"
+        onClick={onMenuClick}
         style={{
-          position: 'absolute',
+          position: 'fixed',
           width: 256,
           left: points.x,
           top: points.y,

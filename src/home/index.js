@@ -48,7 +48,6 @@ const footerStyle = {
 
 function Home() {
   const {
-    pager,
     searchText,
     onFetchTodo,
     onSetSearchText,
@@ -68,15 +67,11 @@ function Home() {
       // TODO: temporarily set 1(todo status)
       status = 1,
       content = searchText,
-      pageNo = pager.pageNo,
-      pageSize = pager.pageSize,
     } = params;
 
     onFetchTodo({
       status,
       content,
-      pageNo,
-      pageSize,
     });
   };
 
