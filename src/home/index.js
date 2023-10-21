@@ -48,13 +48,8 @@ const footerStyle = {
   backgroundColor: '#7dbcea',
 };
 
-const FILTER_ALL = 1;
-const FILTER_TODO = 2;
-const FILTER_DONE = 3;
 
 function Home() {
-  const [filteredStatus, setFilteredStatus] = React.useState(FILTER_ALL);
-
   const {
     pager,
     searchText,
@@ -73,7 +68,8 @@ function Home() {
 
   const getList = async (params = {}) => {
     const {
-      status = filteredStatus,
+      // TODO: temporarily set 1(todo status)
+      status = 1,
       content = searchText,
       pageNo = pager.pageNo,
       pageSize = pager.pageSize,

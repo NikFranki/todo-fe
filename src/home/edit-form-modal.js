@@ -1,20 +1,13 @@
 import React from 'react';
 
-import { Modal, Input, DatePicker, Form, Cascader } from 'antd';
+import { Modal, Input, DatePicker, Form } from 'antd';
 import dayjs from 'dayjs';
-// import qs from 'qs';
-
-import generateNestedGroups from '../utils/generate-nested-groups';
-import useContextInfo from '../hooks/use-context-info';
 
 const { TextArea } = Input;
 
 const Edit = ({ todoDetail, mode, onSubmit, onCancel }) => {
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [form] = Form.useForm();
-
-  const { groups } = useContextInfo();
-  const options = generateNestedGroups(groups, true);
 
   React.useEffect(() => {
     if (todoDetail.id) {
@@ -62,7 +55,6 @@ const Edit = ({ todoDetail, mode, onSubmit, onCancel }) => {
         name="form_in_modal"
         initialValues={{
           date: dayjs(new Date()),
-          position_id: [1],
         }}
       >
         <Form.Item
@@ -90,20 +82,6 @@ const Edit = ({ todoDetail, mode, onSubmit, onCancel }) => {
           <DatePicker
             style={{
               width: '100%',
-            }}
-          />
-        </Form.Item>
-        <Form.Item
-          name="position_id"
-          label="Position"
-        >
-          <Cascader
-            options={options}
-            placeholder="Please select position"
-            showSearch={{
-              filter: (inputValue, path) => {
-                return path.some((option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-              },
             }}
           />
         </Form.Item>

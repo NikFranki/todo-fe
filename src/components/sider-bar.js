@@ -1,14 +1,12 @@
 import React from 'react';
 
 import { PlusCircleOutlined, UnorderedListOutlined, HomeOutlined, ScheduleOutlined, UserOutlined, FireOutlined, StarOutlined } from '@ant-design/icons';
-import { Tree, Space, Input, Divider, Modal, Form, Cascader, Button, message } from 'antd';
+import { Space, Input, Divider, Modal, Form, Button, message } from 'antd';
 
 import { addGroup } from '../api/group';
-import generateNestedGroups from '../utils/generate-nested-groups';
 import useContextInfo from '../hooks/use-context-info';
 import './sider-bar.css';
 
-const { DirectoryTree } = Tree;
 
 const lists = new Array(30).fill(null).map((item, index) => {
   return {
@@ -25,57 +23,21 @@ const SiderBar = () => {
   const [form] = Form.useForm();
 
   const {
-    groups,
     onFetchGroups,
     onFetchTodo,
-    onSetFolderParentId,
     onSetTodoId,
-    onSetFolderParentName,
   } = useContextInfo();
   const [open, setOpen] = React.useState(false);
-  const treeData = generateNestedGroups(groups);
 
-  const options = generateNestedGroups(groups, true);
-
-  const onSelect = async (keys, infos) => {
-    const {
-      isLeaf,
-      id,
-      title,
-    } = infos.node;
-    onSetFolderParentName(title);
-    if (isLeaf) {
-      onSetFolderParentId(undefined);
-      onSetTodoId(id);
-      return onFetchTodo({
-        id: id,
-        parent_id: undefined,
-      });
-    }
-    const arr = keys[0].split('-');
-    const parent_id = +arr[arr.length - 1];
-    onFetchTodo({
-      parent_id,
-      id: undefined,
-    });
-    onSetFolderParentId(parent_id);
-    onSetTodoId(undefined);
-  };
 
   const onAddFolder = () => {
     setOpen(true);
   };
 
-  const filter = (inputValue, path) => {
-    return path.some((option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-  };
-
   const onSearchAll = () => {
     onFetchTodo({
-      parent_id: undefined,
       id: undefined,
     });
-    onSetFolderParentId(undefined);
     onSetTodoId(undefined);
   };
 
@@ -99,19 +61,11 @@ const SiderBar = () => {
       <Divider
         style={{ margin: 0 }}
       />
-      {/* <DirectoryTree
-        rootClassName="group-wrapper"
-        multiple
-        defaultExpandAll
-        onSelect={onSelect}
-        treeData={treeData}
-      /> */}
-      {/* TODO: replace DirectoryTree to a simple list map */}
       <div className="list-wrapper">
         {
           lists.map(item => {
             return (
-              <div className="list-item">
+              <div key={item.id} className="list-item">
                 <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
                 {item.name}
               </div>
@@ -139,12 +93,9 @@ const SiderBar = () => {
             .validateFields()
             .then(async (values) => {
               form.resetFields();
-              if (values.parent_id) {
-                values.parent_id = values.parent_id[values.parent_id.length - 1];
-              }
               await addGroup(values);
               onFetchGroups();
-              message.success('Add folder success.');
+              message.success('Add list success.');
               setOpen(false);
             })
             .catch((info) => {
@@ -158,9 +109,6 @@ const SiderBar = () => {
           form={form}
           layout="vertical"
           name="form_in_modal"
-          initialValues={{
-            parent_id: [1],
-          }}
           onChange={
             (v) => {
               console.log(11, v);
@@ -173,23 +121,11 @@ const SiderBar = () => {
             rules={[
               {
                 required: true,
-                message: 'Please input the folder name.',
+                message: 'Please input the list name.',
               },
             ]}
           >
-            <Input placeholder="folder name" />
-          </Form.Item>
-          <Form.Item
-            name="parent_id"
-            label="Parent Folder Name"
-          >
-            <Cascader
-              options={options}
-              placeholder="Please select"
-              showSearch={{
-                filter,
-              }}
-            />
+            <Input placeholder="list name" />
           </Form.Item>
         </Form>
       </Modal>
