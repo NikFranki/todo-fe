@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Checkbox, Input, Menu } from 'antd';
 import { StarOutlined } from '@ant-design/icons';
 
-import { addTodo, editTodo, deleteodo } from '../api/todo';
+import { addTodo, editTodo, deleteTodo } from '../api/todo';
 import { FIXED_LIST_ITEM_TASKS, FIXED_LIST_ITEM_IMPORTANT } from '../constant/index';
 import useContextInfo from '../hooks/use-context-info';
 
@@ -22,16 +22,19 @@ const Todo = () => {
   const [clikedId, setClickedId] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const inputRef = React.useRef(null);
+  const contextMenuRef = React.useRef(null);
   const [points, setPoints] = React.useState({
     x: 0,
     y: 0,
   });
 
   const {
+    otherlist,
     todo,
     folderParentName,
     searchText,
     onFetchTodo,
+    onFetchList,
     onSetTodoId,
   } = useContextInfo();
 
@@ -39,15 +42,15 @@ const Todo = () => {
     onSetTodoId(undefined);
 
     document.addEventListener('click', (e) => {
-      const target = document.querySelector('.todo-context-menu');
-      if (visible && !target.contains(e.target)) {
+      const target = contextMenuRef.current?.menu?.list;
+      if (target && !target.contains(e.target)) {
         setVisible(false);
       }
     }, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getList = async (params = {}) => {
+  const getTodo = async (params = {}) => {
     const {
       // TODO: temporarily set 1(todo status)
       status = 1,
@@ -73,7 +76,6 @@ const Todo = () => {
   };
 
   const handleEnter = (e) => {
-    console.log(111, e.target.value)
     handleClick();
   };
 
@@ -88,7 +90,7 @@ const Todo = () => {
       list_id: FIXED_LIST_ITEM_TASKS,
     });
     setAddedContent('');
-    getList();
+    getTodo();
     inputRef.current.focus();
   };
 
@@ -117,11 +119,19 @@ const Todo = () => {
   };
 
   const handleTodoItemClick = async (id) => {
+    // await editTodo({
+    //   id,
+    //   status: FIXED_LIST_ITEM_IMPORTANT,
+    // });
+    // getTodo();
+  };
+
+  const onStar = async (id) => {
     await editTodo({
       id,
       status: FIXED_LIST_ITEM_IMPORTANT,
     });
-    getList();
+    getTodo();
   };
 
   const [checked, setChecked] = React.useState(true);
@@ -145,7 +155,7 @@ const Todo = () => {
                 <div className="content">
                   {item.content}
                 </div>
-                <StarOutlined />
+                <StarOutlined onClick={() => onStar(item.id)} />
               </li>
             );
           })
@@ -156,22 +166,36 @@ const Todo = () => {
 
   const items = [
     getItem('Delete', 'delete'),
+    getItem('Move task to', 'move', null, otherlist.map(item => getItem(item.name, item.id))),
   ];
 
-  const onMenuClick =  async (e) => {
+  const onMenuClick = async (e) => {
     e.domEvent.stopPropagation();
-    if (e.key === 'delete') {
-      setVisible(false);
-      await deleteodo({
+    if (e.keyPath.includes('delete')) {
+      await deleteTodo({
         id: clikedId,
       });
-      await getList();
+      await getTodo();
+      await onFetchList();
+      setVisible(false);
+    }
+
+    if (e.keyPath.includes('move')) {
+      const [list_id] = e.keyPath;
+      await editTodo({
+        id: clikedId,
+        list_id,
+      });
+      await getTodo();
+      await onFetchList();
+      setVisible(false);
     }
   };
 
   const renderContextMenu = () => {
     return visible && (
       <Menu
+        ref={contextMenuRef}
         className="todo-context-menu"
         onClick={onMenuClick}
         style={{

@@ -34,7 +34,7 @@ const ProtectedRoute = ({
 function App() {
   const values = useGlobalContextDispatch();
   const [authenticatedLoading, setAuthenticatedLoading] = React.useState(true);
-  const { authenticated, onAuthenticated, onFetchList, onUserInfoChange } = values;
+  const { authenticated, onAuthenticated, onUserInfoChange } = values;
 
   const doValidateToken = async () => {
     setAuthenticatedLoading(true);
@@ -45,7 +45,6 @@ function App() {
 
   React.useEffect(() => {
     doValidateToken();
-    onFetchList();
     onUserInfoChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

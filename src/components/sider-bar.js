@@ -9,18 +9,34 @@ import './sider-bar.css';
 
 const SiderBar = () => {
   const [confirmLoading, setConfirmLoading] = React.useState(false);
-  const [fixedList, setFixedlist] = React.useState([]);
-  const [otherList, setOtherlist] = React.useState([]);
+  const [sbfixedList, setSbfixedlist] = React.useState([]);
+  const [sbotherList, setSbotherlist] = React.useState([]);
   const [form] = Form.useForm();
 
   const {
     list,
+    fixedList,
+    otherlist,
+    todo,
     onFetchList,
     onFetchTodo,
     onSetTodoId,
   } = useContextInfo();
   const [open, setOpen] = React.useState(false);
 
+  const accumulateListNumber = () => {
+    return todo.reduce((acc, prev) => {
+      if (acc[prev.list_id]) {
+        acc[prev.list_id]++;
+      } else {
+        acc[prev.list_id] = 1;
+      }
+      return acc;
+    }, {});
+  };
+
+  const listNumberMap = accumulateListNumber();
+  const factor = Object.entries(listNumberMap).map(([key, value]) => `${key}:${value}`).join('_');
   React.useEffect(() => {
     if (!list.length) return;
     const icons = [
@@ -30,22 +46,24 @@ const SiderBar = () => {
       <UserOutlined className="assigned-icon" />,
       <HomeOutlined className="tasks-icon" />
     ];
-    const newFixedList = list.slice(0, 5).map((item, index) => {
+    const newFixedList = fixedList.map((item, index) => {
       return {
         ...item,
         icon: icons[index],
+        number: listNumberMap[item.id] || 0,
       };
     });
-    setFixedlist(newFixedList);
-    const newOtherList = list.slice(5).map((item, index) => {
+    setSbfixedlist(newFixedList);
+    const newOtherList = otherlist.map((item, index) => {
       return {
         ...item,
         icon: <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />,
+        number: listNumberMap[item.id] || 0,
       };
     });
-    setOtherlist(newOtherList);
+    setSbotherlist(newOtherList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list.length]);
+  }, [list.length, factor]);
 
   const onAddFolder = () => {
     setOpen(true);
@@ -58,32 +76,42 @@ const SiderBar = () => {
     onSetTodoId(undefined);
   };
 
-  return (
-    <Space className="sider-bar-wrapper" direction="vertical" size="small" style={{ display: 'flex' }}>
-      {
-        fixedList.map(item => {
-          return (
-            <div key={item.id} className="shortcut-menu">
-              <Button onClick={onSearchAll} type="link" icon={item.icon}>{item.name}</Button>
-            </div>
-          );
-        })
-      }
-      <Divider
-        style={{ margin: 0 }}
-      />
-      <div className="list-wrapper">
+  const renderFixedList = () => {
+    return sbfixedList.map(item => {
+      return (
+        <div key={item.id} className="shortcut-menu">
+          <Button onClick={onSearchAll} type="link" icon={item.icon}>
+            {item.name}
+            <span>{item.number}</span>
+          </Button>
+        </div>
+      );
+    });
+  };
+
+  const renderOtherList = () => {
+    return (
+      <div className="list-wrapper other-list">
         {
-          otherList.map(item => {
+          sbotherList.map(item => {
             return (
               <div key={item.id} className="list-item">
                 <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
                 {item.name}
+                <span>{item.number}</span>
               </div>
             );
           })
         }
       </div>
+    );
+  };
+
+  return (
+    <Space className="sider-bar-wrapper" direction="vertical" size="small" style={{ display: 'flex' }}>
+      {renderFixedList()}
+      <Divider style={{ margin: 0 }} />
+      {renderOtherList()}
       <div className="add-file-list-wrapper" onClick={onAddFolder}>
         <PlusCircleOutlined className="add-icon" />
         List

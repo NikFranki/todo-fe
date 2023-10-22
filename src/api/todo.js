@@ -12,5 +12,5 @@ export const importTodo = (params) => instance.post('/todo/import', params);
 
 export const exportTodo = () => instance.get('/todo/export', { responseType: 'blob' });
 
-export const deleteodo = (params) => instance.post('/todo/delete', params);
+export const deleteTodo = (params) => instance.post('/todo/delete', params);
 

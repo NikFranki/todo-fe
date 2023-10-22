@@ -45,40 +45,28 @@ const footerStyle = {
   backgroundColor: '#7dbcea',
 };
 
-
 function Home() {
   const {
     searchText,
     onFetchTodo,
+    onFetchList,
     onSetSearchText,
   } = useContextInfo();
 
   React.useEffect(() => {
-    getList();
-
-    window.addEventListener('resize', _.debounce(function() {
-      getList();
-    }, 300), false);
+    sequenceRequest();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getList = async (params = {}) => {
-    const {
-      // TODO: temporarily set 1(todo status)
-      status = 1,
-      content = searchText,
-    } = params;
-
-    onFetchTodo({
-      status,
-      content,
-    });
+  const sequenceRequest = async () => {
+    await onFetchTodo({ content: searchText });
+    await onFetchList();
   };
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     const content = e.target.value;
     onSetSearchText(content);
-    getList({ content });
+    onFetchTodo({ content });
   };
 
   const renderSearch = () => {
