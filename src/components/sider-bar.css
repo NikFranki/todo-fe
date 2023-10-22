@@ -40,7 +40,7 @@
 }
 
 .sider-bar-wrapper .ant-space-item:nth-child(7) {
-  height: calc(100vh - 377px);
+  height: calc(100vh - 384px);
   max-width: 280px;
   padding: 0 10px;
   overflow: auto;
@@ -55,15 +55,22 @@
   white-space: nowrap;
 }
 
-.add-file-list-wrapper {
-  position: absolute;
-  left: 15px;
-  bottom: 0;
-  width: calc(100% - 15px);
-  line-height: 30px;
-  cursor: pointer;
+.add-list-wrapper {
+  display: flex;
+  padding-left: 15px;
 }
 
-.add-file-list-wrapper .add-icon {
+.add-list-wrapper .add-icon {
   margin-right: 5px;
+}
+
+.add-list-wrapper .ant-input {
+  border: none;
+  outline: none;
+  background: inherit;
+  border-radius: 0;
+}
+
+.add-list-wrapper .ant-input:focus {
+  box-shadow: none;
 }

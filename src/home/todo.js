@@ -150,6 +150,7 @@ const Todo = () => {
       });
       await getTodo();
       await onFetchList();
+      setVisible(false);
     }
 
     if (e.keyPath.includes('move')) {
@@ -168,9 +169,10 @@ const Todo = () => {
         onClick={onMenuClick}
         style={{
           position: 'fixed',
-          width: 256,
           left: points.x,
           top: points.y,
+          zIndex: 1,
+          width: 256,
         }}
         mode="vertical"
         items={items}

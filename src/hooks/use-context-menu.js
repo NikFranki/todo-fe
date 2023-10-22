@@ -7,7 +7,9 @@ const useContextMenu = () => {
     y: 0,
   });
   useEffect(() => {
-    const handleClick = () => setVisible(false);
+    const handleClick = () => {
+      setVisible(false);
+    };
     document.addEventListener("click", handleClick);
     return () => {
       document.removeEventListener("click", handleClick);
