@@ -6,32 +6,19 @@ import { StarOutlined } from '@ant-design/icons';
 import { addTodo, editTodo, deleteTodo } from '../api/todo';
 import { FIXED_LIST_ITEM_TASKS, FIXED_LIST_ITEM_IMPORTANT } from '../constant/index';
 import useContextInfo from '../hooks/use-context-info';
-
-function getItem(label, key, icon, children, type) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  };
-}
+import useContextMenu from '../hooks/use-context-menu';
+import getItem from '../utils/menu-get-item';
 
 const Todo = () => {
   const [addedContent, setAddedContent] = React.useState('');
   const [clikedId, setClickedId] = React.useState(false);
-  const [visible, setVisible] = React.useState(false);
   const inputRef = React.useRef(null);
-  const contextMenuRef = React.useRef(null);
-  const [points, setPoints] = React.useState({
-    x: 0,
-    y: 0,
-  });
+
+  const { visible, setVisible, points, setPoints } = useContextMenu();
 
   const {
     otherlist,
     todo,
-    folderParentName,
     searchText,
     onFetchTodo,
     onFetchList,
@@ -40,25 +27,15 @@ const Todo = () => {
 
   React.useEffect(() => {
     onSetTodoId(undefined);
-
-    document.addEventListener('click', (e) => {
-      const target = contextMenuRef.current?.menu?.list;
-      if (target && !target.contains(e.target)) {
-        setVisible(false);
-      }
-    }, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getTodo = async (params = {}) => {
     const {
-      // TODO: temporarily set 1(todo status)
-      status = 1,
       content = searchText,
     } = params;
 
     onFetchTodo({
-      status,
       content,
     });
   };
@@ -66,7 +43,7 @@ const Todo = () => {
   const renderPosition = () => {
     return (
       <div className="belong-to-wrapper">
-        <h3>{folderParentName}</h3>
+        <h3>123</h3>
       </div>
     );
   };
@@ -119,17 +96,12 @@ const Todo = () => {
   };
 
   const handleTodoItemClick = async (id) => {
-    // await editTodo({
-    //   id,
-    //   status: FIXED_LIST_ITEM_IMPORTANT,
-    // });
-    // getTodo();
   };
 
-  const onStar = async (id) => {
+  const onStar = async (id, list_id) => {
     await editTodo({
       id,
-      status: FIXED_LIST_ITEM_IMPORTANT,
+      list_id,
     });
     getTodo();
   };
@@ -143,7 +115,6 @@ const Todo = () => {
   const renderList = () => {
     return (
       <ul className="todo-wrapper">
-        {/* first item is always as additive */}
         <li className="todo-item add-item">
           {renderAddListItem()}
         </li>
@@ -155,7 +126,10 @@ const Todo = () => {
                 <div className="content">
                   {item.content}
                 </div>
-                <StarOutlined onClick={() => onStar(item.id)} />
+                <StarOutlined
+                  style={{ color: item.list_id === FIXED_LIST_ITEM_IMPORTANT ? '#2564cf' : '' }}
+                  onClick={() => onStar(item.id, item.list_id === FIXED_LIST_ITEM_IMPORTANT ? FIXED_LIST_ITEM_TASKS : FIXED_LIST_ITEM_IMPORTANT)}
+                />
               </li>
             );
           })
@@ -168,7 +142,6 @@ const Todo = () => {
     getItem('Delete', 'delete'),
     getItem('Move task to', 'move', null, otherlist.map(item => getItem(item.name, item.id))),
   ];
-
   const onMenuClick = async (e) => {
     e.domEvent.stopPropagation();
     if (e.keyPath.includes('delete')) {
@@ -177,7 +150,6 @@ const Todo = () => {
       });
       await getTodo();
       await onFetchList();
-      setVisible(false);
     }
 
     if (e.keyPath.includes('move')) {
@@ -188,15 +160,11 @@ const Todo = () => {
       });
       await getTodo();
       await onFetchList();
-      setVisible(false);
     }
   };
-
   const renderContextMenu = () => {
     return visible && (
       <Menu
-        ref={contextMenuRef}
-        className="todo-context-menu"
         onClick={onMenuClick}
         style={{
           position: 'fixed',

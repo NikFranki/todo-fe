@@ -1,23 +1,29 @@
 import React from 'react';
 
 import { PlusCircleOutlined, UnorderedListOutlined, HomeOutlined, ScheduleOutlined, UserOutlined, FireOutlined, StarOutlined } from '@ant-design/icons';
-import { Space, Input, Divider, Modal, Form, Button, message } from 'antd';
+import { Space, Input, Divider, Modal, Form, Button, message, Menu } from 'antd';
 
-import { addList } from '../api/list';
+import { addList, deleteList } from '../api/list';
 import useContextInfo from '../hooks/use-context-info';
+import getItem from '../utils/menu-get-item';
+import useContextMenu from '../hooks/use-context-menu';
 import './sider-bar.css';
 
 const SiderBar = () => {
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [sbfixedList, setSbfixedlist] = React.useState([]);
   const [sbotherList, setSbotherlist] = React.useState([]);
+  const [clikedId, setClickedId] = React.useState(false);
   const [form] = Form.useForm();
+
+  const { visible, setVisible, points, setPoints } = useContextMenu();
 
   const {
     list,
     fixedList,
     otherlist,
     todo,
+    searchText,
     onFetchList,
     onFetchTodo,
     onSetTodoId,
@@ -95,7 +101,7 @@ const SiderBar = () => {
         {
           sbotherList.map(item => {
             return (
-              <div key={item.id} className="list-item">
+              <div key={item.id} className="list-item" onContextMenu={(e) => handleContextMenu(e, item.id)}>
                 <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
                 {item.name}
                 <span>{item.number}</span>
@@ -104,6 +110,47 @@ const SiderBar = () => {
           })
         }
       </div>
+    );
+  };
+
+  const handleContextMenu = (e, id) => {
+    e.preventDefault();
+    setClickedId(id);
+    setVisible(true);
+    setPoints({
+      x: e.pageX,
+      y: e.pageY,
+    });
+  };
+
+  const items = [
+    getItem('Delete', 'delete'),
+  ];
+  const onMenuClick = async (e) => {
+    e.domEvent.stopPropagation();
+    if (e.keyPath.includes('delete')) {
+      await deleteList({
+        id: clikedId,
+      });
+      await onFetchTodo({
+        content: searchText,
+      });
+      await onFetchList();
+    }
+  };
+  const renderContextMenu = () => {
+    return visible && (
+      <Menu
+        onClick={onMenuClick}
+        style={{
+          position: 'fixed',
+          width: 256,
+          left: points.x,
+          top: points.y,
+        }}
+        mode="vertical"
+        items={items}
+      />
     );
   };
 
@@ -116,6 +163,7 @@ const SiderBar = () => {
         <PlusCircleOutlined className="add-icon" />
         List
       </div>
+      {renderContextMenu()}
       <Modal
         open={open}
         title={'Add list'}
