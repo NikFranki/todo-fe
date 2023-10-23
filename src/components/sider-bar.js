@@ -91,14 +91,16 @@ const SiderBar = () => {
 
   const renderOtherList = () => {
     return (
-      <div ref={otherListRef} className="list-wrapper other-list">
+      <div ref={otherListRef} className="other-list list-wrapper">
         {
           sbotherList.map(item => {
             return (
               <div key={item.id} className="list-item" onContextMenu={(e) => handleContextMenu(e, item.id)}>
-                <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
-                {item.name}
-                <span>{item.number}</span>
+                <div className="icon-text">
+                  <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
+                  {item.name}
+                </div>
+                <span className="number">{item.number}</span>
               </div>
             );
           })

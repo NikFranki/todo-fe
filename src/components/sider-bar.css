@@ -74,3 +74,9 @@
 .add-list-wrapper .ant-input:focus {
   box-shadow: none;
 }
+
+.other-list .list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

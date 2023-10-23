@@ -10,3 +10,7 @@
   margin-right: 8px;
   cursor: pointer;
 }
+
+.ant-menu {
+  max-height: 500px !important;
+}

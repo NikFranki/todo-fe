@@ -150,7 +150,6 @@ const Todo = () => {
       });
       await getTodo();
       await onFetchList();
-      setVisible(false);
     }
 
     if (e.keyPath.includes('move')) {
@@ -162,11 +161,14 @@ const Todo = () => {
       await getTodo();
       await onFetchList();
     }
+
+    setVisible(false);
   };
   const renderContextMenu = () => {
     return visible && (
       <Menu
         onClick={onMenuClick}
+        className="xxxxxx"
         style={{
           position: 'fixed',
           left: points.x,
