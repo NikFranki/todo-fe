@@ -1,6 +1,5 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Dropdown, Space, Avatar, message, Upload } from 'antd';
 
@@ -53,7 +52,10 @@ const Menu = () => {
     };
 
     return (
-      <div style={{ display: 'inline-block', height: 22 }} className="import-todo">
+      <div
+        style={{ display: 'inline-block', height: 22 }}
+        className="import-todo"
+      >
         <Upload {...props}>
           <a style={{ color: 'inherit' }}>Import Todo</a>
         </Upload>
@@ -62,35 +64,41 @@ const Menu = () => {
   };
 
   const items = !userLogined
-    ? [{
-      label: <Link to="/login">Login</Link>,
-      key: '0',
-    }]
+    ? [
+        {
+          label: <Link to="/login">Login</Link>,
+          key: '0',
+        },
+      ]
     : [
-      {
-        label: <a onClick={handleLogout}>Logout</a>,
-        key: '1',
-      },
-      {
-        type: 'divider',
-      },
-      {
-        label: renderImport(),
-        key: '2',
-      },
-      {
-        label: <a onClick={onExport}>Export Todo</a>,
-        key: '3',
-      },
-      {
-        label: <Link to="/profile">Profile</Link>,
-        key: '4',
-      },
-    ];
+        {
+          label: <a onClick={handleLogout}>Logout</a>,
+          key: '1',
+        },
+        {
+          type: 'divider',
+        },
+        {
+          label: renderImport(),
+          key: '2',
+        },
+        {
+          label: <a onClick={onExport}>Export Todo</a>,
+          key: '3',
+        },
+        {
+          label: <Link to="/profile">Profile</Link>,
+          key: '4',
+        },
+      ];
 
   return (
     <div className="header-menu-wrapper">
-      <Dropdown className="avater-dropdown" menu={{ items }} trigger={['click']}>
+      <Dropdown
+        className="avater-dropdown"
+        menu={{ items }}
+        trigger={['click']}
+      >
         <a onClick={(e) => e.preventDefault()}>
           <Space>
             <Avatar src={avatar} />

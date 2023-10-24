@@ -1,6 +1,14 @@
 import React from 'react';
 
-import { PlusCircleOutlined, UnorderedListOutlined, HomeOutlined, ScheduleOutlined, UserOutlined, FireOutlined, StarOutlined } from '@ant-design/icons';
+import {
+  PlusCircleOutlined,
+  UnorderedListOutlined,
+  HomeOutlined,
+  ScheduleOutlined,
+  UserOutlined,
+  FireOutlined,
+  StarOutlined,
+} from '@ant-design/icons';
 import { Space, Input, Divider, Button, Menu } from 'antd';
 
 import { addList, deleteList } from '../api/list';
@@ -40,15 +48,17 @@ const SiderBar = () => {
   };
 
   const listNumberMap = accumulateListNumber();
-  const factor = Object.entries(listNumberMap).map(([key, value]) => `${key}:${value}`).join('_');
+  const factor = Object.entries(listNumberMap)
+    .map(([key, value]) => `${key}:${value}`)
+    .join('_');
   React.useEffect(() => {
     if (!list.length) return;
     const icons = [
-      <FireOutlined className="today-icon" />,
-      <StarOutlined className="important-icon" />,
-      <ScheduleOutlined className="planned-icon" />,
-      <UserOutlined className="assigned-icon" />,
-      <HomeOutlined className="tasks-icon" />
+      <FireOutlined key="today-icon" className="today-icon" />,
+      <StarOutlined key="important-icon" className="important-icon" />,
+      <ScheduleOutlined key="planned-icon" className="planned-icon" />,
+      <UserOutlined key="assigned-icon" className="assigned-icon" />,
+      <HomeOutlined key="tasks-icon" className="tasks-icon" />,
     ];
     const newFixedList = fixedList.map((item, index) => {
       return {
@@ -58,10 +68,12 @@ const SiderBar = () => {
       };
     });
     setSbfixedlist(newFixedList);
-    const newOtherList = otherlist.map((item, index) => {
+    const newOtherList = otherlist.map((item) => {
       return {
         ...item,
-        icon: <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />,
+        icon: (
+          <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
+        ),
         number: listNumberMap[item.id] || 0,
       };
     });
@@ -77,7 +89,7 @@ const SiderBar = () => {
   };
 
   const renderFixedList = () => {
-    return sbfixedList.map(item => {
+    return sbfixedList.map((item) => {
       return (
         <div key={item.id} className="shortcut-menu">
           <Button onClick={onSearchAll} type="link" icon={item.icon}>
@@ -92,19 +104,23 @@ const SiderBar = () => {
   const renderOtherList = () => {
     return (
       <div ref={otherListRef} className="other-list list-wrapper">
-        {
-          sbotherList.map(item => {
-            return (
-              <div key={item.id} className="list-item" onContextMenu={(e) => handleContextMenu(e, item.id)}>
-                <div className="icon-text">
-                  <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
-                  {item.name}
-                </div>
-                <span className="number">{item.number}</span>
+        {sbotherList.map((item) => {
+          return (
+            <div
+              key={item.id}
+              className="list-item"
+              onContextMenu={(e) => handleContextMenu(e, item.id)}
+            >
+              <div className="icon-text">
+                <UnorderedListOutlined
+                  style={{ fontSize: 16, marginRight: 10 }}
+                />
+                {item.name}
               </div>
-            );
-          })
-        }
+              <span className="number">{item.number}</span>
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -119,9 +135,7 @@ const SiderBar = () => {
     });
   };
 
-  const items = [
-    getItem('Delete', 'delete'),
-  ];
+  const items = [getItem('Delete', 'delete')];
   const onMenuClick = async (e) => {
     e.domEvent.stopPropagation();
     if (e.keyPath.includes('delete')) {
@@ -136,19 +150,21 @@ const SiderBar = () => {
     }
   };
   const renderContextMenu = () => {
-    return visible && (
-      <Menu
-        onClick={onMenuClick}
-        style={{
-          position: 'fixed',
-          left: points.x,
-          top: points.y,
-          zIndex: 1,
-          width: 256,
-        }}
-        mode="vertical"
-        items={items}
-      />
+    return (
+      visible && (
+        <Menu
+          onClick={onMenuClick}
+          style={{
+            position: 'fixed',
+            left: points.x,
+            top: points.y,
+            zIndex: 1,
+            width: 256,
+          }}
+          mode="vertical"
+          items={items}
+        />
+      )
     );
   };
 
@@ -171,13 +187,24 @@ const SiderBar = () => {
   };
 
   return (
-    <Space className="sider-bar-wrapper" direction="vertical" size="small" style={{ display: 'flex' }}>
+    <Space
+      className="sider-bar-wrapper"
+      direction="vertical"
+      size="small"
+      style={{ display: 'flex' }}
+    >
       {renderFixedList()}
       <Divider style={{ margin: 0 }} />
       {renderOtherList()}
       <div className="add-list-wrapper">
         <PlusCircleOutlined className="add-icon" />
-        <Input ref={inputRef} placeholder="New list" value={listName} onChange={handleInput} onPressEnter={handlePressEnter} />
+        <Input
+          ref={inputRef}
+          placeholder="New list"
+          value={listName}
+          onChange={handleInput}
+          onPressEnter={handlePressEnter}
+        />
       </div>
       {renderContextMenu()}
     </Space>

@@ -10,7 +10,7 @@ import Todo from './todo';
 import SiderBar from '../components/sider-bar';
 import useContextInfo from '../hooks/use-context-info';
 
-import "./home.css";
+import './home.css';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -46,12 +46,8 @@ const footerStyle = {
 };
 
 function Home() {
-  const {
-    searchText,
-    onFetchTodo,
-    onFetchList,
-    onSetSearchText,
-  } = useContextInfo();
+  const { searchText, onFetchTodo, onFetchList, onSetSearchText } =
+    useContextInfo();
 
   React.useEffect(() => {
     sequenceRequest();
@@ -72,7 +68,12 @@ function Home() {
   const renderSearch = () => {
     return (
       <div className="global-search-wrapper">
-        <Input placeholder="Area search" onChange={_.debounce(handleSearch, 100)} prefix={<SearchOutlined />} allowClear />
+        <Input
+          placeholder="Area search"
+          onChange={_.debounce(handleSearch, 100)}
+          prefix={<SearchOutlined />}
+          allowClear
+        />
       </div>
     );
   };
@@ -82,7 +83,9 @@ function Home() {
       <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
         <Layout className="todo-layout">
           <Header className="header" style={headerStyle}>
-            <div className="logo" style={titleStyle}>Todo</div>
+            <div className="logo" style={titleStyle}>
+              Todo
+            </div>
             {renderSearch()}
             <Menu />
           </Header>
@@ -94,7 +97,9 @@ function Home() {
               <Todo />
             </Content>
           </Layout>
-          <Footer style={footerStyle}>@Copyright reserved by franki & christ {dayjs().format('YYYY')}</Footer>
+          <Footer style={footerStyle}>
+            @Copyright reserved by franki & christ {dayjs().format('YYYY')}
+          </Footer>
         </Layout>
       </Space>
     </div>

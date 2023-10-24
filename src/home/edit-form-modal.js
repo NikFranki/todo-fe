@@ -20,7 +20,9 @@ const Edit = ({ todoDetail, mode, onSubmit, onCancel }) => {
   return (
     <Modal
       open={!!mode}
-      title={`${mode.slice(0, 1).toUpperCase()}${mode.slice(1).toLowerCase()} Todo`}
+      title={`${mode.slice(0, 1).toUpperCase()}${mode
+        .slice(1)
+        .toLowerCase()} Todo`}
       okText="Ok"
       cancelText="Cancel"
       confirmLoading={confirmLoading}
@@ -44,7 +46,8 @@ const Edit = ({ todoDetail, mode, onSubmit, onCancel }) => {
           })
           .catch((info) => {
             console.log('Validate Failed:', info);
-          }).finally(() => {
+          })
+          .finally(() => {
             setConfirmLoading(false);
           });
       }}

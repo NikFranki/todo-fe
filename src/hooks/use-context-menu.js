@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 const useContextMenu = () => {
   const [visible, setVisible] = useState(false);
@@ -10,9 +10,9 @@ const useContextMenu = () => {
     const handleClick = () => {
       setVisible(false);
     };
-    document.addEventListener("click", handleClick);
+    document.addEventListener('click', handleClick);
     return () => {
-      document.removeEventListener("click", handleClick);
+      document.removeEventListener('click', handleClick);
     };
   }, []);
   return {

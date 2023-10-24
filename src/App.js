@@ -5,7 +5,7 @@ import {
   Route,
   Outlet,
   Navigate,
-} from "react-router-dom";
+} from 'react-router-dom';
 
 import { LoadingOutlined } from '@ant-design/icons';
 import TodoContext from './utils/todo-context';
@@ -13,17 +13,13 @@ import Register from './register';
 import Login from './login';
 import Home from './home';
 import Profile from './profile';
-import ErrorPage from "./error-page";
+import ErrorPage from './error-page';
 import useGlobalContextDispatch from './hooks/use-global-context-dispatch';
 import { validateToken } from './api/user';
 
 import './App.css';
 
-const ProtectedRoute = ({
-  isAllowed,
-  children,
-  redirectPath = '/login',
-}) => {
+const ProtectedRoute = ({ isAllowed, children, redirectPath = '/login' }) => {
   if (!isAllowed) {
     return <Navigate to={redirectPath} replace />;
   }
@@ -38,7 +34,9 @@ function App() {
 
   const doValidateToken = async () => {
     setAuthenticatedLoading(true);
-    const res = await validateToken({ token: localStorage.getItem('token') });
+    const res = await validateToken({
+      token: localStorage.getItem('token'),
+    });
     onAuthenticated(res.code === 200);
     setAuthenticatedLoading(false);
   };
@@ -50,13 +48,15 @@ function App() {
   }, []);
 
   if (authenticatedLoading) {
-    return <div className="page-init user-authentication-loading">
-      <LoadingOutlined style={{ fontSize: 30, marginBottom: 15 }} />
-      loading...
-    </div>;
+    return (
+      <div className="page-init user-authentication-loading">
+        <LoadingOutlined style={{ fontSize: 30, marginBottom: 15 }} />
+        loading...
+      </div>
+    );
   }
 
-  // Using protect routes, relative link: https://www.robinwieruch.de/react-router-private-routes/
+  // Using protect routesrelative link: https://www.robinwieruch.de/react-router-private-routes/
 
   // Make more compatable with applying permission and roles on protect routes for the fucture
   const permissions = ['analyze'];
@@ -67,7 +67,7 @@ function App() {
       <Router>
         <Routes>
           <Route element={<ProtectedRoute isAllowed={authenticated} />}>
-            <Route path='/' element={<Home />} errorElement={<ErrorPage />} />
+            <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
           </Route>
           <Route
             path="profile"
@@ -75,19 +75,24 @@ function App() {
               <ProtectedRoute
                 redirectPath="/"
                 isAllowed={
-                  authenticated && permissions.includes('analyze') && roles.includes('admin')
+                  authenticated &&
+                  permissions.includes('analyze') &&
+                  roles.includes('admin')
                 }
               >
                 <Profile />
               </ProtectedRoute>
             }
           />
-          <Route path='login' element={<Login />} />
-          <Route path='register' element={<Register />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Routes>
       </Router>
     </TodoContext.Provider>
   );
 }
+
+s;
+var s = '1';
 
 export default App;

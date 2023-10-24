@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  useNavigate,
-} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Upload, message } from 'antd';
@@ -118,7 +116,7 @@ const Profile = () => {
                 name: 'avatar.png',
                 status: 'done',
                 url: userInfoAvatar,
-              }
+              },
             ]}
             listType="picture-card"
             maxCount={1}

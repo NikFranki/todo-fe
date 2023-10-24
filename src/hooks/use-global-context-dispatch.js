@@ -14,7 +14,7 @@ const useGlobalContextDispatch = () => {
   const [todoId, setTodoId] = React.useState(undefined);
   const [authenticated, setAuthenticated] = React.useState(false);
 
-  const onUserInfoChange = async() => {
+  const onUserInfoChange = async () => {
     const res = await searchUser({});
     setUserInfo(res.data || {});
   };

@@ -4,7 +4,10 @@ import { Button, Checkbox, Input, Menu } from 'antd';
 import { StarOutlined } from '@ant-design/icons';
 
 import { addTodo, editTodo, deleteTodo } from '../api/todo';
-import { FIXED_LIST_ITEM_TASKS, FIXED_LIST_ITEM_IMPORTANT } from '../constant/index';
+import {
+  FIXED_LIST_ITEM_TASKS,
+  FIXED_LIST_ITEM_IMPORTANT,
+} from '../constant/index';
 import useContextInfo from '../hooks/use-context-info';
 import useContextMenu from '../hooks/use-context-menu';
 import getItem from '../utils/menu-get-item';
@@ -16,14 +19,8 @@ const Todo = () => {
 
   const { visible, setVisible, points, setPoints } = useContextMenu();
 
-  const {
-    otherlist,
-    todo,
-    searchText,
-    onFetchTodo,
-    onFetchList,
-    onSetTodoId,
-  } = useContextInfo();
+  const { otherlist, todo, searchText, onFetchTodo, onFetchList, onSetTodoId } =
+    useContextInfo();
 
   React.useEffect(() => {
     onSetTodoId(undefined);
@@ -31,9 +28,7 @@ const Todo = () => {
   }, []);
 
   const getTodo = async (params = {}) => {
-    const {
-      content = searchText,
-    } = params;
+    const { content = searchText } = params;
 
     onFetchTodo({
       content,
@@ -52,7 +47,7 @@ const Todo = () => {
     setAddedContent(e.target.value);
   };
 
-  const handleEnter = (e) => {
+  const handleEnter = () => {
     handleClick();
   };
 
@@ -76,7 +71,13 @@ const Todo = () => {
       <div className="addition-wrapper">
         <div className="addition-content">
           <Checkbox checked={checked} onChange={onChange} />
-          <Input ref={inputRef} value={addedContent} placeholder="Add a task" onChange={handleInput} onPressEnter={handleEnter} />
+          <Input
+            ref={inputRef}
+            value={addedContent}
+            placeholder="Add a task"
+            onChange={handleInput}
+            onPressEnter={handleEnter}
+          />
         </div>
         <div className="add-btn">
           <Button onClick={handleClick}>Add</Button>
@@ -95,8 +96,7 @@ const Todo = () => {
     });
   };
 
-  const handleTodoItemClick = async (id) => {
-  };
+  const handleTodoItemClick = async () => {};
 
   const onStar = async (id, list_id) => {
     await editTodo({
@@ -115,32 +115,46 @@ const Todo = () => {
   const renderList = () => {
     return (
       <ul className="todo-wrapper">
-        <li className="todo-item add-item">
-          {renderAddListItem()}
-        </li>
-        {
-          todo.map(item => {
-            return (
-              <li key={item.id} className="todo-item" onContextMenu={(e) => handleContextMenu(e, item.id)} onClick={() => handleTodoItemClick(item.id)}>
-                <Checkbox checked={checked} onChange={onChange} />
-                <div className="content">
-                  {item.content}
-                </div>
-                <StarOutlined
-                  style={{ color: item.list_id === FIXED_LIST_ITEM_IMPORTANT ? '#2564cf' : '' }}
-                  onClick={() => onStar(item.id, item.list_id === FIXED_LIST_ITEM_IMPORTANT ? FIXED_LIST_ITEM_TASKS : FIXED_LIST_ITEM_IMPORTANT)}
-                />
-              </li>
-            );
-          })
-        }
+        <li className="todo-item add-item">{renderAddListItem()}</li>
+        {todo.map((item) => {
+          return (
+            <li
+              key={item.id}
+              className="todo-item"
+              onContextMenu={(e) => handleContextMenu(e, item.id)}
+              onClick={() => handleTodoItemClick(item.id)}
+            >
+              <Checkbox checked={checked} onChange={onChange} />
+              <div className="content">{item.content}</div>
+              <StarOutlined
+                style={{
+                  color:
+                    item.list_id === FIXED_LIST_ITEM_IMPORTANT ? '#2564cf' : '',
+                }}
+                onClick={() =>
+                  onStar(
+                    item.id,
+                    item.list_id === FIXED_LIST_ITEM_IMPORTANT
+                      ? FIXED_LIST_ITEM_TASKS
+                      : FIXED_LIST_ITEM_IMPORTANT
+                  )
+                }
+              />
+            </li>
+          );
+        })}
       </ul>
     );
   };
 
   const items = [
     getItem('Delete', 'delete'),
-    getItem('Move task to', 'move', null, otherlist.map(item => getItem(item.name, item.id))),
+    getItem(
+      'Move task to',
+      'move',
+      null,
+      otherlist.map((item) => getItem(item.name, item.id))
+    ),
   ];
   const onMenuClick = async (e) => {
     e.domEvent.stopPropagation();
@@ -165,20 +179,22 @@ const Todo = () => {
     setVisible(false);
   };
   const renderContextMenu = () => {
-    return visible && (
-      <Menu
-        onClick={onMenuClick}
-        className="xxxxxx"
-        style={{
-          position: 'fixed',
-          left: points.x,
-          top: points.y,
-          zIndex: 1,
-          width: 256,
-        }}
-        mode="vertical"
-        items={items}
-      />
+    return (
+      visible && (
+        <Menu
+          onClick={onMenuClick}
+          className="xxxxxx"
+          style={{
+            position: 'fixed',
+            left: points.x,
+            top: points.y,
+            zIndex: 1,
+            width: 256,
+          }}
+          mode="vertical"
+          items={items}
+        />
+      )
     );
   };
 
