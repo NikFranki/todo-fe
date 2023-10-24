@@ -9,10 +9,10 @@ import {
 
 import { LoadingOutlined } from '@ant-design/icons';
 import TodoContext from './utils/todo-context';
-import Register from './register';
-import Login from './login';
-import Home from './home';
-import Profile from './profile';
+import Register from './pages/register';
+import Login from './pages/login';
+import Home from './pages/home';
+import Profile from './pages/profile';
 import ErrorPage from './error-page';
 import useGlobalContextDispatch from './hooks/use-global-context-dispatch';
 import { validateToken } from './api/user';
