@@ -1,4 +1,4 @@
-import instance from '../utils/request';
+import instance from '@utils/request';
 
 export const fetchList = (params) => instance.post('/list/all', params);
 

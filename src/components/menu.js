@@ -3,10 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { Dropdown, Space, Avatar, message, Upload } from 'antd';
 
-import { logout } from '../api/user';
-import { importTodo, exportTodo } from '../api/todo';
-import downloadFile from '../utils/download-file';
-import TodoContext from '../utils/todo-context';
+import { logout } from '@api/user';
+import { importTodo, exportTodo } from '@api/todo';
+import downloadFile from '@utils/download-file';
+import TodoContext from '@utils/todo-context';
 
 import './menu.css';
 

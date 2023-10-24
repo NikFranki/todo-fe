@@ -1,4 +1,4 @@
-import instance from '../utils/request';
+import instance from '@utils/request';
 
 export const login = (params) => instance.post('/user/login', params);
 

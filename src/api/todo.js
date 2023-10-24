@@ -1,4 +1,4 @@
-import instance from '../utils/request';
+import instance from '@utils/request';
 
 export const fetchTodoList = (params) => instance.post('/todo/list', params);
 

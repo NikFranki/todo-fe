@@ -3,14 +3,14 @@ import React from 'react';
 import { Button, Checkbox, Input, Menu } from 'antd';
 import { StarOutlined } from '@ant-design/icons';
 
-import { addTodo, editTodo, deleteTodo } from '../api/todo';
+import { addTodo, editTodo, deleteTodo } from '@api/todo';
 import {
   FIXED_LIST_ITEM_TASKS,
   FIXED_LIST_ITEM_IMPORTANT,
-} from '../constant/index';
-import useContextInfo from '../hooks/use-context-info';
-import useContextMenu from '../hooks/use-context-menu';
-import getItem from '../utils/menu-get-item';
+} from '@constant/index';
+import useContextInfo from '@hooks/use-context-info';
+import useContextMenu from '@hooks/use-context-menu';
+import getItem from '@utils/menu-get-item';
 
 const Todo = () => {
   const [addedContent, setAddedContent] = React.useState('');

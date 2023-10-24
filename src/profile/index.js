@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Upload, message } from 'antd';
 
-import TodoContext from '../utils/todo-context';
-import { updateUser } from '../api/user';
+import TodoContext from '@utils/todo-context';
+import { updateUser } from '@api/user';
 
 import './index.css';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { fetchTodoList } from '../api/todo';
-import { searchUser } from '../api/user';
-import { fetchList } from '../api/list';
+import { fetchTodoList } from '@api/todo';
+import { searchUser } from '@api/user';
+import { fetchList } from '@api/list';
 
 const useGlobalContextDispatch = () => {
   const [userInfo, setUserInfo] = React.useState({});

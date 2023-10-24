@@ -11,10 +11,10 @@ import {
 } from '@ant-design/icons';
 import { Space, Input, Divider, Button, Menu } from 'antd';
 
-import { addList, deleteList } from '../api/list';
-import useContextInfo from '../hooks/use-context-info';
-import getItem from '../utils/menu-get-item';
-import useContextMenu from '../hooks/use-context-menu';
+import { addList, deleteList } from '@api/list';
+import useContextInfo from '@hooks/use-context-info';
+import getItem from '@utils/menu-get-item';
+import useContextMenu from '@hooks/use-context-menu';
 import './sider-bar.css';
 
 const SiderBar = () => {

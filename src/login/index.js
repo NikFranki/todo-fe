@@ -4,8 +4,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 
-import TodoContext from '../utils/todo-context';
-import { login } from '../api/user';
+import TodoContext from '@utils/todo-context';
+import { login } from '@api/user';
 
 import './index.css';
 

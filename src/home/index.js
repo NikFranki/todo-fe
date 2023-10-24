@@ -5,10 +5,10 @@ import { SearchOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 
-import Menu from '../components/menu';
+import Menu from '@components/menu';
 import Todo from './todo';
-import SiderBar from '../components/sider-bar';
-import useContextInfo from '../hooks/use-context-info';
+import SiderBar from '@components/sider-bar';
+import useContextInfo from '@hooks/use-context-info';
 
 import './home.css';
 

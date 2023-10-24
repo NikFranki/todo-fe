@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Upload, message } from 'antd';
 
-import { register } from '../api/user';
+import { register } from '@api/user';
 
 import './index.css';
 
