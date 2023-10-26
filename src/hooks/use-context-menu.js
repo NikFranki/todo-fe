@@ -6,15 +6,18 @@ const useContextMenu = () => {
     x: 0,
     y: 0,
   });
+
   useEffect(() => {
-    const handleClick = () => {
-      setVisible(false);
-    };
     document.addEventListener('click', handleClick);
     return () => {
       document.removeEventListener('click', handleClick);
     };
   }, []);
+
+  const handleClick = () => {
+    setVisible(false);
+  };
+
   return {
     visible,
     setVisible,

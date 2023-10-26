@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons';
 import { Space, Input, Divider, Button, Menu } from 'antd';
 
-import { addList, deleteList } from '@api/list';
+import { addList, updateList, deleteList } from '@api/list';
 import useContextInfo from '@hooks/use-context-info';
 import getItem from '@utils/menu-get-item';
 import useContextMenu from '@hooks/use-context-menu';
@@ -22,6 +22,11 @@ const SiderBar = () => {
   const [sbotherList, setSbotherlist] = React.useState([]);
   const [clikedId, setClickedId] = React.useState(false);
   const otherListRef = React.useRef(null);
+
+  const [editInfo, setEditInfo] = React.useState({
+    editable: false,
+    reListName: '',
+  });
 
   const { visible, setVisible, points, setPoints } = useContextMenu();
 
@@ -36,19 +41,19 @@ const SiderBar = () => {
     onSetTodoId,
   } = useContextInfo();
 
-  const accumulateListNumber = () => {
-    return todo.reduce((acc, prev) => {
-      if (acc[prev.list_id]) {
-        acc[prev.list_id]++;
-      } else {
-        acc[prev.list_id] = 1;
-      }
-      return acc;
-    }, {});
-  };
-
-  const listNumberMap = accumulateListNumber();
-  const factor = Object.entries(listNumberMap)
+  const listFactor = list.reduce((acc, prev) => {
+    acc += `${prev.id}${prev.name}`;
+    return acc;
+  }, '');
+  const listNumberMap = todo.reduce((acc, prev) => {
+    if (acc[prev.list_id]) {
+      acc[prev.list_id]++;
+    } else {
+      acc[prev.list_id] = 1;
+    }
+    return acc;
+  }, {});
+  const todoFactor = Object.entries(listNumberMap)
     .map(([key, value]) => `${key}:${value}`)
     .join('_');
   React.useEffect(() => {
@@ -79,7 +84,7 @@ const SiderBar = () => {
     });
     setSbotherlist(newOtherList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list.length, factor]);
+  }, [listFactor, todoFactor]);
 
   const onSearchAll = () => {
     onFetchTodo({
@@ -109,13 +114,45 @@ const SiderBar = () => {
             <div
               key={item.id}
               className="list-item"
-              onContextMenu={(e) => handleContextMenu(e, item.id)}
+              onContextMenu={(e) => handleContextMenu(e, item)}
             >
               <div className="icon-text">
                 <UnorderedListOutlined
                   style={{ fontSize: 16, marginRight: 10 }}
                 />
-                {item.name}
+                {editInfo.editable && item.id === clikedId ? (
+                  <Input
+                    placeholder="Please input list name"
+                    value={editInfo.reListName}
+                    autoFocus
+                    onBlur={async (e) => {
+                      await updateList({ id: item.id, name: e.target.value });
+                      await onFetchList();
+                      setEditInfo({
+                        ...editInfo,
+                        editable: false,
+                        reListName: '',
+                      });
+                    }}
+                    onChange={(e) => {
+                      setEditInfo({
+                        ...editInfo,
+                        reListName: e.target.value,
+                      });
+                    }}
+                    onPressEnter={async (e) => {
+                      await updateList({ id: item.id, name: e.target.value });
+                      await onFetchList();
+                      setEditInfo({
+                        ...editInfo,
+                        editable: false,
+                        reListName: '',
+                      });
+                    }}
+                  />
+                ) : (
+                  item.name
+                )}
               </div>
               <span className="number">{item.number}</span>
             </div>
@@ -125,17 +162,23 @@ const SiderBar = () => {
     );
   };
 
-  const handleContextMenu = (e, id) => {
+  const handleContextMenu = (e, item) => {
     e.preventDefault();
-    setClickedId(id);
+    setClickedId(item.id);
     setVisible(true);
     setPoints({
       x: e.pageX,
       y: e.pageY,
     });
+
+    setEditInfo({
+      ...editInfo,
+      editable: false,
+      reListName: item.name,
+    });
   };
 
-  const items = [getItem('Delete', 'delete')];
+  const items = [getItem('Delete', 'delete'), getItem('Edit', 'edit')];
   const onMenuClick = async (e) => {
     e.domEvent.stopPropagation();
     if (e.keyPath.includes('delete')) {
@@ -146,6 +189,10 @@ const SiderBar = () => {
         content: searchText,
       });
       await onFetchList();
+      setVisible(false);
+    }
+    if (e.keyPath.includes('edit')) {
+      setEditInfo({ ...editInfo, editable: true });
       setVisible(false);
     }
   };

@@ -80,3 +80,8 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.other-list .list-item .icon-text {
+  display: flex;
+  align-items: center;
+}
