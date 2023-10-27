@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Button, Checkbox, Input, Menu } from 'antd';
+import { Button, Checkbox, Input } from 'antd';
 import { StarOutlined } from '@ant-design/icons';
 
+import ContextMenu from '@components/context-menu';
 import { addTodo, editTodo, deleteTodo } from '@api/todo';
 import {
   FIXED_LIST_ITEM_TASKS,
@@ -17,7 +18,7 @@ const Todo = () => {
   const [clikedId, setClickedId] = React.useState(false);
   const inputRef = React.useRef(null);
 
-  const { visible, setVisible, points, setPoints } = useContextMenu();
+  const { visible, points, onContextMenuOpen } = useContextMenu();
 
   const { otherlist, todo, searchText, onFetchTodo, onFetchList, onSetTodoId } =
     useContextInfo();
@@ -88,12 +89,8 @@ const Todo = () => {
 
   const handleContextMenu = (e, id) => {
     e.preventDefault();
+    onContextMenuOpen(e);
     setClickedId(id);
-    setVisible(true);
-    setPoints({
-      x: e.pageX,
-      y: e.pageY,
-    });
   };
 
   const handleTodoItemClick = async () => {};
@@ -156,8 +153,7 @@ const Todo = () => {
       otherlist.map((item) => getItem(item.name, item.id))
     ),
   ];
-  const onMenuClick = async (e) => {
-    e.domEvent.stopPropagation();
+  const handleMenuClick = async (e) => {
     if (e.keyPath.includes('delete')) {
       await deleteTodo({
         id: clikedId,
@@ -175,34 +171,18 @@ const Todo = () => {
       await getTodo();
       await onFetchList();
     }
-
-    setVisible(false);
-  };
-  const renderContextMenu = () => {
-    return (
-      visible && (
-        <Menu
-          onClick={onMenuClick}
-          className="xxxxxx"
-          style={{
-            position: 'fixed',
-            left: points.x,
-            top: points.y,
-            zIndex: 1,
-            width: 256,
-          }}
-          mode="vertical"
-          items={items}
-        />
-      )
-    );
   };
 
   return (
     <div className="Todo-wrapper">
       {renderPosition()}
       {renderList()}
-      {renderContextMenu()}
+      <ContextMenu
+        items={items}
+        visible={visible}
+        points={points}
+        onMenuClick={handleMenuClick}
+      />
     </div>
   );
 };

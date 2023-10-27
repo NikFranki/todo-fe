@@ -34,7 +34,7 @@
 .sider-bar-wrapper .ant-space-item .list-wrapper {
   display: flex;
   flex-direction: column;
-  row-gap: 16px;
+  /* row-gap: 16px; */
   line-height: 1;
   padding-left: 8px;
 }
@@ -79,9 +79,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  line-height: 32px;
 }
 
 .other-list .list-item .icon-text {
   display: flex;
   align-items: center;
+  flex: 1;
+}
+
+.other-list .list-item .icon-text .text {
+  width: 230px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+}
+
+.other-list .list-item .edit-list-name {
+  padding: 0 10px;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  border: none;
+  background: inherit;
 }

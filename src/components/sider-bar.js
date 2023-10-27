@@ -9,8 +9,9 @@ import {
   FireOutlined,
   StarOutlined,
 } from '@ant-design/icons';
-import { Space, Input, Divider, Button, Menu } from 'antd';
+import { Space, Input, Divider, Button } from 'antd';
 
+import ContextMenu from '@components/context-menu';
 import { addList, updateList, deleteList } from '@api/list';
 import useContextInfo from '@hooks/use-context-info';
 import getItem from '@utils/menu-get-item';
@@ -20,15 +21,15 @@ import './sider-bar.css';
 const SiderBar = () => {
   const [sbfixedList, setSbfixedlist] = React.useState([]);
   const [sbotherList, setSbotherlist] = React.useState([]);
-  const [clikedId, setClickedId] = React.useState(false);
   const otherListRef = React.useRef(null);
 
   const [editInfo, setEditInfo] = React.useState({
     editable: false,
+    clikedId: null,
     reListName: '',
   });
 
-  const { visible, setVisible, points, setPoints } = useContextMenu();
+  const { visible, points, onContextMenuOpen } = useContextMenu();
 
   const {
     list,
@@ -86,7 +87,7 @@ const SiderBar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listFactor, todoFactor]);
 
-  const onSearchAll = () => {
+  const handleSearchAll = () => {
     onFetchTodo({
       id: undefined,
     });
@@ -97,7 +98,7 @@ const SiderBar = () => {
     return sbfixedList.map((item) => {
       return (
         <div key={item.id} className="shortcut-menu">
-          <Button onClick={onSearchAll} type="link" icon={item.icon}>
+          <Button onClick={handleSearchAll} type="link" icon={item.icon}>
             {item.name}
             <span>{item.number}</span>
           </Button>
@@ -117,11 +118,10 @@ const SiderBar = () => {
               onContextMenu={(e) => handleContextMenu(e, item)}
             >
               <div className="icon-text">
-                <UnorderedListOutlined
-                  style={{ fontSize: 16, marginRight: 10 }}
-                />
-                {editInfo.editable && item.id === clikedId ? (
+                <UnorderedListOutlined style={{ fontSize: 16 }} />
+                {editInfo.editable && item.id === editInfo.clikedId ? (
                   <Input
+                    className="edit-list-name"
                     placeholder="Please input list name"
                     value={editInfo.reListName}
                     autoFocus
@@ -131,6 +131,7 @@ const SiderBar = () => {
                       setEditInfo({
                         ...editInfo,
                         editable: false,
+                        clikedId: null,
                         reListName: '',
                       });
                     }}
@@ -146,12 +147,13 @@ const SiderBar = () => {
                       setEditInfo({
                         ...editInfo,
                         editable: false,
+                        clikedId: null,
                         reListName: '',
                       });
                     }}
                   />
                 ) : (
-                  item.name
+                  <span className="text">{item.name}</span>
                 )}
               </div>
               <span className="number">{item.number}</span>
@@ -164,55 +166,28 @@ const SiderBar = () => {
 
   const handleContextMenu = (e, item) => {
     e.preventDefault();
-    setClickedId(item.id);
-    setVisible(true);
-    setPoints({
-      x: e.pageX,
-      y: e.pageY,
-    });
+    onContextMenuOpen(e);
 
     setEditInfo({
       ...editInfo,
       editable: false,
+      clikedId: item.id,
       reListName: item.name,
     });
   };
-
-  const items = [getItem('Delete', 'delete'), getItem('Edit', 'edit')];
-  const onMenuClick = async (e) => {
-    e.domEvent.stopPropagation();
+  const handleMenuClick = async (e) => {
     if (e.keyPath.includes('delete')) {
       await deleteList({
-        id: clikedId,
+        id: editInfo.clikedId,
       });
       await onFetchTodo({
         content: searchText,
       });
       await onFetchList();
-      setVisible(false);
     }
     if (e.keyPath.includes('edit')) {
       setEditInfo({ ...editInfo, editable: true });
-      setVisible(false);
     }
-  };
-  const renderContextMenu = () => {
-    return (
-      visible && (
-        <Menu
-          onClick={onMenuClick}
-          style={{
-            position: 'fixed',
-            left: points.x,
-            top: points.y,
-            zIndex: 1,
-            width: 256,
-          }}
-          mode="vertical"
-          items={items}
-        />
-      )
-    );
   };
 
   const [listName, setListName] = React.useState('');
@@ -253,7 +228,12 @@ const SiderBar = () => {
           onPressEnter={handlePressEnter}
         />
       </div>
-      {renderContextMenu()}
+      <ContextMenu
+        items={[getItem('Delete', 'delete'), getItem('Edit', 'edit')]}
+        visible={visible}
+        points={points}
+        onMenuClick={handleMenuClick}
+      />
     </Space>
   );
 };

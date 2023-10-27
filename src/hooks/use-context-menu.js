@@ -18,11 +18,20 @@ const useContextMenu = () => {
     setVisible(false);
   };
 
+  const handleContextMenuOpen = (e) => {
+    setVisible(true);
+    setPoints({
+      x: e.pageX,
+      y: e.pageY,
+    });
+  };
+
   return {
     visible,
     setVisible,
     points,
     setPoints,
+    onContextMenuOpen: handleContextMenuOpen,
   };
 };
 
