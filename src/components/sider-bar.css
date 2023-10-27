@@ -80,6 +80,7 @@
   align-items: center;
   justify-content: space-between;
   line-height: 32px;
+  cursor: pointer;
 }
 
 .other-list .list-item .icon-text {

@@ -91,3 +91,10 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
+.ant-menu-title-content {
+  width: 230px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

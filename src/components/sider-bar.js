@@ -35,7 +35,6 @@ const SiderBar = () => {
     list,
     fixedList,
     otherlist,
-    todo,
     searchText,
     onFetchList,
     onFetchTodo,
@@ -43,20 +42,9 @@ const SiderBar = () => {
   } = useContextInfo();
 
   const listFactor = list.reduce((acc, prev) => {
-    acc += `${prev.id}${prev.name}`;
+    acc += `${prev.id}-${prev.name}-${prev.number}`;
     return acc;
   }, '');
-  const listNumberMap = todo.reduce((acc, prev) => {
-    if (acc[prev.list_id]) {
-      acc[prev.list_id]++;
-    } else {
-      acc[prev.list_id] = 1;
-    }
-    return acc;
-  }, {});
-  const todoFactor = Object.entries(listNumberMap)
-    .map(([key, value]) => `${key}:${value}`)
-    .join('_');
   React.useEffect(() => {
     if (!list.length) return;
     const icons = [
@@ -70,7 +58,6 @@ const SiderBar = () => {
       return {
         ...item,
         icon: icons[index],
-        number: listNumberMap[item.id] || 0,
       };
     });
     setSbfixedlist(newFixedList);
@@ -80,16 +67,15 @@ const SiderBar = () => {
         icon: (
           <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
         ),
-        number: listNumberMap[item.id] || 0,
       };
     });
     setSbotherlist(newOtherList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listFactor, todoFactor]);
+  }, [listFactor]);
 
   const handleSearchAll = () => {
     onFetchTodo({
-      id: undefined,
+      list_id: undefined,
     });
     onSetTodoId(undefined);
   };
@@ -107,6 +93,11 @@ const SiderBar = () => {
     });
   };
 
+  const handleListItemClick = (item) => {
+    onFetchTodo({
+      list_id: item.id,
+    });
+  };
   const renderOtherList = () => {
     return (
       <div ref={otherListRef} className="other-list list-wrapper">
@@ -115,6 +106,7 @@ const SiderBar = () => {
             <div
               key={item.id}
               className="list-item"
+              onClick={() => handleListItemClick(item)}
               onContextMenu={(e) => handleContextMenu(e, item)}
             >
               <div className="icon-text">
