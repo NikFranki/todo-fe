@@ -5,10 +5,7 @@ import { StarOutlined } from '@ant-design/icons';
 
 import ContextMenu from '@components/context-menu';
 import { addTodo, editTodo, deleteTodo } from '@api/todo';
-import {
-  FIXED_LIST_ITEM_TASKS,
-  FIXED_LIST_ITEM_IMPORTANT,
-} from '@constant/index';
+import { MARKED_AS_UNIMPORTANT, MARKED_AS_IMPORTANT } from '@constant/index';
 import useContextInfo from '@hooks/use-context-info';
 import useContextMenu from '@hooks/use-context-menu';
 import getItem from '@utils/menu-get-item';
@@ -94,10 +91,13 @@ const Todo = () => {
 
   const handleTodoItemClick = async () => {};
 
-  const onStar = async (id, list_id) => {
+  const onMarkedAsImportant = async (item) => {
     await editTodo({
-      id,
-      list_id,
+      id: item.id,
+      marked_as_important:
+        item.marked_as_important === MARKED_AS_UNIMPORTANT
+          ? MARKED_AS_IMPORTANT
+          : MARKED_AS_UNIMPORTANT,
     });
     onFetchTodo({
       list_id: listItemInfo.id,
@@ -128,16 +128,11 @@ const Todo = () => {
               <StarOutlined
                 style={{
                   color:
-                    item.list_id === FIXED_LIST_ITEM_IMPORTANT ? '#2564cf' : '',
+                    item.marked_as_important === MARKED_AS_IMPORTANT
+                      ? '#2564cf'
+                      : '',
                 }}
-                onClick={() =>
-                  onStar(
-                    item.id,
-                    item.list_id === FIXED_LIST_ITEM_IMPORTANT
-                      ? FIXED_LIST_ITEM_TASKS
-                      : FIXED_LIST_ITEM_IMPORTANT
-                  )
-                }
+                onClick={() => onMarkedAsImportant(item)}
               />
             </li>
           );
