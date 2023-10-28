@@ -35,14 +35,6 @@ const Todo = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getTodo = async (params = {}) => {
-    const { content = searchText } = params;
-
-    onFetchTodo({
-      content,
-    });
-  };
-
   const renderPosition = () => {
     return (
       <div className="belong-to-wrapper">
@@ -55,22 +47,22 @@ const Todo = () => {
     setAddedContent(e.target.value);
   };
 
-  const handleEnter = () => {
-    handleClick();
-  };
-
-  const handleClick = async () => {
+  const handleAdd = async () => {
     if (!addedContent) {
-      alert('content can not be empty!');
+      alert('Content can not be empty!');
       return;
     }
 
     await addTodo({
       content: addedContent,
-      list_id: FIXED_LIST_ITEM_TASKS,
+      list_id: listItemInfo.id,
     });
+    await onFetchTodo({
+      list_id: listItemInfo.id,
+      content: searchText,
+    });
+    await onFetchList();
     setAddedContent('');
-    getTodo();
     inputRef.current.focus();
   };
 
@@ -84,11 +76,11 @@ const Todo = () => {
             value={addedContent}
             placeholder="Add a task"
             onChange={handleInput}
-            onPressEnter={handleEnter}
+            onPressEnter={handleAdd}
           />
         </div>
         <div className="add-btn">
-          <Button onClick={handleClick}>Add</Button>
+          <Button onClick={handleAdd}>Add</Button>
         </div>
       </div>
     );
@@ -107,7 +99,10 @@ const Todo = () => {
       id,
       list_id,
     });
-    getTodo();
+    onFetchTodo({
+      list_id: listItemInfo.id,
+      content: searchText,
+    });
   };
 
   const [checked, setChecked] = React.useState(true);
@@ -165,7 +160,10 @@ const Todo = () => {
       await deleteTodo({
         id: clikedId,
       });
-      await getTodo();
+      await onFetchTodo({
+        list_id: listItemInfo.id,
+        content: searchText,
+      });
       await onFetchList();
     }
 
@@ -175,7 +173,10 @@ const Todo = () => {
         id: clikedId,
         list_id,
       });
-      await getTodo();
+      await onFetchTodo({
+        list_id: listItemInfo.id,
+        content: searchText,
+      });
       await onFetchList();
     }
   };

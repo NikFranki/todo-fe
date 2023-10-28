@@ -179,13 +179,22 @@ const SiderBar = () => {
   };
   const handleMenuClick = async (e) => {
     if (e.keyPath.includes('delete')) {
+      const deletedIndex = list.findIndex(
+        (item) => item.id === editInfo.clikedId
+      );
+      const currentListItem = list[deletedIndex - 1];
       await deleteList({
         id: editInfo.clikedId,
       });
       await onFetchTodo({
         content: searchText,
+        list_id: currentListItem.id,
       });
       await onFetchList();
+      onSetListItemInfo({
+        id: currentListItem.id,
+        name: currentListItem.name,
+      });
     }
     if (e.keyPath.includes('edit')) {
       setEditInfo({ ...editInfo, editable: true });
