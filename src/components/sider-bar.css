@@ -7,42 +7,49 @@
   line-height: 1;
 }
 
-.shortcut-menu button {
+.shortcut-menu .ant-btn {
   display: inline-flex;
   align-items: center;
   width: 100%;
   text-align: left;
   color: #fff;
+  padding: 0 20px;
+  border: none;
 }
 
-.shortcut-menu button .today-icon {
+.shortcut-menu .ant-btn .ant-btn-icon {
+  margin-inline-end: 10px;
+}
+
+.shortcut-menu .ant-btn .number {
+  margin-left: auto;
+}
+
+.shortcut-menu .ant-btn .today-icon {
   font-size: 18px;
 }
-.shortcut-menu button .important-icon {
+.shortcut-menu .ant-btn .important-icon {
   font-size: 18px;
 }
-.shortcut-menu button .planned-icon {
+.shortcut-menu .ant-btn .planned-icon {
   font-size: 18px;
 }
-.shortcut-menu button .assigned-icon {
+.shortcut-menu .ant-btn .assigned-icon {
   font-size: 18px;
 }
-.shortcut-menu button .tasks-icon {
+.shortcut-menu .ant-btn .tasks-icon {
   font-size: 18px;
 }
 
 .sider-bar-wrapper .ant-space-item .list-wrapper {
   display: flex;
   flex-direction: column;
-  /* row-gap: 16px; */
   line-height: 1;
-  padding-left: 8px;
 }
 
 .sider-bar-wrapper .ant-space-item:nth-child(7) {
   height: calc(100vh - 384px);
-  max-width: 280px;
-  padding: 0 10px;
+  padding: 0 20px;
   overflow: auto;
   padding-bottom: 10px;
 }

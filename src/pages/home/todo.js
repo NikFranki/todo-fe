@@ -20,8 +20,15 @@ const Todo = () => {
 
   const { visible, points, onContextMenuOpen } = useContextMenu();
 
-  const { otherlist, todo, searchText, onFetchTodo, onFetchList, onSetTodoId } =
-    useContextInfo();
+  const {
+    otherlist,
+    todo,
+    searchText,
+    listItemInfo,
+    onFetchTodo,
+    onFetchList,
+    onSetTodoId,
+  } = useContextInfo();
 
   React.useEffect(() => {
     onSetTodoId(undefined);
@@ -39,7 +46,7 @@ const Todo = () => {
   const renderPosition = () => {
     return (
       <div className="belong-to-wrapper">
-        <h3>123</h3>
+        <h3>{listItemInfo.name}</h3>
       </div>
     );
   };

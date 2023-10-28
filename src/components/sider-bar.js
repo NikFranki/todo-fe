@@ -36,9 +36,10 @@ const SiderBar = () => {
     fixedList,
     otherlist,
     searchText,
+    listItemInfo,
     onFetchList,
     onFetchTodo,
-    onSetTodoId,
+    onSetListItemInfo,
   } = useContextInfo();
 
   const listFactor = list.reduce((acc, prev) => {
@@ -73,20 +74,27 @@ const SiderBar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listFactor]);
 
-  const handleSearchAll = () => {
+  const handleFixedItemClick = (item) => {
     onFetchTodo({
-      list_id: undefined,
+      list_id: item.id,
     });
-    onSetTodoId(undefined);
+    onSetListItemInfo({
+      id: item.id,
+      name: item.name,
+    });
   };
 
   const renderFixedList = () => {
     return sbfixedList.map((item) => {
       return (
         <div key={item.id} className="shortcut-menu">
-          <Button onClick={handleSearchAll} type="link" icon={item.icon}>
+          <Button
+            onClick={() => handleFixedItemClick(item)}
+            type="link"
+            icon={item.icon}
+          >
             {item.name}
-            <span>{item.number}</span>
+            <span className="number">{item.number}</span>
           </Button>
         </div>
       );
@@ -97,6 +105,26 @@ const SiderBar = () => {
     onFetchTodo({
       list_id: item.id,
     });
+    onSetListItemInfo({
+      id: item.id,
+      name: item.name,
+    });
+  };
+  const handleReListNameEnter = async (e, item) => {
+    await updateList({ id: item.id, name: e.target.value });
+    await onFetchList();
+    setEditInfo({
+      ...editInfo,
+      editable: false,
+      clikedId: null,
+      reListName: '',
+    });
+    if (listItemInfo.id === item.id) {
+      onSetListItemInfo({
+        id: item.id,
+        name: e.target.value,
+      });
+    }
   };
   const renderOtherList = () => {
     return (
@@ -117,32 +145,14 @@ const SiderBar = () => {
                     placeholder="Please input list name"
                     value={editInfo.reListName}
                     autoFocus
-                    onBlur={async (e) => {
-                      await updateList({ id: item.id, name: e.target.value });
-                      await onFetchList();
-                      setEditInfo({
-                        ...editInfo,
-                        editable: false,
-                        clikedId: null,
-                        reListName: '',
-                      });
-                    }}
+                    onBlur={(e) => handleReListNameEnter(e, item)}
                     onChange={(e) => {
                       setEditInfo({
                         ...editInfo,
                         reListName: e.target.value,
                       });
                     }}
-                    onPressEnter={async (e) => {
-                      await updateList({ id: item.id, name: e.target.value });
-                      await onFetchList();
-                      setEditInfo({
-                        ...editInfo,
-                        editable: false,
-                        clikedId: null,
-                        reListName: '',
-                      });
-                    }}
+                    onPressEnter={(e) => handleReListNameEnter(e, item)}
                   />
                 ) : (
                   <span className="text">{item.name}</span>

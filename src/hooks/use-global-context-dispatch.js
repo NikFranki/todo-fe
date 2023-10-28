@@ -12,6 +12,10 @@ const useGlobalContextDispatch = () => {
   const [todo, setTodo] = React.useState([]);
   const [searchText, setSearchText] = React.useState('');
   const [todoId, setTodoId] = React.useState(undefined);
+  const [listItemInfo, setListItemInfo] = React.useState({
+    id: 1,
+    name: 'My Day',
+  });
   const [authenticated, setAuthenticated] = React.useState(false);
 
   const onUserInfoChange = async () => {
@@ -30,6 +34,10 @@ const useGlobalContextDispatch = () => {
 
   const onSetTodoId = (todoId) => {
     setTodoId(todoId);
+  };
+
+  const onSetListItemInfo = (listId) => {
+    setListItemInfo(listId);
   };
 
   const onAuthenticated = (authenticated) => {
@@ -56,6 +64,7 @@ const useGlobalContextDispatch = () => {
     searchText,
     fixedList,
     otherlist,
+    listItemInfo,
     onUserInfoChange,
     onFetchList,
     onFetchTodo,
@@ -63,6 +72,7 @@ const useGlobalContextDispatch = () => {
     setAuthenticated,
     onAuthenticated,
     onSetSearchText,
+    onSetListItemInfo,
   };
 };
 
