@@ -5,10 +5,20 @@ import { StarOutlined } from '@ant-design/icons';
 
 import ContextMenu from '@components/context-menu';
 import { addTodo, editTodo, deleteTodo } from '@api/todo';
-import { MARKED_AS_UNIMPORTANT, MARKED_AS_IMPORTANT } from '@constant/index';
 import useContextInfo from '@hooks/use-context-info';
 import useContextMenu from '@hooks/use-context-menu';
 import getItem from '@utils/menu-get-item';
+import {
+  FIXED_LIST_ITEM_MY_DAY,
+  FIXED_LIST_ITEM_IMPORTANT,
+  FIXED_LIST_ITEM_PLANNED,
+  FIXED_LIST_ITEM_ASSIGNED_TO_ME,
+  FIXED_LIST_ITEM_TASKS,
+  MARKED_AS_UNIMPORTANT,
+  MARKED_AS_IMPORTANT,
+  UN_ADDED_MY_DAY,
+  ADDED_MY_DAY,
+} from '@constant/index';
 
 const Todo = () => {
   const [addedContent, setAddedContent] = React.useState('');
@@ -50,9 +60,28 @@ const Todo = () => {
       return;
     }
 
+    let list_id = listItemInfo.id;
+    const spcial_list_ids = [
+      FIXED_LIST_ITEM_MY_DAY,
+      FIXED_LIST_ITEM_IMPORTANT,
+      FIXED_LIST_ITEM_PLANNED,
+      FIXED_LIST_ITEM_ASSIGNED_TO_ME,
+    ];
+    if (spcial_list_ids.includes(listItemInfo.id)) {
+      list_id = FIXED_LIST_ITEM_TASKS;
+    }
+
     await addTodo({
+      list_id,
+      added_my_day:
+        listItemInfo.id === FIXED_LIST_ITEM_MY_DAY
+          ? ADDED_MY_DAY
+          : UN_ADDED_MY_DAY,
+      marked_as_important:
+        listItemInfo.id === FIXED_LIST_ITEM_IMPORTANT
+          ? MARKED_AS_IMPORTANT
+          : MARKED_AS_UNIMPORTANT,
       content: addedContent,
-      list_id: listItemInfo.id,
     });
     await onFetchTodo({
       list_id: listItemInfo.id,
@@ -91,7 +120,7 @@ const Todo = () => {
 
   const handleTodoItemClick = async () => {};
 
-  const onMarkedAsImportant = async (item) => {
+  const handleMarkedAsImportant = async (item) => {
     await editTodo({
       id: item.id,
       marked_as_important:
@@ -99,10 +128,11 @@ const Todo = () => {
           ? MARKED_AS_IMPORTANT
           : MARKED_AS_UNIMPORTANT,
     });
-    onFetchTodo({
+    await onFetchTodo({
       list_id: listItemInfo.id,
       content: searchText,
     });
+    await onFetchList();
   };
 
   const [checked, setChecked] = React.useState(true);
@@ -132,7 +162,7 @@ const Todo = () => {
                       ? '#2564cf'
                       : '',
                 }}
-                onClick={() => onMarkedAsImportant(item)}
+                onClick={() => handleMarkedAsImportant(item)}
               />
             </li>
           );
