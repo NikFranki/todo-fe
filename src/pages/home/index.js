@@ -9,45 +9,14 @@ import Menu from '@components/menu';
 import Todo from './todo';
 import SiderBar from '@components/sider-bar';
 import useContextInfo from '@hooks/use-context-info';
+import { FIXED_LIST_ITEM_MY_DAY } from '@constant/index';
 
 import './home.css';
 
 const { Header, Footer, Sider, Content } = Layout;
 
-const headerStyle = {
-  display: 'flex',
-  color: '#fff',
-  height: 64,
-  lineHeight: '64px',
-  backgroundColor: '#7dbcea',
-};
-const titleStyle = {
-  fontSize: 16,
-  fontWeight: 600,
-};
-const siderStyle = {
-  flex: '0 0 300px',
-  maxWidth: '300px',
-  minWidth: '200px',
-  width: '300px',
-  textAlign: 'left',
-  color: '#fff',
-  backgroundColor: '#3ba0e9',
-};
-const contentStyle = {
-  minHeight: 120,
-  color: '#fff',
-  backgroundColor: '#f5f5d5',
-};
-const footerStyle = {
-  textAlign: 'center',
-  color: '#fff',
-  backgroundColor: '#7dbcea',
-};
-
 function Home() {
-  const { searchText, onFetchTodo, onFetchList, onSetSearchText } =
-    useContextInfo();
+  const { onFetchTodo, onFetchList, onSetSearchText } = useContextInfo();
 
   React.useEffect(() => {
     sequenceRequest();
@@ -55,7 +24,7 @@ function Home() {
   }, []);
 
   const sequenceRequest = async () => {
-    await onFetchTodo({ content: searchText });
+    await onFetchTodo({ list_id: FIXED_LIST_ITEM_MY_DAY });
     await onFetchList();
   };
 
@@ -80,24 +49,22 @@ function Home() {
 
   return (
     <div className="App">
-      <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
+      <Space direction="vertical" style={{ width: '100%' }}>
         <Layout className="todo-layout">
-          <Header className="header" style={headerStyle}>
-            <div className="logo" style={titleStyle}>
-              Todo
-            </div>
+          <Header className="header">
+            <div className="logo">Todo</div>
             {renderSearch()}
             <Menu />
           </Header>
-          <Layout>
-            <Sider className="menu-side-bar" style={siderStyle}>
+          <Layout className="content-layout">
+            <Sider className="menu-side-bar">
               <SiderBar />
             </Sider>
-            <Content style={contentStyle}>
+            <Content className="content-wrapper">
               <Todo />
             </Content>
           </Layout>
-          <Footer style={footerStyle}>
+          <Footer className="footer">
             @Copyright reserved by franki & christ {dayjs().format('YYYY')}
           </Footer>
         </Layout>

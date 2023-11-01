@@ -44,7 +44,7 @@ const Todo = () => {
 
   const renderPosition = () => {
     return (
-      <div className="belong-to-wrapper">
+      <div className="position">
         <h3>{listItemInfo.name}</h3>
       </div>
     );
@@ -207,7 +207,7 @@ const Todo = () => {
   };
 
   return (
-    <div className="Todo-wrapper">
+    <div className="todo-container">
       {renderPosition()}
       {renderList()}
       <ContextMenu

@@ -6,30 +6,24 @@
   height: 100vh;
 }
 
-.menu-side-bar {
-  flex: 0 0 300px !important;
-  max-width: 300px !important;
-  width: 300px !important;
-  height: calc(100vh - 129px);
-}
-
 .ant-space .ant-layout-content {
   height: calc(100vh - 129px);
   overflow: auto;
 }
 
-.Todo-wrapper {
+.todo-container {
   position: relative;
 }
 
-.belong-to-wrapper h3 {
+.position h3 {
   margin: 0;
   padding-left: 15px;
+  line-height: 30px;
   text-align: left;
   color: #1b82f1;
 }
 
-.Todo-wrapper h1 {
+.todo-container h1 {
   height: 60px;
   line-height: 60px;
   margin: 0;

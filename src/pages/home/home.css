@@ -28,6 +28,7 @@
 
 .todo-item {
   display: flex;
+  align-items: center;
   width: 100%;
   line-height: 32px;
   color: #000;
@@ -76,5 +77,44 @@
 
 .todo-item .anticon-star {
   justify-content: center;
-  width: 50px;
+  margin-right: 20px;
+}
+
+.todo-layout .header {
+  display: flex;
+  color: #fff;
+  height: 64px;
+  line-height: 64px;
+  background: #7dbcea;
+}
+
+.todo-layout .header .logo {
+  font-size: 16;
+  font-weight: 600;
+}
+
+.todo-layout .content-layout {
+  width: 100%;
+  height: calc(100vh - 129px);
+  background: #f5f5d5;
+}
+
+.todo-layout .content-layout .menu-side-bar {
+  flex: initial !important;
+  max-width: 300px !important;
+  width: 300px !important;
+  height: calc(100vh - 129px);
+  text-align: left;
+  color: #fff;
+  background: #3ba0e9;
+}
+
+.todo-layout .content-layout .content-wrapper {
+  flex: 1;
+}
+
+.todo-layout .footer {
+  text-align: center;
+  color: #fff;
+  background: #7dbcea;
 }
