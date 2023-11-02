@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Button, Checkbox, Input } from 'antd';
 import { StarOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
 
 import ContextMenu from '@components/context-menu';
 import { addTodo, editTodo, deleteTodo } from '@api/todo';
@@ -38,6 +39,7 @@ const Todo = () => {
   } = useContextInfo();
 
   React.useEffect(() => {
+    console.log(11, dayjs().format('YYYY-MM-DD HH:mm:ss'));
     onSetTodoId(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -73,14 +75,19 @@ const Todo = () => {
 
     await addTodo({
       list_id,
-      added_my_day:
-        listItemInfo.id === FIXED_LIST_ITEM_MY_DAY
-          ? ADDED_MY_DAY
-          : UN_ADDED_MY_DAY,
+      added_my_day: [FIXED_LIST_ITEM_MY_DAY, FIXED_LIST_ITEM_PLANNED].includes(
+        listItemInfo.id
+      )
+        ? ADDED_MY_DAY
+        : UN_ADDED_MY_DAY,
       marked_as_important:
         listItemInfo.id === FIXED_LIST_ITEM_IMPORTANT
           ? MARKED_AS_IMPORTANT
           : MARKED_AS_UNIMPORTANT,
+      due_date:
+        listItemInfo.id === FIXED_LIST_ITEM_PLANNED
+          ? dayjs().format('YYYY-MM-DD HH:mm:ss')
+          : null,
       content: addedContent,
     });
     await onFetchTodo({
