@@ -8,5 +8,8 @@ export const FIXED_LIST_ITEM_TASKS = 5;
 export const MARKED_AS_UNIMPORTANT = 0;
 export const MARKED_AS_IMPORTANT = 1;
 
+export const MARKED_AS_COMPLETED = 0;
+export const MARKED_AS_UNCOMPLETED = 1;
+
 export const UN_ADDED_MY_DAY = 0;
 export const ADDED_MY_DAY = 1;

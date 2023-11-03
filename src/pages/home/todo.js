@@ -17,6 +17,8 @@ import {
   FIXED_LIST_ITEM_TASKS,
   MARKED_AS_UNIMPORTANT,
   MARKED_AS_IMPORTANT,
+  MARKED_AS_COMPLETED,
+  MARKED_AS_UNCOMPLETED,
   UN_ADDED_MY_DAY,
   ADDED_MY_DAY,
 } from '@constant/index';
@@ -39,7 +41,6 @@ const Todo = () => {
   } = useContextInfo();
 
   React.useEffect(() => {
-    console.log(11, dayjs().format('YYYY-MM-DD HH:mm:ss'));
     onSetTodoId(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -103,7 +104,7 @@ const Todo = () => {
     return (
       <div className="addition-wrapper">
         <div className="addition-content">
-          <Checkbox checked={checked} onChange={onChange} />
+          <Checkbox checked={false} />
           <Input
             ref={inputRef}
             value={addedContent}
@@ -142,10 +143,14 @@ const Todo = () => {
     await onFetchList();
   };
 
-  const [checked, setChecked] = React.useState(true);
-
-  const onChange = (e) => {
-    setChecked(e.target.checked);
+  const handleCompleteChange = async (item) => {
+    await editTodo({
+      id: item.id,
+      marked_as_important:
+        item.marked_as_completed === MARKED_AS_COMPLETED
+          ? MARKED_AS_UNCOMPLETED
+          : MARKED_AS_COMPLETED,
+    });
   };
 
   const renderList = () => {
@@ -160,7 +165,10 @@ const Todo = () => {
               onContextMenu={(e) => handleContextMenu(e, item.id)}
               onClick={() => handleTodoItemClick(item.id)}
             >
-              <Checkbox checked={checked} onChange={onChange} />
+              <Checkbox
+                checked={item.marked_as_completed}
+                onChange={() => handleCompleteChange(item)}
+              />
               <div className="content">{item.content}</div>
               <StarOutlined
                 style={{
