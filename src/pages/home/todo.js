@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Button, Checkbox, Input } from 'antd';
-import { StarOutlined } from '@ant-design/icons';
+import { StarOutlined, DownOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 import ContextMenu from '@components/context-menu';
@@ -100,7 +100,7 @@ const Todo = () => {
     inputRef.current.focus();
   };
 
-  const renderAddListItem = () => {
+  const renderListAddItem = () => {
     return (
       <div className="addition-wrapper">
         <div className="addition-content">
@@ -146,43 +146,93 @@ const Todo = () => {
   const handleCompleteChange = async (item) => {
     await editTodo({
       id: item.id,
-      marked_as_important:
+      marked_as_completed:
         item.marked_as_completed === MARKED_AS_COMPLETED
           ? MARKED_AS_UNCOMPLETED
           : MARKED_AS_COMPLETED,
     });
+    await onFetchTodo({
+      list_id: listItemInfo.id,
+      content: searchText,
+    });
+    await onFetchList();
   };
 
-  const renderList = () => {
+  const filterTodo = (marked_as_completed = MARKED_AS_UNCOMPLETED) => {
+    return todo.filter(
+      (item) => item.marked_as_completed === marked_as_completed
+    );
+  };
+  const renderListItemContent = (item) => {
+    return (
+      <>
+        <Checkbox
+          checked={item.marked_as_completed}
+          onChange={() => handleCompleteChange(item)}
+        />
+        <div
+          className={`content ${
+            item.marked_as_completed ? 'completed' : 'uncompleted'
+          }`}
+        >
+          {item.content}
+        </div>
+        <StarOutlined
+          style={{
+            color:
+              item.marked_as_important === MARKED_AS_IMPORTANT ? '#2564cf' : '',
+          }}
+          onClick={() => handleMarkedAsImportant(item)}
+        />
+      </>
+    );
+  };
+  const renderListItem = (item) => {
+    return (
+      <li
+        key={item.id}
+        className="todo-item"
+        onContextMenu={(e) => handleContextMenu(e, item.id)}
+        onClick={() => handleTodoItemClick(item.id)}
+      >
+        {renderListItemContent(item)}
+      </li>
+    );
+  };
+  const renderList = (marked_as_completed = MARKED_AS_UNCOMPLETED) => {
     return (
       <ul className="todo-wrapper">
-        <li className="todo-item add-item">{renderAddListItem()}</li>
-        {todo.map((item) => {
-          return (
-            <li
-              key={item.id}
-              className="todo-item"
-              onContextMenu={(e) => handleContextMenu(e, item.id)}
-              onClick={() => handleTodoItemClick(item.id)}
-            >
-              <Checkbox
-                checked={item.marked_as_completed}
-                onChange={() => handleCompleteChange(item)}
-              />
-              <div className="content">{item.content}</div>
-              <StarOutlined
-                style={{
-                  color:
-                    item.marked_as_important === MARKED_AS_IMPORTANT
-                      ? '#2564cf'
-                      : '',
-                }}
-                onClick={() => handleMarkedAsImportant(item)}
-              />
-            </li>
-          );
+        {filterTodo(marked_as_completed).map((item) => {
+          return renderListItem(item);
         })}
       </ul>
+    );
+  };
+
+  const renderUnCompletedList = () => {
+    return renderList();
+  };
+
+  const [show, setShow] = React.useState(true);
+  const renderCompletedList = () => {
+    const completedListNum = filterTodo(MARKED_AS_COMPLETED).length;
+    if (!completedListNum) return null;
+
+    return (
+      <div className="todo-completed-wrapper">
+        <a
+          className="dropdown-btn"
+          onClick={(e) => {
+            e.preventDefault();
+            setShow(!show);
+          }}
+        >
+          <DownOutlined />
+          <h3 className="completed-label">Completed</h3>
+          <h3 className="completed-list-num">{completedListNum}</h3>
+        </a>
+        {show ? renderList(MARKED_AS_COMPLETED) : null}
+      </div>
     );
   };
 
@@ -224,7 +274,9 @@ const Todo = () => {
   return (
     <div className="todo-container">
       {renderPosition()}
-      {renderList()}
+      {renderListAddItem()}
+      {renderUnCompletedList()}
+      {renderCompletedList()}
       <ContextMenu
         items={items}
         visible={visible}

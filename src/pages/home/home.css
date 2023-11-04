@@ -36,17 +36,18 @@
   margin-bottom: 15px;
 }
 
-.add-item .addition-wrapper {
-  width: 100%;
+.addition-wrapper {
+  padding: 15px;
 }
 
-.add-item .addition-wrapper .addition-content {
+.addition-wrapper .addition-content {
   display: flex;
   width: 100%;
+  padding-left: 20px;
   border-bottom: 1px solid #ddd;
 }
 
-.add-item .addition-wrapper .add-btn {
+.addition-wrapper .add-btn {
   padding: 6px;
   text-align: right;
 }
@@ -73,6 +74,10 @@
 .todo-item .content {
   flex: 1;
   text-align: left;
+}
+
+.todo-item .content.completed {
+  text-decoration: line-through;
 }
 
 .todo-item .anticon-star {
@@ -117,4 +122,17 @@
   text-align: center;
   color: #fff;
   background: #7dbcea;
+}
+
+.todo-completed-wrapper .dropdown-btn {
+  display: inline-flex;
+  margin: 15px;
+}
+
+.todo-completed-wrapper .dropdown-btn .completed-label {
+  margin-left: 12px;
+}
+
+.todo-completed-wrapper .dropdown-btn .completed-list-num {
+  margin-left: 12px;
 }
