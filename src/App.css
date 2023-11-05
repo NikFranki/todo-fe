@@ -15,12 +15,20 @@
   position: relative;
 }
 
-.position h3 {
-  margin: 0;
+.position {
+  display: flex;
+  align-items: center;
   padding-left: 15px;
   line-height: 30px;
-  text-align: left;
+}
+
+.position h3 {
+  margin: 0;
   color: #1b82f1;
+}
+
+.position h3 .name {
+  padding-left: 10px;
 }
 
 .todo-container h1 {

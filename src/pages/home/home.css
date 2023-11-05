@@ -129,10 +129,20 @@
   margin: 15px;
 }
 
+.todo-completed-wrapper .dropdown-btn .anticon-down.down svg {
+  transform: rotate(0);
+}
+
+.todo-completed-wrapper .dropdown-btn .anticon-down.up svg {
+  transform: rotate(180deg);
+}
+
 .todo-completed-wrapper .dropdown-btn .completed-label {
+  margin: 0;
   margin-left: 12px;
 }
 
 .todo-completed-wrapper .dropdown-btn .completed-list-num {
+  margin: 0;
   margin-left: 12px;
 }

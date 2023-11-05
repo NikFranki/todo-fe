@@ -1,7 +1,11 @@
 import React from 'react';
 
 import { Button, Checkbox, Input } from 'antd';
-import { StarOutlined, DownOutlined } from '@ant-design/icons';
+import {
+  StarOutlined,
+  DownOutlined,
+  UnorderedListOutlined,
+} from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 import ContextMenu from '@components/context-menu';
@@ -21,6 +25,7 @@ import {
   MARKED_AS_UNCOMPLETED,
   UN_ADDED_MY_DAY,
   ADDED_MY_DAY,
+  LIST_ICON_MAP,
 } from '@constant/index';
 
 const Todo = () => {
@@ -48,7 +53,12 @@ const Todo = () => {
   const renderPosition = () => {
     return (
       <div className="position">
-        <h3>{listItemInfo.name}</h3>
+        <h3>
+          {LIST_ICON_MAP[listItemInfo.id] || (
+            <UnorderedListOutlined style={{ fontSize: 16 }} />
+          )}
+          <span className="name">{listItemInfo.name}</span>
+        </h3>
       </div>
     );
   };
@@ -235,7 +245,7 @@ const Todo = () => {
             setShow(!show);
           }}
         >
-          <DownOutlined />
+          <DownOutlined className={`${show ? 'up' : 'down'}`} />
           <h3 className="completed-label">Completed</h3>
           <h3 className="completed-list-num">{completedListNum}</h3>
         </a>

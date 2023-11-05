@@ -1,14 +1,6 @@
 import React from 'react';
 
-import {
-  PlusCircleOutlined,
-  UnorderedListOutlined,
-  HomeOutlined,
-  ScheduleOutlined,
-  UserOutlined,
-  FireOutlined,
-  StarOutlined,
-} from '@ant-design/icons';
+import { PlusCircleOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { Space, Input, Divider, Button } from 'antd';
 
 import ContextMenu from '@components/context-menu';
@@ -16,6 +8,7 @@ import { addList, updateList, deleteList } from '@api/list';
 import useContextInfo from '@hooks/use-context-info';
 import getItem from '@utils/menu-get-item';
 import useContextMenu from '@hooks/use-context-menu';
+import { LIST_ICON_MAP } from '@constant/index';
 
 import './sider-bar.css';
 
@@ -49,17 +42,10 @@ const SiderBar = () => {
   }, '');
   React.useEffect(() => {
     if (!list.length) return;
-    const icons = [
-      <FireOutlined key="today-icon" className="today-icon" />,
-      <StarOutlined key="important-icon" className="important-icon" />,
-      <ScheduleOutlined key="planned-icon" className="planned-icon" />,
-      <UserOutlined key="assigned-icon" className="assigned-icon" />,
-      <HomeOutlined key="tasks-icon" className="tasks-icon" />,
-    ];
-    const newFixedList = fixedList.map((item, index) => {
+    const newFixedList = fixedList.map((item) => {
       return {
         ...item,
-        icon: icons[index],
+        icon: LIST_ICON_MAP[item.id],
       };
     });
     setSbfixedlist(newFixedList);
