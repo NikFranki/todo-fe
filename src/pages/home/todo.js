@@ -216,7 +216,15 @@ const Todo = () => {
   const [show, setShow] = React.useState(true);
   const renderCompletedList = () => {
     const completedListNum = filterTodo(MARKED_AS_COMPLETED).length;
-    if (!completedListNum) return null;
+
+    const NOT_SHOW_COMPLETED_LIST = [
+      FIXED_LIST_ITEM_MY_DAY,
+      FIXED_LIST_ITEM_IMPORTANT,
+      FIXED_LIST_ITEM_PLANNED,
+      FIXED_LIST_ITEM_ASSIGNED_TO_ME,
+    ];
+    if (!completedListNum || NOT_SHOW_COMPLETED_LIST.includes(listItemInfo.id))
+      return null;
 
     return (
       <div className="todo-completed-wrapper">
