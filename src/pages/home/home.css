@@ -146,3 +146,8 @@
   margin: 0;
   margin-left: 12px;
 }
+
+.ant-menu-submenu > .ant-menu .ant-menu-item {
+  display: flex !important;
+  align-items: center;
+}

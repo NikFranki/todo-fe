@@ -4,6 +4,7 @@ import { Button, Checkbox, Input } from 'antd';
 import {
   StarOutlined,
   DownOutlined,
+  HomeOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
@@ -36,6 +37,7 @@ const Todo = () => {
   const { visible, points, onContextMenuOpen } = useContextMenu();
 
   const {
+    fixedList,
     otherlist,
     todo,
     searchText,
@@ -254,14 +256,20 @@ const Todo = () => {
     );
   };
 
+  const decoratedTasklist = fixedList.slice(-1).map((item) => {
+    item.icon = <HomeOutlined style={{ fontSize: 16 }} />;
+    return item;
+  });
+  const decoratedOtherlist = otherlist.map((item) => {
+    item.icon = <UnorderedListOutlined style={{ fontSize: 16 }} />;
+    return item;
+  });
+  const moveToSubItems = [...decoratedTasklist, ...decoratedOtherlist]
+    .filter((item) => item.id !== listItemInfo.id)
+    .map((item) => getItem(item.name, item.id, item.icon));
   const items = [
     getItem('Delete', 'delete'),
-    getItem(
-      'Move task to',
-      'move',
-      null,
-      otherlist.map((item) => getItem(item.name, item.id))
-    ),
+    getItem('Move task to', 'move', null, moveToSubItems),
   ];
   const handleMenuClick = async (e) => {
     if (e.keyPath.includes('delete')) {
