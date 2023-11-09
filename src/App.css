@@ -94,7 +94,7 @@
   display: none;
 }
 
-.ant-menu-title-content {
+.sider-bar-wrapper .ant-menu-title-content {
   width: 230px;
   display: inline-block;
   overflow: hidden;

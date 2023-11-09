@@ -1,13 +1,18 @@
 import React from 'react';
 
 import { Button, Checkbox, Input } from 'antd';
-import {
+import Icon, {
   StarOutlined,
   DownOutlined,
   HomeOutlined,
   UnorderedListOutlined,
+  ScheduleOutlined,
+  FireOutlined,
+  DeleteOutlined,
+  CheckSquareOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
+import _ from 'lodash';
 
 import ContextMenu from '@components/context-menu';
 import { addTodo, editTodo, deleteTodo } from '@api/todo';
@@ -28,10 +33,11 @@ import {
   ADDED_MY_DAY,
   LIST_ICON_MAP,
 } from '@constant/index';
+import moveToSvg from '@assets/images/moveout.svg';
 
 const Todo = () => {
   const [addedContent, setAddedContent] = React.useState('');
-  const [clikedId, setClickedId] = React.useState(false);
+  const [clikedTodo, setClickedTodo] = React.useState({});
   const inputRef = React.useRef(null);
 
   const { visible, points, onContextMenuOpen } = useContextMenu();
@@ -51,6 +57,15 @@ const Todo = () => {
     onSetTodoId(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const updateTodo = async (todoInfo = {}) => {
+    await editTodo(todoInfo);
+    await onFetchTodo({
+      list_id: listItemInfo.id,
+      content: searchText,
+    });
+    await onFetchList();
+  };
 
   const renderPosition = () => {
     return (
@@ -132,42 +147,32 @@ const Todo = () => {
     );
   };
 
-  const handleContextMenu = (e, id) => {
+  const handleContextMenu = (e, item) => {
     e.preventDefault();
     onContextMenuOpen(e);
-    setClickedId(id);
+    setClickedTodo(item);
   };
 
   const handleTodoItemClick = async () => {};
 
   const handleMarkedAsImportant = async (item) => {
-    await editTodo({
-      id: item.id,
+    updateTodo({
+      ..._.omit(item, ['update_time', 'create_time']),
       marked_as_important:
         item.marked_as_important === MARKED_AS_UNIMPORTANT
           ? MARKED_AS_IMPORTANT
           : MARKED_AS_UNIMPORTANT,
     });
-    await onFetchTodo({
-      list_id: listItemInfo.id,
-      content: searchText,
-    });
-    await onFetchList();
   };
 
   const handleCompleteChange = async (item) => {
-    await editTodo({
-      id: item.id,
+    updateTodo({
+      ..._.omit(item, ['update_time', 'create_time']),
       marked_as_completed:
         item.marked_as_completed === MARKED_AS_COMPLETED
           ? MARKED_AS_UNCOMPLETED
           : MARKED_AS_COMPLETED,
     });
-    await onFetchTodo({
-      list_id: listItemInfo.id,
-      content: searchText,
-    });
-    await onFetchList();
   };
 
   const filterTodo = (marked_as_completed = MARKED_AS_UNCOMPLETED) => {
@@ -204,7 +209,7 @@ const Todo = () => {
       <li
         key={item.id}
         className="todo-item"
-        onContextMenu={(e) => handleContextMenu(e, item.id)}
+        onContextMenu={(e) => handleContextMenu(e, item)}
         onClick={() => handleTodoItemClick(item.id)}
       >
         {renderListItemContent(item)}
@@ -268,13 +273,75 @@ const Todo = () => {
     .filter((item) => item.id !== listItemInfo.id)
     .map((item) => getItem(item.name, item.id, item.icon));
   const items = [
-    getItem('Delete', 'delete'),
-    getItem('Move task to', 'move', null, moveToSubItems),
+    getItem(
+      clikedTodo.added_my_day === ADDED_MY_DAY
+        ? 'Remove from My Day'
+        : 'Add to My Day',
+      'added_my_day',
+      <FireOutlined />
+    ),
+    getItem(
+      clikedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
+        ? 'Mark as important'
+        : 'Remove importance',
+      'marked_as_important',
+      <StarOutlined />
+    ),
+    getItem(
+      clikedTodo.marked_as_completed === MARKED_AS_COMPLETED
+        ? 'Mark as not completed'
+        : 'Mark as completed',
+      'marked_as_completed',
+      <CheckSquareOutlined />
+    ),
+    { type: 'divider' },
+    getItem('Due today', 'due_today', <ScheduleOutlined />),
+    getItem('Due tomorrow', 'due_tomorrow', <ScheduleOutlined />),
+    { type: 'divider' },
+    getItem(
+      'Move task to...',
+      'move',
+      <Icon component={() => <img src={moveToSvg} />} />,
+      moveToSubItems
+    ),
+    { type: 'divider' },
+    getItem('Delete', 'delete', <DeleteOutlined />),
   ];
   const handleMenuClick = async (e) => {
+    var pickedClikedTodo = _.omit(clikedTodo, ['update_time', 'create_time']);
+    if (e.keyPath.includes('added_my_day')) {
+      updateTodo({
+        ...pickedClikedTodo,
+        added_my_day:
+          clikedTodo.added_my_day === ADDED_MY_DAY
+            ? UN_ADDED_MY_DAY
+            : ADDED_MY_DAY,
+      });
+    }
+
+    if (e.keyPath.includes('marked_as_important')) {
+      updateTodo({
+        ...pickedClikedTodo,
+        marked_as_important:
+          clikedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
+            ? MARKED_AS_IMPORTANT
+            : MARKED_AS_UNIMPORTANT,
+      });
+    }
+
+    if (e.keyPath.includes('marked_as_completed')) {
+      updateTodo({
+        ...pickedClikedTodo,
+        marked_as_completed:
+          clikedTodo.marked_as_completed === MARKED_AS_COMPLETED
+            ? MARKED_AS_UNCOMPLETED
+            : MARKED_AS_COMPLETED,
+      });
+    }
+
     if (e.keyPath.includes('delete')) {
       await deleteTodo({
-        id: clikedId,
+        id: clikedTodo.id,
       });
       await onFetchTodo({
         list_id: listItemInfo.id,
@@ -286,7 +353,7 @@ const Todo = () => {
     if (e.keyPath.includes('move')) {
       const [list_id] = e.keyPath;
       await editTodo({
-        id: clikedId,
+        id: clikedTodo.id,
         list_id,
       });
       await onFetchTodo({

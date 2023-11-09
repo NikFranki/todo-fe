@@ -18,7 +18,6 @@ const ContextMenu = (props) => {
       <Menu
         onClick={handleMenuClick}
         className="context-menu-wrapper"
-        popupClassName="context-sub-menu-wrapper"
         style={{
           position: 'fixed',
           left: x,
