@@ -27,6 +27,48 @@ const ProtectedRoute = ({ isAllowed, children, redirectPath = '/login' }) => {
   return children ? children : <Outlet />;
 };
 
+// let log = console.log;
+
+// const webNotificationApp = () => {
+//   try {
+//     if ('Notification' in window) {
+//       // let ask = window.Notification.requestPermission();
+//       let ask = Notification.requestPermission();
+//       ask.then(
+//         // Permission
+//         (permission) => {
+//           log(`permission =`, permission);
+//           if (permission === 'granted') {
+//             log(`permission granted`);
+//             let msg = new Notification('App Upgrade Info', {
+//               // eslint-disable-next-line max-len
+//               body: 'a new version app is available, click download: https://app.xgqfrms.xyz/download',
+//               icon: 'https://cdn.xgqfrms.xyz/logo/icon.png',
+//             });
+//             msg.addEventListener(`click`, (e) => {
+//               let btn = e.target.dataset(`btn-type`);
+//               if (btn === 'ok') {
+//                 log(`OK`);
+//               } else {
+//                 log(`Cancel`);
+//               }
+//               alert(`clicked notification`);
+//             });
+//           } else {
+//             log(`notification permission is denied!`);
+//           }
+//         }
+//       );
+//     } else {
+//       console.warn(
+//         `your browser is too old, which not support web notification!`
+//       );
+//     }
+//   } catch (err) {
+//     console.error(`error =`, err);
+//   }
+// };
+
 function App() {
   const values = useGlobalContextDispatch();
   const [authenticatedLoading, setAuthenticatedLoading] = React.useState(true);
@@ -42,6 +84,7 @@ function App() {
   };
 
   React.useEffect(() => {
+    // webNotificationApp();
     doValidateToken();
     onUserInfoChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps

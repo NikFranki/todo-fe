@@ -34,13 +34,27 @@ import {
   LIST_ICON_MAP,
 } from '@constant/index';
 import moveToSvg from '@assets/images/moveout.svg';
+import myDaySmallSvg from '@assets/images/my_day_small.svg';
+import todayBlueSvg from '@assets/images/today_blue.svg';
+import dueDateSmallSvg from '@assets/images/due_date_small.svg';
 
 const Todo = () => {
   const [addedContent, setAddedContent] = React.useState('');
-  const [clikedTodo, setClickedTodo] = React.useState({});
+  const [clickedTodo, setClickedTodo] = React.useState({});
   const inputRef = React.useRef(null);
 
-  const { visible, points, onContextMenuOpen } = useContextMenu();
+  const TODO_CONTEXT_MENU_HEIGHT = 327;
+  const { visible, points, setPoints, onContextMenuOpen } = useContextMenu({
+    onOpen: ({ x, y }) => {
+      setPoints({
+        x,
+        y:
+          document.body.clientHeight - y < TODO_CONTEXT_MENU_HEIGHT
+            ? document.body.clientHeight - TODO_CONTEXT_MENU_HEIGHT
+            : y,
+      });
+    },
+  });
 
   const {
     fixedList,
@@ -114,7 +128,7 @@ const Todo = () => {
           : MARKED_AS_UNIMPORTANT,
       due_date:
         listItemInfo.id === FIXED_LIST_ITEM_PLANNED
-          ? dayjs().format('YYYY-MM-DD HH:mm:ss')
+          ? dayjs().format('YYYY-MM-DD')
           : null,
       content: addedContent,
     });
@@ -181,6 +195,9 @@ const Todo = () => {
     );
   };
   const renderListItemContent = (item) => {
+    const isToday = item.due_date === dayjs().format('YYYY-MM-DD');
+    const isTomorrow =
+      item.due_date === dayjs().add(1, 'day').format('YYYY-MM-DD');
     return (
       <>
         <Checkbox
@@ -192,7 +209,27 @@ const Todo = () => {
             item.marked_as_completed ? 'completed' : 'uncompleted'
           }`}
         >
-          {item.content}
+          <span className="text">{item.content}</span>
+          <div className="tags">
+            {item.added_my_day && (
+              <div className="my-day-sign">
+                <Icon component={() => <img src={myDaySmallSvg} />} />
+                <span>My Day</span>
+              </div>
+            )}
+            {isToday && (
+              <div className="today-sign">
+                <Icon component={() => <img src={todayBlueSvg} />} />
+                <span>Today</span>
+              </div>
+            )}
+            {isTomorrow && (
+              <div className="tomorrow-sign">
+                <Icon component={() => <img src={dueDateSmallSvg} />} />
+                <span>Tomorrow</span>
+              </div>
+            )}
+          </div>
         </div>
         <StarOutlined
           style={{
@@ -274,21 +311,21 @@ const Todo = () => {
     .map((item) => getItem(item.name, item.id, item.icon));
   const items = [
     getItem(
-      clikedTodo.added_my_day === ADDED_MY_DAY
+      clickedTodo.added_my_day === ADDED_MY_DAY
         ? 'Remove from My Day'
         : 'Add to My Day',
       'added_my_day',
       <FireOutlined />
     ),
     getItem(
-      clikedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
+      clickedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
         ? 'Mark as important'
         : 'Remove importance',
       'marked_as_important',
       <StarOutlined />
     ),
     getItem(
-      clikedTodo.marked_as_completed === MARKED_AS_COMPLETED
+      clickedTodo.marked_as_completed === MARKED_AS_COMPLETED
         ? 'Mark as not completed'
         : 'Mark as completed',
       'marked_as_completed',
@@ -297,6 +334,9 @@ const Todo = () => {
     { type: 'divider' },
     getItem('Due today', 'due_today', <ScheduleOutlined />),
     getItem('Due tomorrow', 'due_tomorrow', <ScheduleOutlined />),
+    clickedTodo.due_date
+      ? getItem('Remove due date', 'remove_due_date', <ScheduleOutlined />)
+      : null,
     { type: 'divider' },
     getItem(
       'Move task to...',
@@ -308,12 +348,12 @@ const Todo = () => {
     getItem('Delete', 'delete', <DeleteOutlined />),
   ];
   const handleMenuClick = async (e) => {
-    var pickedClikedTodo = _.omit(clikedTodo, ['update_time', 'create_time']);
+    var pickedClikedTodo = _.omit(clickedTodo, ['update_time', 'create_time']);
     if (e.keyPath.includes('added_my_day')) {
       updateTodo({
         ...pickedClikedTodo,
         added_my_day:
-          clikedTodo.added_my_day === ADDED_MY_DAY
+          clickedTodo.added_my_day === ADDED_MY_DAY
             ? UN_ADDED_MY_DAY
             : ADDED_MY_DAY,
       });
@@ -323,7 +363,7 @@ const Todo = () => {
       updateTodo({
         ...pickedClikedTodo,
         marked_as_important:
-          clikedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
+          clickedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
             ? MARKED_AS_IMPORTANT
             : MARKED_AS_UNIMPORTANT,
       });
@@ -333,15 +373,36 @@ const Todo = () => {
       updateTodo({
         ...pickedClikedTodo,
         marked_as_completed:
-          clikedTodo.marked_as_completed === MARKED_AS_COMPLETED
+          clickedTodo.marked_as_completed === MARKED_AS_COMPLETED
             ? MARKED_AS_UNCOMPLETED
             : MARKED_AS_COMPLETED,
       });
     }
 
+    if (e.keyPath.includes('due_today')) {
+      updateTodo({
+        ...pickedClikedTodo,
+        due_date: dayjs().format('YYYY-MM-DD'),
+      });
+    }
+
+    if (e.keyPath.includes('due_tomorrow')) {
+      updateTodo({
+        ...pickedClikedTodo,
+        due_date: dayjs().add(1, 'day').format('YYYY-MM-DD'),
+      });
+    }
+
+    if (e.keyPath.includes('remove_due_date')) {
+      updateTodo({
+        ...pickedClikedTodo,
+        due_date: null,
+      });
+    }
+
     if (e.keyPath.includes('delete')) {
       await deleteTodo({
-        id: clikedTodo.id,
+        id: clickedTodo.id,
       });
       await onFetchTodo({
         list_id: listItemInfo.id,
@@ -353,7 +414,7 @@ const Todo = () => {
     if (e.keyPath.includes('move')) {
       const [list_id] = e.keyPath;
       await editTodo({
-        id: clikedTodo.id,
+        id: clickedTodo.id,
         list_id,
       });
       await onFetchTodo({
