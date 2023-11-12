@@ -434,6 +434,25 @@ const Todo = () => {
   const closeDrawer = () => {
     setOpen(false);
   };
+  const completeTodoInDrawer = () => {
+    handleCompleteChange(clickedTodo);
+    const newClickedTodo = { ...clickedTodo };
+    newClickedTodo.marked_as_completed =
+      clickedTodo.marked_as_completed === MARKED_AS_COMPLETED
+        ? MARKED_AS_UNCOMPLETED
+        : MARKED_AS_COMPLETED;
+    setClickedTodo(newClickedTodo);
+  };
+  const makeImportantTodoInDrawer = () => {
+    handleMarkedAsImportant(clickedTodo);
+    const newClickedTodo = { ...clickedTodo };
+    newClickedTodo.marked_as_important =
+      clickedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
+        ? MARKED_AS_IMPORTANT
+        : MARKED_AS_UNIMPORTANT;
+    setClickedTodo(newClickedTodo);
+  };
+  console.log(11, clickedTodo);
 
   return (
     <div className="todo-container">
@@ -460,7 +479,7 @@ const Todo = () => {
           <div className="content-area">
             <Checkbox
               checked={clickedTodo.marked_as_completed}
-              onChange={() => handleCompleteChange(clickedTodo)}
+              onChange={completeTodoInDrawer}
             />
             <div
               className={`content ${
@@ -476,7 +495,7 @@ const Todo = () => {
                     ? '#2564cf'
                     : '',
               }}
-              onClick={() => handleMarkedAsImportant(clickedTodo)}
+              onClick={makeImportantTodoInDrawer}
             />
           </div>
           <div className="add-step">

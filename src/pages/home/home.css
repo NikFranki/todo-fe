@@ -190,6 +190,10 @@
   flex: 1;
 }
 
+.todo-drawer .subject-operation .content-area .content.completed {
+  text-decoration: line-through;
+}
+
 .todo-drawer .added-to-my-day,
 .todo-drawer .pick-a-category,
 .todo-drawer .add-file,
