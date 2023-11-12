@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Checkbox, Input } from 'antd';
+import { Button, Checkbox, Input, Drawer } from 'antd';
 import Icon, {
   StarOutlined,
   DownOutlined,
@@ -38,10 +38,13 @@ import myDaySmallSvg from '@assets/images/my_day_small.svg';
 import todayBlueSvg from '@assets/images/today_blue.svg';
 import dueDateSmallSvg from '@assets/images/due_date_small.svg';
 
+const { TextArea } = Input;
+
 const Todo = () => {
   const [addedContent, setAddedContent] = React.useState('');
   const [clickedTodo, setClickedTodo] = React.useState({});
   const inputRef = React.useRef(null);
+  const [open, setOpen] = React.useState(false);
 
   const TODO_CONTEXT_MENU_HEIGHT = 327;
   const { visible, points, setPoints, onContextMenuOpen } = useContextMenu({
@@ -99,10 +102,7 @@ const Todo = () => {
   };
 
   const handleAdd = async () => {
-    if (!addedContent) {
-      alert('Content can not be empty!');
-      return;
-    }
+    if (!addedContent) return;
 
     let list_id = listItemInfo.id;
     const spcial_list_ids = [
@@ -167,7 +167,10 @@ const Todo = () => {
     setClickedTodo(item);
   };
 
-  const handleTodoItemClick = async () => {};
+  const handleTodoItemClick = (item) => {
+    setClickedTodo(item);
+    showDrawer();
+  };
 
   const handleMarkedAsImportant = async (item) => {
     updateTodo({
@@ -208,10 +211,11 @@ const Todo = () => {
           className={`content ${
             item.marked_as_completed ? 'completed' : 'uncompleted'
           }`}
+          onClick={() => handleTodoItemClick(item)}
         >
           <span className="text">{item.content}</span>
           <div className="tags">
-            {item.added_my_day && (
+            {!!item.added_my_day && (
               <div className="my-day-sign">
                 <Icon component={() => <img src={myDaySmallSvg} />} />
                 <span>My Day</span>
@@ -247,7 +251,6 @@ const Todo = () => {
         key={item.id}
         className="todo-item"
         onContextMenu={(e) => handleContextMenu(e, item)}
-        onClick={() => handleTodoItemClick(item.id)}
       >
         {renderListItemContent(item)}
       </li>
@@ -425,6 +428,13 @@ const Todo = () => {
     }
   };
 
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const closeDrawer = () => {
+    setOpen(false);
+  };
+
   return (
     <div className="todo-container">
       {renderPosition()}
@@ -437,6 +447,76 @@ const Todo = () => {
         points={points}
         onMenuClick={handleMenuClick}
       />
+      <Drawer
+        className="todo-drawer"
+        title=""
+        placement="right"
+        closable={false}
+        onClose={closeDrawer}
+        open={open}
+        key="right"
+      >
+        <div className="subject-operation">
+          <div className="content-area">
+            <Checkbox
+              checked={clickedTodo.marked_as_completed}
+              onChange={() => handleCompleteChange(clickedTodo)}
+            />
+            <div
+              className={`content ${
+                clickedTodo.marked_as_completed ? 'completed' : 'uncompleted'
+              }`}
+            >
+              <span className="text">{clickedTodo.content}</span>
+            </div>
+            <StarOutlined
+              style={{
+                color:
+                  clickedTodo.marked_as_important === MARKED_AS_IMPORTANT
+                    ? '#2564cf'
+                    : '',
+              }}
+              onClick={() => handleMarkedAsImportant(clickedTodo)}
+            />
+          </div>
+          <div className="add-step">
+            <Checkbox
+              checked={clickedTodo.marked_as_completed}
+              onChange={() => handleCompleteChange(clickedTodo)}
+            />
+            <span>Add step</span>
+          </div>
+        </div>
+        <div className="added-to-my-day">
+          <Icon component={() => <img src={myDaySmallSvg} />} />
+          <span>Added to My Day</span>
+        </div>
+        <div className="date-reminder">
+          <div className="remind-me">
+            <Icon component={() => <img src={myDaySmallSvg} />} />
+            <span>Remind me</span>
+          </div>
+          <div className="add-due-date">
+            <Icon component={() => <img src={myDaySmallSvg} />} />
+            <span>Add due date</span>
+          </div>
+          <div className="repeat">
+            <Icon component={() => <img src={myDaySmallSvg} />} />
+            <span>Repeat</span>
+          </div>
+        </div>
+        <div className="pick-a-category">
+          <Icon component={() => <img src={myDaySmallSvg} />} />
+          <span>Pick a category</span>
+        </div>
+        <div className="add-file">
+          <Icon component={() => <img src={myDaySmallSvg} />} />
+          <span>Add file</span>
+        </div>
+        <div className="add-note">
+          <TextArea rows={4} placeholder="Add note" />
+        </div>
+      </Drawer>
     </div>
   );
 };

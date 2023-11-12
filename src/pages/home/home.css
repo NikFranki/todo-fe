@@ -34,6 +34,7 @@
   border: 1px solid #ddd;
   margin-bottom: 15px;
   padding: 8px 0;
+  cursor: pointer;
 }
 
 .addition-wrapper {
@@ -159,4 +160,50 @@
 .ant-menu-submenu > .ant-menu .ant-menu-item {
   display: flex !important;
   align-items: center;
+}
+
+.ant-drawer-content.todo-drawer {
+  background: #faf9f8;
+}
+
+.todo-drawer .subject-operation {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 16px;
+}
+
+.todo-drawer .subject-operation .content-area {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  margin-bottom: 16px;
+}
+
+.todo-drawer .subject-operation .add-step {
+  display: flex;
+  column-gap: 8px;
+  align-items: center;
+}
+
+.todo-drawer .subject-operation .content-area .content {
+  flex: 1;
+}
+
+.todo-drawer .added-to-my-day,
+.todo-drawer .pick-a-category,
+.todo-drawer .add-file,
+.todo-drawer .add-note {
+  margin: 8px 0;
+  padding: 16px;
+  background: #fff;
+}
+
+.todo-drawer .date-reminder .remind-me,
+.todo-drawer .date-reminder .add-due-date,
+.todo-drawer .date-reminder .repeat {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: #fff;
 }
