@@ -2,7 +2,7 @@ import instance from '@utils/request';
 
 export const fetchTodoList = (params) => instance.post('/todo/list', params);
 
-export const fetchTodoListById = (params) =>
+export const fetchTodoItem = (params) =>
   instance.post('/todo/get_list_by_id', params);
 
 export const addTodo = (params) => instance.post('/todo/add', params);

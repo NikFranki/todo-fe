@@ -15,7 +15,7 @@ import dayjs from 'dayjs';
 import _ from 'lodash';
 
 import ContextMenu from '@components/context-menu';
-import { addTodo, editTodo, deleteTodo } from '@api/todo';
+import { fetchTodoItem, addTodo, editTodo, deleteTodo } from '@api/todo';
 import useContextInfo from '@hooks/use-context-info';
 import useContextMenu from '@hooks/use-context-menu';
 import getItem from '@utils/menu-get-item';
@@ -167,8 +167,9 @@ const Todo = () => {
     setClickedTodo(item);
   };
 
-  const handleTodoItemClick = (item) => {
-    setClickedTodo(item);
+  const handleTodoItemClick = async (item) => {
+    const { data } = await fetchTodoItem({ id: item.id });
+    setClickedTodo(data);
     showDrawer();
   };
 
@@ -452,7 +453,6 @@ const Todo = () => {
         : MARKED_AS_UNIMPORTANT;
     setClickedTodo(newClickedTodo);
   };
-  console.log(11, clickedTodo);
 
   return (
     <div className="todo-container">
