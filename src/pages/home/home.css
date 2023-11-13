@@ -182,8 +182,66 @@
 
 .todo-drawer .subject-operation .add-step {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.todo-drawer .subject-operation .add-step .steps {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  width: 100%;
+}
+
+.todo-drawer .subject-operation .add-step .new-step {
+  display: flex;
   column-gap: 8px;
-  align-items: center;
+  padding-top: 8px;
+  width: 100%;
+}
+
+.todo-drawer .subject-operation .add-step .new-step .ant-input {
+  padding: 0;
+  line-height: 32px;
+  border: none;
+  outline: none;
+}
+
+.todo-drawer .subject-operation .add-step .steps .edited-step {
+  display: flex;
+  column-gap: 8px;
+}
+
+.todo-drawer
+  .subject-operation
+  .add-step
+  .steps
+  .edited-step
+  .ant-input-affix-wrapper {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid #edebe9;
+  border-radius: 0;
+  padding: 0;
+}
+
+.todo-drawer
+  .subject-operation
+  .add-step
+  .steps
+  .edited-step
+  .ant-input-affix-wrapper:focus-within {
+  box-shadow: none;
+}
+
+.todo-drawer
+  .subject-operation
+  .add-step
+  .steps
+  .edited-step
+  .ant-input-affix-wrapper
+  .ant-input {
+  line-height: 32px;
 }
 
 .todo-drawer .subject-operation .content-area .content {

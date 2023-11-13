@@ -10,12 +10,21 @@ import Icon, {
   FireOutlined,
   DeleteOutlined,
   CheckSquareOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 
 import ContextMenu from '@components/context-menu';
-import { fetchTodoItem, addTodo, editTodo, deleteTodo } from '@api/todo';
+import {
+  fetchTodoItem,
+  addTodo,
+  editTodo,
+  deleteTodo,
+  addSubtask,
+  editSubtask,
+  deleteSubtask,
+} from '@api/todo';
 import useContextInfo from '@hooks/use-context-info';
 import useContextMenu from '@hooks/use-context-menu';
 import getItem from '@utils/menu-get-item';
@@ -45,6 +54,7 @@ const Todo = () => {
   const [clickedTodo, setClickedTodo] = React.useState({});
   const inputRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
+  const [clickedSteps, setClickedSteps] = React.useState([]);
 
   const TODO_CONTEXT_MENU_HEIGHT = 327;
   const { visible, points, setPoints, onContextMenuOpen } = useContextMenu({
@@ -170,6 +180,7 @@ const Todo = () => {
   const handleTodoItemClick = async (item) => {
     const { data } = await fetchTodoItem({ id: item.id });
     setClickedTodo(data);
+    setClickedSteps(data.subtask);
     showDrawer();
   };
 
@@ -453,6 +464,59 @@ const Todo = () => {
         : MARKED_AS_UNIMPORTANT;
     setClickedTodo(newClickedTodo);
   };
+  const [addedStep, setAddedStep] = React.useState('');
+  const handleAddStepInput = (e) => {
+    setAddedStep(e.target.value);
+  };
+  const handleAddStep = async () => {
+    await addSubtask({
+      todo_id: clickedTodo.id,
+      content: addedStep,
+    });
+    const { data } = await fetchTodoItem({ id: clickedTodo.id });
+    setClickedTodo(data);
+    setClickedSteps(data.subtask);
+    setAddedStep('');
+  };
+  const [clickedSubtask, setClickedSubtask] = React.useState({});
+  const handleEditStepInput = (index, newContent) => {
+    const newClickedSteps = [...clickedSteps];
+    newClickedSteps[index].content = newContent;
+    setClickedSteps(newClickedSteps);
+    setClickedSubtask(clickedSteps[index]);
+  };
+  const handleEditStep = async () => {
+    if (!clickedSubtask.id) return;
+
+    await editSubtask({
+      id: clickedSubtask.id,
+      content: clickedSubtask.content,
+    });
+    const { data } = await fetchTodoItem({ id: clickedTodo.id });
+    setClickedTodo(data);
+    setClickedSteps(data.subtask);
+    setClickedSubtask({});
+  };
+  const handleDeleteStep = async (id) => {
+    await deleteSubtask({
+      id,
+    });
+    const { data } = await fetchTodoItem({ id: clickedTodo.id });
+    setClickedTodo(data);
+    setClickedSteps(data.subtask);
+  };
+  const handleCheckedStep = async (clickedStep) => {
+    await editSubtask({
+      id: clickedStep.id,
+      marked_as_completed: clickedStep.marked_as_completed
+        ? MARKED_AS_UNCOMPLETED
+        : MARKED_AS_COMPLETED,
+    });
+    const { data } = await fetchTodoItem({ id: clickedTodo.id });
+    setClickedTodo(data);
+    setClickedSteps(data.subtask);
+    setClickedSubtask({});
+  };
 
   return (
     <div className="todo-container">
@@ -499,11 +563,43 @@ const Todo = () => {
             />
           </div>
           <div className="add-step">
-            <Checkbox
-              checked={clickedTodo.marked_as_completed}
-              onChange={() => handleCompleteChange(clickedTodo)}
-            />
-            <span>Add step</span>
+            <div className="steps">
+              {clickedSteps.map((item, index) => {
+                return (
+                  <div key={item.id} className="edited-step">
+                    <Checkbox
+                      checked={item.marked_as_completed}
+                      onChange={() => handleCheckedStep(item)}
+                    />
+                    <Input
+                      autoSize
+                      value={item.content}
+                      onChange={(e) =>
+                        handleEditStepInput(index, e.target.value)
+                      }
+                      onBlur={handleEditStep}
+                      onPressEnter={handleEditStep}
+                      suffix={
+                        <CloseOutlined
+                          onClick={() => handleDeleteStep(item.id)}
+                        />
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="new-step">
+              <Checkbox checked={false} />
+              <Input
+                autoSize
+                value={addedStep}
+                placeholder="Add step"
+                onChange={handleAddStepInput}
+                onBlur={() => setAddedStep('')}
+                onPressEnter={handleAddStep}
+              />
+            </div>
           </div>
         </div>
         <div className="added-to-my-day">

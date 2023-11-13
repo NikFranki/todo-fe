@@ -15,3 +15,10 @@ export const exportTodo = () =>
   instance.get('/todo/export', { responseType: 'blob' });
 
 export const deleteTodo = (params) => instance.post('/todo/delete', params);
+
+export const addSubtask = (params) => instance.post('/subtask/add', params);
+
+export const editSubtask = (params) => instance.post('/subtask/update', params);
+
+export const deleteSubtask = (params) =>
+  instance.post('/subtask/delete', params);
