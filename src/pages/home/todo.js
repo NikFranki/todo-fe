@@ -517,6 +517,14 @@ const Todo = () => {
     setClickedSteps(data.subtask);
     setClickedSubtask({});
   };
+  const handleAddedMyDay = async (added_my_day = ADDED_MY_DAY) => {
+    await updateTodo({
+      id: clickedTodo.id,
+      added_my_day,
+    });
+    const { data } = await fetchTodoItem({ id: clickedTodo.id });
+    setClickedTodo(data);
+  };
 
   return (
     <div className="todo-container">
@@ -572,7 +580,7 @@ const Todo = () => {
                       onChange={() => handleCheckedStep(item)}
                     />
                     <Input
-                      autoSize
+                      autosize="true"
                       value={item.content}
                       onChange={(e) =>
                         handleEditStepInput(index, e.target.value)
@@ -592,7 +600,7 @@ const Todo = () => {
             <div className="new-step">
               <Checkbox checked={false} />
               <Input
-                autoSize
+                autosize="true"
                 value={addedStep}
                 placeholder="Add step"
                 onChange={handleAddStepInput}
@@ -602,9 +610,26 @@ const Todo = () => {
             </div>
           </div>
         </div>
-        <div className="added-to-my-day">
+        <div
+          className="added-to-my-day"
+          onClick={() => handleAddedMyDay(ADDED_MY_DAY)}
+        >
           <Icon component={() => <img src={myDaySmallSvg} />} />
-          <span>Added to My Day</span>
+          <span
+            className={`text ${
+              clickedTodo.added_my_day === ADDED_MY_DAY ? 'added' : ''
+            }`}
+          >
+            {clickedTodo.added_my_day === ADDED_MY_DAY
+              ? 'Added to My Day'
+              : 'Add to My Day'}
+          </span>
+          <CloseOutlined
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddedMyDay(UN_ADDED_MY_DAY);
+            }}
+          />
         </div>
         <div className="date-reminder">
           <div className="remind-me">

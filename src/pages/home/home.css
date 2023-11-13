@@ -252,6 +252,20 @@
   text-decoration: line-through;
 }
 
+.todo-drawer .added-to-my-day {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.todo-drawer .added-to-my-day .text {
+  flex: 1;
+}
+
+.todo-drawer .added-to-my-day .text.added {
+  color: #2564cf;
+}
+
 .todo-drawer .added-to-my-day,
 .todo-drawer .pick-a-category,
 .todo-drawer .add-file,
