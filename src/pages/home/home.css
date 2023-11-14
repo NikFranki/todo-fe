@@ -280,6 +280,7 @@
 .todo-drawer .date-reminder .repeat {
   display: flex;
   align-items: center;
+  column-gap: 8px;
   padding: 16px;
   background: #fff;
 }

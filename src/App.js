@@ -7,6 +7,10 @@ import {
   Navigate,
 } from 'react-router-dom';
 
+import { notification } from 'antd';
+
+import io from 'socket.io-client';
+
 import { LoadingOutlined } from '@ant-design/icons';
 import TodoContext from './utils/todo-context';
 import Register from './pages/register';
@@ -27,52 +31,42 @@ const ProtectedRoute = ({ isAllowed, children, redirectPath = '/login' }) => {
   return children ? children : <Outlet />;
 };
 
-// let log = console.log;
-
-// const webNotificationApp = () => {
-//   try {
-//     if ('Notification' in window) {
-//       // let ask = window.Notification.requestPermission();
-//       let ask = Notification.requestPermission();
-//       ask.then(
-//         // Permission
-//         (permission) => {
-//           log(`permission =`, permission);
-//           if (permission === 'granted') {
-//             log(`permission granted`);
-//             let msg = new Notification('App Upgrade Info', {
-//               // eslint-disable-next-line max-len
-//               body: 'a new version app is available, click download: https://app.xgqfrms.xyz/download',
-//               icon: 'https://cdn.xgqfrms.xyz/logo/icon.png',
-//             });
-//             msg.addEventListener(`click`, (e) => {
-//               let btn = e.target.dataset(`btn-type`);
-//               if (btn === 'ok') {
-//                 log(`OK`);
-//               } else {
-//                 log(`Cancel`);
-//               }
-//               alert(`clicked notification`);
-//             });
-//           } else {
-//             log(`notification permission is denied!`);
-//           }
-//         }
-//       );
-//     } else {
-//       console.warn(
-//         `your browser is too old, which not support web notification!`
-//       );
-//     }
-//   } catch (err) {
-//     console.error(`error =`, err);
-//   }
-// };
-
 function App() {
   const values = useGlobalContextDispatch();
   const [authenticatedLoading, setAuthenticatedLoading] = React.useState(true);
   const { authenticated, onAuthenticated, onUserInfoChange } = values;
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (todoItem) => {
+    api.open({
+      message: `Reminder: ${todoItem.content}`,
+      description: '',
+      duration: 0,
+    });
+  };
+
+  React.useEffect(() => {
+    const socketInstance = io('http://localhost:8000');
+
+    // listen for events emitted by the server
+    socketInstance.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    socketInstance.on('todo-message', (data) => {
+      console.log(`Received todo message:`, data);
+      if (Array.isArray(data) && data.length) {
+        openNotification(data[0]);
+      }
+    });
+
+    return () => {
+      if (socketInstance) {
+        socketInstance.disconnect();
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const doValidateToken = async () => {
     setAuthenticatedLoading(true);
@@ -131,6 +125,7 @@ function App() {
           <Route path="register" element={<Register />} />
         </Routes>
       </Router>
+      {contextHolder}
     </TodoContext.Provider>
   );
 }

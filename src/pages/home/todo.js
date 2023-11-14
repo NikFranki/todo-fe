@@ -86,7 +86,13 @@ const Todo = () => {
   }, []);
 
   const updateTodo = async (todoInfo = {}) => {
-    await editTodo(todoInfo);
+    const originClikedTodo = _.omit(clickedTodo, [
+      'reminder',
+      'due_date',
+      'update_time',
+      'create_time',
+    ]);
+    await editTodo({ ...originClikedTodo, ...todoInfo });
     await onFetchTodo({
       list_id: listItemInfo.id,
       content: searchText,
@@ -363,10 +369,8 @@ const Todo = () => {
     getItem('Delete', 'delete', <DeleteOutlined />),
   ];
   const handleMenuClick = async (e) => {
-    var pickedClikedTodo = _.omit(clickedTodo, ['update_time', 'create_time']);
     if (e.keyPath.includes('added_my_day')) {
       updateTodo({
-        ...pickedClikedTodo,
         added_my_day:
           clickedTodo.added_my_day === ADDED_MY_DAY
             ? UN_ADDED_MY_DAY
@@ -376,7 +380,6 @@ const Todo = () => {
 
     if (e.keyPath.includes('marked_as_important')) {
       updateTodo({
-        ...pickedClikedTodo,
         marked_as_important:
           clickedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
             ? MARKED_AS_IMPORTANT
@@ -386,7 +389,6 @@ const Todo = () => {
 
     if (e.keyPath.includes('marked_as_completed')) {
       updateTodo({
-        ...pickedClikedTodo,
         marked_as_completed:
           clickedTodo.marked_as_completed === MARKED_AS_COMPLETED
             ? MARKED_AS_UNCOMPLETED
@@ -396,21 +398,18 @@ const Todo = () => {
 
     if (e.keyPath.includes('due_today')) {
       updateTodo({
-        ...pickedClikedTodo,
         due_date: dayjs().format('YYYY-MM-DD'),
       });
     }
 
     if (e.keyPath.includes('due_tomorrow')) {
       updateTodo({
-        ...pickedClikedTodo,
         due_date: dayjs().add(1, 'day').format('YYYY-MM-DD'),
       });
     }
 
     if (e.keyPath.includes('remove_due_date')) {
       updateTodo({
-        ...pickedClikedTodo,
         due_date: null,
       });
     }
@@ -525,6 +524,14 @@ const Todo = () => {
     const { data } = await fetchTodoItem({ id: clickedTodo.id });
     setClickedTodo(data);
   };
+  const handleRemindMe = async () => {
+    await updateTodo({
+      id: clickedTodo.id,
+      reminder: dayjs().add(1, 'minute').format('YYYY-MM-DD HH:mm:ss'),
+    });
+    const { data } = await fetchTodoItem({ id: clickedTodo.id });
+    setClickedTodo(data);
+  };
 
   return (
     <div className="todo-container">
@@ -632,7 +639,7 @@ const Todo = () => {
           />
         </div>
         <div className="date-reminder">
-          <div className="remind-me">
+          <div className="remind-me" onClick={handleRemindMe}>
             <Icon component={() => <img src={myDaySmallSvg} />} />
             <span>Remind me</span>
           </div>
