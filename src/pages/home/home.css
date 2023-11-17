@@ -284,3 +284,40 @@
   padding: 16px;
   background: #fff;
 }
+
+.todo-drawer .date-reminder .remind-me .notice-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-drawer .date-reminder .remind-me .day-text {
+  font-size: 12px;
+  color: #605e5c;
+}
+
+.todo-drawer .date-reminder .remind-me .time-text.setted {
+  color: #2564cf;
+}
+
+.reminder-dropdown {
+  width: 250px;
+  background-color: #fff;
+  box-shadow:
+    rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px,
+    rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px;
+}
+
+.reminder-dropdown .title {
+  line-height: 32px;
+  text-align: center;
+}
+
+.reminder-dropdown .custom-pick {
+  line-height: 32px;
+  padding: 0 15px 0 20px;
+}
+
+.reminder-dropdown .reminder-quickshort {
+  padding: 0 15px 0 20px;
+  cursor: pointer;
+}

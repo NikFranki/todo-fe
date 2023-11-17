@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Checkbox, Input, Drawer } from 'antd';
+import { Button, Checkbox, Input, Drawer, Dropdown, Divider } from 'antd';
 import Icon, {
   StarOutlined,
   DownOutlined,
@@ -46,6 +46,8 @@ import moveToSvg from '@assets/images/moveout.svg';
 import myDaySmallSvg from '@assets/images/my_day_small.svg';
 import todayBlueSvg from '@assets/images/today_blue.svg';
 import dueDateSmallSvg from '@assets/images/due_date_small.svg';
+import reminderSvg from '@assets/images/reminder.svg';
+import reminderBlueSvg from '@assets/images/reminder_blue.svg';
 
 const { TextArea } = Input;
 
@@ -524,14 +526,56 @@ const Todo = () => {
     const { data } = await fetchTodoItem({ id: clickedTodo.id });
     setClickedTodo(data);
   };
-  const handleRemindMe = async () => {
+  // const handleRemindMe = async () => {
+  //   await updateTodo({
+  //     id: clickedTodo.id,
+  //     reminder: dayjs().add(1, 'minute').format('YYYY-MM-DD HH:mm:ss'),
+  //   });
+  //   const { data } = await fetchTodoItem({ id: clickedTodo.id });
+  //   setClickedTodo(data);
+  // };
+  const [remindmeOpen, setRemindmeOpen] = React.useState(false);
+  const handleOpenChange = (open) => {
+    setRemindmeOpen(open);
+  };
+  const localeDayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; // 0: Sunday 1: Monday 2: Tuesday 3 Wednesday 4: Thursday 5: Friday 6: Saturday
+  const localeMonth = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]; // 0: January 1: Feburay 2: March 3 April 4: May 5: June 6: July 7: August 8: September 9: October 10: November 11: December
+  const handleRminderQuickshort = async (reminder) => {
     await updateTodo({
       id: clickedTodo.id,
-      reminder: dayjs().add(1, 'minute').format('YYYY-MM-DD HH:mm:ss'),
+      reminder,
     });
     const { data } = await fetchTodoItem({ id: clickedTodo.id });
     setClickedTodo(data);
+    handleOpenChange(false);
   };
+  const later4Hour = dayjs().hour() + 4;
+  const reminderHour = dayjs(clickedTodo.reminder).hour();
+  const reminderDay = dayjs(clickedTodo.reminder).day();
+  const reminderDate = dayjs(clickedTodo.reminder).date();
+  const reminderMonth = dayjs(clickedTodo.reminder).month();
+  const todayDate = dayjs().date();
+
+  const dayText =
+    reminderDate === todayDate
+      ? 'Today'
+      : reminderDate === todayDate + 1
+      ? 'Tomorrow'
+      : // eslint-disable-next-line max-len
+        `${localeDayOfWeek[reminderDay]}, ${localeMonth[reminderMonth]} ${reminderDate}`;
 
   return (
     <div className="todo-container">
@@ -639,10 +683,77 @@ const Todo = () => {
           />
         </div>
         <div className="date-reminder">
-          <div className="remind-me" onClick={handleRemindMe}>
-            <Icon component={() => <img src={myDaySmallSvg} />} />
-            <span>Remind me</span>
-          </div>
+          <Dropdown
+            placement="bottom"
+            trigger="click"
+            dropdownRender={() => (
+              <div className="reminder-dropdown">
+                <div className="title">Reminder</div>
+                <Divider style={{ margin: '5px 0' }} />
+                <div
+                  className="reminder-quickshort"
+                  onClick={() =>
+                    handleRminderQuickshort(
+                      `${dayjs().format('YYYY-MM-DD')} ${later4Hour}:00:00`
+                    )
+                  }
+                >
+                  Later Today {later4Hour > 12 ? later4Hour - 12 : later4Hour}
+                  :00 PM
+                </div>
+                <div
+                  className="reminder-quickshort"
+                  onClick={() =>
+                    handleRminderQuickshort(
+                      `${dayjs().add(1, 'day').format('YYYY-MM-DD')} 09:00:00`
+                    )
+                  }
+                >
+                  Tomorrow {localeDayOfWeek[dayjs().day() + 1]}, 9 AM
+                </div>
+                <div
+                  className="reminder-quickshort"
+                  onClick={() =>
+                    handleRminderQuickshort(
+                      `${dayjs().add(1, 'week').format('YYYY-MM-DD')} 09:00:00`
+                    )
+                  }
+                >
+                  Next Week Mon, 9 AM
+                </div>
+                <Divider style={{ margin: '5px 0' }} />
+                <div className="custom-pick">Pick a date & time</div>
+              </div>
+            )}
+            open={remindmeOpen}
+            onOpenChange={handleOpenChange}
+          >
+            <div className="remind-me">
+              <Icon
+                component={() => (
+                  <img
+                    src={clickedTodo.reminder ? reminderBlueSvg : reminderSvg}
+                  />
+                )}
+              />
+              <div className="notice-text">
+                <span
+                  className={`time-text ${
+                    clickedTodo.reminder ? 'setted' : ''
+                  }`}
+                >
+                  {clickedTodo.reminder
+                    ? `Remind me at ${
+                        reminderHour > 12 ? reminderHour - 12 : reminderHour
+                      } ${reminderHour > 12 ? 'pm' : 'am'}`
+                    : 'Remind me'}
+                </span>
+                {clickedTodo.reminder && (
+                  <span className="day-text">{dayText}</span>
+                )}
+              </div>
+            </div>
+          </Dropdown>
           <div className="add-due-date">
             <Icon component={() => <img src={myDaySmallSvg} />} />
             <span>Add due date</span>
