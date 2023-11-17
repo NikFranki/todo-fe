@@ -22,6 +22,7 @@ import {
 } from '@api/todo';
 
 import myDaySmallSvg from '@assets/images/my_day_small.svg';
+import myDayBlueSvg from '@assets/images/my_day_bule.svg';
 import reminderSvg from '@assets/images/reminder.svg';
 import reminderBlueSvg from '@assets/images/reminder_blue.svg';
 
@@ -243,7 +244,13 @@ const TodoDrawer = (props) => {
         className="added-to-my-day"
         onClick={() => handleAddedMyDay(ADDED_MY_DAY)}
       >
-        <Icon component={() => <img src={myDaySmallSvg} />} />
+        <Icon
+          component={() => (
+            <img
+              src={clickedTodo.added_my_day ? myDayBlueSvg : myDaySmallSvg}
+            />
+          )}
+        />
         <span
           className={`text ${
             clickedTodo.added_my_day === ADDED_MY_DAY ? 'added' : ''
@@ -339,6 +346,12 @@ const TodoDrawer = (props) => {
                 <span className="day-text">{dayText}</span>
               )}
             </div>
+            <CloseOutlined
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRminderQuickshort(null);
+              }}
+            />
           </div>
         </Dropdown>
         <div className="add-due-date">

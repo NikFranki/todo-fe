@@ -288,6 +288,7 @@
 .todo-drawer .date-reminder .remind-me .notice-text {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .todo-drawer .date-reminder .remind-me .day-text {
