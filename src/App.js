@@ -37,11 +37,21 @@ function App() {
   const { authenticated, onAuthenticated, onUserInfoChange } = values;
   const [api, contextHolder] = notification.useNotification();
 
-  const openNotification = (todoItem) => {
-    api.open({
-      message: `Reminder: ${todoItem.content}`,
-      description: '',
-      duration: 0,
+  const openNotification = (todoItem, index) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const time = index * 500;
+        setTimeout(() => {
+          api.open({
+            message: `Reminder: ${todoItem.content}`,
+            description: '',
+            duration: 0,
+          });
+          resolve();
+        }, time);
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 
@@ -55,9 +65,10 @@ function App() {
 
     socketInstance.on('todo-message', (data) => {
       console.log(`Received todo message:`, data);
+      let chain = Promise.resolve();
       if (Array.isArray(data) && data.length) {
-        data.forEach((todoItem) => {
-          openNotification(todoItem);
+        data.forEach((todoItem, index) => {
+          chain.then(() => openNotification(todoItem, index));
         });
       }
     });

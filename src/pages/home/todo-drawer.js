@@ -337,9 +337,16 @@ const TodoDrawer = (props) => {
                 {clickedTodo.reminder
                   ? `Remind me at ${
                       reminderHour > 12 ? reminderHour - 12 : reminderHour
-                    }${reminderMinute > 0 ? ':' + reminderMinute : ''} ${
-                      reminderHour > 12 ? 'pm' : 'am'
-                    }`
+                    }${
+                      reminderMinute > 0
+                        ? ':' +
+                          `${
+                            reminderMinute > 10
+                              ? reminderMinute
+                              : `0${reminderMinute}`
+                          }`
+                        : ''
+                    } ${reminderHour > 12 ? 'pm' : 'am'}`
                   : 'Remind me'}
               </span>
               {clickedTodo.reminder && (
