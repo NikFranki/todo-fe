@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Checkbox, Input, Drawer, Dropdown, Divider } from 'antd';
+import { Checkbox, Input, Drawer, Dropdown, Divider, DatePicker } from 'antd';
 import Icon, { StarOutlined, CloseOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
@@ -148,8 +148,13 @@ const TodoDrawer = (props) => {
     handleOpenChange(false);
   };
 
+  const onPickDateOk = (value) => {
+    handleRminderQuickshort(`${value.format('YYYY-MM-DD HH:mm')}:00`);
+  };
+
   const later4Hour = dayjs().hour() + 4;
   const reminderHour = dayjs(clickedTodo.reminder).hour();
+  const reminderMinute = dayjs(clickedTodo.reminder).minute();
   const reminderDay = dayjs(clickedTodo.reminder).day();
   const reminderDate = dayjs(clickedTodo.reminder).date();
   const reminderMonth = dayjs(clickedTodo.reminder).month();
@@ -295,7 +300,16 @@ const TodoDrawer = (props) => {
                 Next Week Mon, 9 AM
               </div>
               <Divider style={{ margin: '5px 0' }} />
-              <div className="custom-pick">Pick a date & time</div>
+              <div className="custom-pick">
+                <DatePicker
+                  placeholder="Pick a date & time"
+                  showTime={{
+                    format: 'HH:mm',
+                  }}
+                  format="YYYY-MM-DD HH:mm"
+                  onOk={onPickDateOk}
+                />
+              </div>
             </div>
           )}
           open={remindmeOpen}
@@ -316,7 +330,9 @@ const TodoDrawer = (props) => {
                 {clickedTodo.reminder
                   ? `Remind me at ${
                       reminderHour > 12 ? reminderHour - 12 : reminderHour
-                    } ${reminderHour > 12 ? 'pm' : 'am'}`
+                    }${reminderMinute > 0 ? ':' + reminderMinute : ''} ${
+                      reminderHour > 12 ? 'pm' : 'am'
+                    }`
                   : 'Remind me'}
               </span>
               {clickedTodo.reminder && (

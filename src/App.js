@@ -56,7 +56,9 @@ function App() {
     socketInstance.on('todo-message', (data) => {
       console.log(`Received todo message:`, data);
       if (Array.isArray(data) && data.length) {
-        openNotification(data[0]);
+        data.forEach((todoItem) => {
+          openNotification(todoItem);
+        });
       }
     });
 
@@ -78,7 +80,6 @@ function App() {
   };
 
   React.useEffect(() => {
-    // webNotificationApp();
     doValidateToken();
     onUserInfoChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps
