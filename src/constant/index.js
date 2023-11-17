@@ -41,3 +41,27 @@ export const LIST_ICON_MAP = {
     <HomeOutlined key="tasks-icon" className="tasks-icon" />
   ),
 };
+
+export const LOCALE_DAY_OF_WEEK = [
+  'Sun',
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat',
+]; // 0: Sunday 1: Monday 2: Tuesday 3 Wednesday 4: Thursday 5: Friday 6: Saturday
+export const LOCALE_MONTH = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+]; // 0: January 1: Feburay 2: March 3 April 4: May 5: June 6: July 7: August 8: September 9: October 10: November 11: December
