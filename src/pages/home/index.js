@@ -65,7 +65,7 @@ function Home() {
             </Content>
           </Layout>
           <Footer className="footer">
-            @Copyright reserved by franki & christ {dayjs().format('YYYY')}
+            @Copyright reserved by franki & christy {dayjs().format('YYYY')}
           </Footer>
         </Layout>
       </Space>

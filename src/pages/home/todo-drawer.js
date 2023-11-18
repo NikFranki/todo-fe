@@ -25,8 +25,15 @@ import myDaySmallSvg from '@assets/images/my_day_small.svg';
 import myDayBlueSvg from '@assets/images/my_day_bule.svg';
 import reminderSvg from '@assets/images/reminder.svg';
 import reminderBlueSvg from '@assets/images/reminder_blue.svg';
+import dueDateSmallSvg from '@assets/images/due_date_small.svg';
+import dueDateSmallBlueSvg from '@assets/images/due_date_samll_blue.svg';
 
 const { TextArea } = Input;
+
+const DROPDOWN_TYPE = {
+  REMINDER: 'reminder',
+  DUE_DATE: 'due_date',
+};
 
 const TodoDrawer = (props) => {
   const {
@@ -41,7 +48,7 @@ const TodoDrawer = (props) => {
     onClickedSteps,
   } = props;
 
-  const [remindmeOpen, setRemindmeOpen] = React.useState(false);
+  const [dropdownOpen, setDropdownOpen] = React.useState({});
   const [addedStep, setAddedStep] = React.useState('');
   const [clickedSubtask, setClickedSubtask] = React.useState({});
 
@@ -135,31 +142,50 @@ const TodoDrawer = (props) => {
     onClickedTodo(data);
   };
 
-  const handleOpenChange = (open) => {
-    setRemindmeOpen(open);
+  const handleOpenChange = (key, value) => {
+    const map = {
+      [DROPDOWN_TYPE.REMINDER]: 'reminder',
+      [DROPDOWN_TYPE.DUE_DATE]: 'due_date',
+    };
+    const newDPO = {
+      [map[key]]: value,
+    };
+    setDropdownOpen(newDPO);
   };
 
-  const handleRminderQuickshort = async (reminder) => {
+  const handleDropdownQuickshortSelect = async (key, value) => {
+    const map = {
+      [DROPDOWN_TYPE.REMINDER]: 'reminder',
+      [DROPDOWN_TYPE.DUE_DATE]: 'due_date',
+    };
     await onUpdateTodo({
       id: clickedTodo.id,
-      reminder,
+      [map[key]]: value,
     });
     const { data } = await fetchTodoItem({ id: clickedTodo.id });
     onClickedTodo(data);
-    handleOpenChange(false);
+    handleOpenChange(DROPDOWN_TYPE.REMINDER, false);
   };
 
-  const onPickDateOk = (value) => {
-    handleRminderQuickshort(`${value.format('YYYY-MM-DD HH:mm')}:00`);
+  const onPickDateOk = (key, value) => {
+    handleDropdownQuickshortSelect(
+      key,
+      `${value.format('YYYY-MM-DD HH:mm')}:00`
+    );
   };
 
   const later4Hour = dayjs().hour() + 4;
   const reminderHour = dayjs(clickedTodo.reminder).hour();
   const reminderMinute = dayjs(clickedTodo.reminder).minute();
   const reminderDay = dayjs(clickedTodo.reminder).day();
+  const dueDateDay = dayjs(clickedTodo.due_date).day();
   const reminderDate = dayjs(clickedTodo.reminder).date();
+  const dueDateDate = dayjs(clickedTodo.due_date).date();
+  const dueDateMonth = dayjs(clickedTodo.reminder).month();
   const reminderMonth = dayjs(clickedTodo.reminder).month();
   const todayDate = dayjs().date();
+  const nextWeekMondayDistance = 7 - dayjs().day() + 1;
+  console.log(11, reminderDate);
 
   const dayText =
     reminderDate === todayDate
@@ -168,6 +194,13 @@ const TodoDrawer = (props) => {
       ? 'Tomorrow'
       : // eslint-disable-next-line max-len
         `${LOCALE_DAY_OF_WEEK[reminderDay]}, ${LOCALE_MONTH[reminderMonth]} ${reminderDate}`;
+  const dueDateDayText =
+    dueDateDate === todayDate
+      ? 'Today'
+      : dueDateDate === todayDate + 1
+      ? 'Tomorrow'
+      : // eslint-disable-next-line max-len
+        `${LOCALE_DAY_OF_WEEK[dueDateDay]}, ${LOCALE_MONTH[dueDateMonth]} ${dueDateDate}`;
 
   return (
     <Drawer
@@ -260,12 +293,14 @@ const TodoDrawer = (props) => {
             ? 'Added to My Day'
             : 'Add to My Day'}
         </span>
-        <CloseOutlined
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddedMyDay(UN_ADDED_MY_DAY);
-          }}
-        />
+        {!!clickedTodo.added_my_day && (
+          <CloseOutlined
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddedMyDay(UN_ADDED_MY_DAY);
+            }}
+          />
+        )}
       </div>
       <div className="date-reminder">
         <Dropdown
@@ -278,7 +313,8 @@ const TodoDrawer = (props) => {
               <div
                 className="reminder-quickshort"
                 onClick={() =>
-                  handleRminderQuickshort(
+                  handleDropdownQuickshortSelect(
+                    DROPDOWN_TYPE.REMINDER,
                     `${dayjs().format('YYYY-MM-DD')} ${later4Hour}:00:00`
                   )
                 }
@@ -289,7 +325,8 @@ const TodoDrawer = (props) => {
               <div
                 className="reminder-quickshort"
                 onClick={() =>
-                  handleRminderQuickshort(
+                  handleDropdownQuickshortSelect(
+                    DROPDOWN_TYPE.REMINDER,
                     `${dayjs().add(1, 'day').format('YYYY-MM-DD')} 09:00:00`
                   )
                 }
@@ -299,8 +336,11 @@ const TodoDrawer = (props) => {
               <div
                 className="reminder-quickshort"
                 onClick={() =>
-                  handleRminderQuickshort(
-                    `${dayjs().add(1, 'week').format('YYYY-MM-DD')} 09:00:00`
+                  handleDropdownQuickshortSelect(
+                    DROPDOWN_TYPE.REMINDER,
+                    `${dayjs()
+                      .add(nextWeekMondayDistance, 'day')
+                      .format('YYYY-MM-DD')} 09:00:00`
                   )
                 }
               >
@@ -314,13 +354,15 @@ const TodoDrawer = (props) => {
                     format: 'HH:mm',
                   }}
                   format="YYYY-MM-DD HH:mm"
-                  onOk={onPickDateOk}
+                  onOk={(value) => onPickDateOk(DROPDOWN_TYPE.REMINDER, value)}
                 />
               </div>
             </div>
           )}
-          open={remindmeOpen}
-          onOpenChange={handleOpenChange}
+          open={dropdownOpen[DROPDOWN_TYPE.REMINDER]}
+          onOpenChange={(open) =>
+            handleOpenChange(DROPDOWN_TYPE.REMINDER, open)
+          }
         >
           <div className="remind-me">
             <Icon
@@ -353,18 +395,108 @@ const TodoDrawer = (props) => {
                 <span className="day-text">{dayText}</span>
               )}
             </div>
-            <CloseOutlined
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRminderQuickshort(null);
-              }}
-            />
+            {clickedTodo.reminder && (
+              <CloseOutlined
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDropdownQuickshortSelect(DROPDOWN_TYPE.REMINDER, null);
+                }}
+              />
+            )}
           </div>
         </Dropdown>
-        <div className="add-due-date">
-          <Icon component={() => <img src={myDaySmallSvg} />} />
-          <span>Add due date</span>
-        </div>
+        <Dropdown
+          placement="bottom"
+          trigger="click"
+          dropdownRender={() => (
+            <div className="due-date-dropdown">
+              <div className="title">Due</div>
+              <Divider style={{ margin: '5px 0' }} />
+              <div
+                className="due-date-quickshort"
+                onClick={() =>
+                  handleDropdownQuickshortSelect(
+                    DROPDOWN_TYPE.DUE_DATE,
+                    `${dayjs().format('YYYY-MM-DD')}`
+                  )
+                }
+              >
+                Today
+              </div>
+              <div
+                className="due-date-quickshort"
+                onClick={() =>
+                  handleDropdownQuickshortSelect(
+                    DROPDOWN_TYPE.DUE_DATE,
+                    `${dayjs().add(1, 'day').format('YYYY-MM-DD')}`
+                  )
+                }
+              >
+                Tomorrow
+              </div>
+              <div
+                className="due-date-quickshort"
+                onClick={() =>
+                  handleDropdownQuickshortSelect(
+                    DROPDOWN_TYPE.DUE_DATE,
+                    `${dayjs()
+                      .add(nextWeekMondayDistance, 'day')
+                      .format('YYYY-MM-DD')}`
+                  )
+                }
+              >
+                Next Week Mon
+              </div>
+              <Divider style={{ margin: '5px 0' }} />
+              <div className="custom-pick">
+                <DatePicker
+                  placeholder="Pick a date"
+                  onChange={(value) =>
+                    handleDropdownQuickshortSelect(
+                      DROPDOWN_TYPE.DUE_DATE,
+                      value.format('YYYY-MM-DD')
+                    )
+                  }
+                />
+              </div>
+            </div>
+          )}
+          open={dropdownOpen[DROPDOWN_TYPE.DUE_DATE]}
+          onOpenChange={(open) =>
+            handleOpenChange(DROPDOWN_TYPE.DUE_DATE, open)
+          }
+        >
+          <div className="add-due-date">
+            <Icon
+              component={() => (
+                <img
+                  src={
+                    clickedTodo.due_date ? dueDateSmallBlueSvg : dueDateSmallSvg
+                  }
+                />
+              )}
+            />
+            <div className="notice-text">
+              <span
+                className={`time-text ${clickedTodo.due_date ? 'setted' : ''}`}
+              >
+                {clickedTodo.due_date ? (
+                  <span className="day-text">{dueDateDayText}</span>
+                ) : (
+                  'Add due date'
+                )}
+              </span>
+            </div>
+            {clickedTodo.due_date && (
+              <CloseOutlined
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDropdownQuickshortSelect(DROPDOWN_TYPE.DUE_DATE, null);
+                }}
+              />
+            )}
+          </div>
+        </Dropdown>
         <div className="repeat">
           <Icon component={() => <img src={myDaySmallSvg} />} />
           <span>Repeat</span>
