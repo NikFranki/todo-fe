@@ -286,7 +286,8 @@
 }
 
 .todo-drawer .date-reminder .remind-me .notice-text,
-.todo-drawer .date-reminder .add-due-date .notice-text {
+.todo-drawer .date-reminder .add-due-date .notice-text,
+.todo-drawer .date-reminder .repeat .notice-text {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -298,7 +299,8 @@
 }
 
 .todo-drawer .date-reminder .remind-me .time-text.setted,
-.todo-drawer .date-reminder .add-due-date .time-text.setted {
+.todo-drawer .date-reminder .add-due-date .time-text.setted,
+.todo-drawer .date-reminder .repeat .time-text.setted {
   color: #2564cf;
 }
 

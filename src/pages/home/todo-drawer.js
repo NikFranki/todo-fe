@@ -13,6 +13,8 @@ import {
   MARKED_AS_UNIMPORTANT,
   LOCALE_DAY_OF_WEEK,
   LOCALE_MONTH,
+  NO_REPEATED,
+  REPEATED,
 } from '@constant/index';
 import {
   fetchTodoItem,
@@ -27,12 +29,15 @@ import reminderSvg from '@assets/images/reminder.svg';
 import reminderBlueSvg from '@assets/images/reminder_blue.svg';
 import dueDateSmallSvg from '@assets/images/due_date_small.svg';
 import dueDateSmallBlueSvg from '@assets/images/due_date_samll_blue.svg';
+import repeatSvg from '@assets/images/repeat.svg';
+import repeatBlueSvg from '@assets/images/repeat_blue.svg';
 
 const { TextArea } = Input;
 
 const DROPDOWN_TYPE = {
   REMINDER: 'reminder',
   DUE_DATE: 'due_date',
+  REPEATED: 'repeated',
 };
 
 const TodoDrawer = (props) => {
@@ -146,6 +151,7 @@ const TodoDrawer = (props) => {
     const map = {
       [DROPDOWN_TYPE.REMINDER]: 'reminder',
       [DROPDOWN_TYPE.DUE_DATE]: 'due_date',
+      [DROPDOWN_TYPE.REPEATED]: 'repeated',
     };
     const newDPO = {
       [map[key]]: value,
@@ -157,6 +163,7 @@ const TodoDrawer = (props) => {
     const map = {
       [DROPDOWN_TYPE.REMINDER]: 'reminder',
       [DROPDOWN_TYPE.DUE_DATE]: 'due_date',
+      [DROPDOWN_TYPE.REPEATED]: 'repeated',
     };
     await onUpdateTodo({
       id: clickedTodo.id,
@@ -180,27 +187,33 @@ const TodoDrawer = (props) => {
   const reminderDay = dayjs(clickedTodo.reminder).day();
   const dueDateDay = dayjs(clickedTodo.due_date).day();
   const reminderDate = dayjs(clickedTodo.reminder).date();
+  const reminderFormat = dayjs(clickedTodo.reminder).format(
+    'YYYY-MM-DD HH:mm:ss'
+  );
   const dueDateDate = dayjs(clickedTodo.due_date).date();
-  const dueDateMonth = dayjs(clickedTodo.reminder).month();
+  const dueDateFormat = dayjs(clickedTodo.due_date).format('YYYY-MM-DD');
   const reminderMonth = dayjs(clickedTodo.reminder).month();
-  const todayDate = dayjs().date();
+  const dueDateMonth = dayjs(clickedTodo.due_date).month();
+  const todayFormat = dayjs().format('YYYY-MM-DD HH:mm:ss');
+  const todayDateFormat = dayjs().format('YYYY-MM-DD');
+  const tomorrowFormat = dayjs().add(1, 'day').format('YYYY-MM-DD HH:mm:ss');
+  const tomorrowDateFormat = dayjs().add(1, 'day').format('YYYY-MM-DD');
   const nextWeekMondayDistance = 7 - dayjs().day() + 1;
-  console.log(11, reminderDate);
 
   const dayText =
-    reminderDate === todayDate
+    reminderFormat === todayFormat
       ? 'Today'
-      : reminderDate === todayDate + 1
+      : reminderFormat === tomorrowFormat
       ? 'Tomorrow'
       : // eslint-disable-next-line max-len
         `${LOCALE_DAY_OF_WEEK[reminderDay]}, ${LOCALE_MONTH[reminderMonth]} ${reminderDate}`;
   const dueDateDayText =
-    dueDateDate === todayDate
+    dueDateFormat === todayDateFormat
       ? 'Today'
-      : dueDateDate === todayDate + 1
+      : dueDateFormat === tomorrowDateFormat
       ? 'Tomorrow'
       : // eslint-disable-next-line max-len
-        `${LOCALE_DAY_OF_WEEK[dueDateDay]}, ${LOCALE_MONTH[dueDateMonth]} ${dueDateDate}`;
+        `Due ${LOCALE_DAY_OF_WEEK[dueDateDay]}, ${LOCALE_MONTH[dueDateMonth]} ${dueDateDate}`;
 
   return (
     <Drawer
@@ -498,8 +511,34 @@ const TodoDrawer = (props) => {
           </div>
         </Dropdown>
         <div className="repeat">
-          <Icon component={() => <img src={myDaySmallSvg} />} />
-          <span>Repeat</span>
+          <Icon
+            component={() => (
+              <img src={clickedTodo.repeated ? repeatBlueSvg : repeatSvg} />
+            )}
+          />
+          <div
+            className="notice-text"
+            onClick={() => {
+              handleDropdownQuickshortSelect(DROPDOWN_TYPE.REPEATED, REPEATED);
+            }}
+          >
+            <span
+              className={`time-text ${clickedTodo.repeated ? 'setted' : ''}`}
+            >
+              Repeat
+            </span>
+          </div>
+          {!!clickedTodo.repeated && (
+            <CloseOutlined
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDropdownQuickshortSelect(
+                  DROPDOWN_TYPE.REPEATED,
+                  NO_REPEATED
+                );
+              }}
+            />
+          )}
         </div>
       </div>
       <div className="pick-a-category">
