@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Checkbox, Input, Drawer, Dropdown, Divider, DatePicker } from 'antd';
 import Icon, { StarOutlined, CloseOutlined } from '@ant-design/icons';
+import { Select, Tag } from 'antd';
 import dayjs from 'dayjs';
 
 import {
@@ -31,6 +32,7 @@ import dueDateSmallSvg from '@assets/images/due_date_small.svg';
 import dueDateSmallBlueSvg from '@assets/images/due_date_samll_blue.svg';
 import repeatSvg from '@assets/images/repeat.svg';
 import repeatBlueSvg from '@assets/images/repeat_blue.svg';
+import pickACategorySvg from '@assets/images/pick_a_category.svg';
 
 const { TextArea } = Input;
 
@@ -38,6 +40,43 @@ const DROPDOWN_TYPE = {
   REMINDER: 'reminder',
   DUE_DATE: 'due_date',
   REPEATED: 'repeated',
+};
+
+const COLOR_TEXT_TYPE = {
+  ORANGE: 'orange',
+  RED: 'red',
+  VIOLET: 'violet',
+  GREEN: 'green',
+  YELLOW: 'yellow',
+  BLUE: 'blue',
+};
+
+const options = [
+  { label: '橙色类别', value: COLOR_TEXT_TYPE.ORANGE },
+  { label: '红色类别', value: COLOR_TEXT_TYPE.RED },
+  { label: '紫色类别', value: COLOR_TEXT_TYPE.VIOLET },
+  { label: '绿色类别', value: COLOR_TEXT_TYPE.GREEN },
+  { label: '黄色类别', value: COLOR_TEXT_TYPE.YELLOW },
+  { label: '蓝色类别', value: COLOR_TEXT_TYPE.BLUE },
+];
+
+const tagRender = (props) => {
+  const { label, value, closable, onClose } = props;
+  const onPreventMouseDown = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+  return (
+    <Tag
+      color={value}
+      onMouseDown={onPreventMouseDown}
+      closable={closable}
+      onClose={onClose}
+      style={{ marginRight: 3 }}
+    >
+      {label}
+    </Tag>
+  );
 };
 
 const TodoDrawer = (props) => {
@@ -179,6 +218,16 @@ const TodoDrawer = (props) => {
       key,
       `${value.format('YYYY-MM-DD HH:mm')}:00`
     );
+  };
+
+  const handlePickACategoryChange = async (value) => {
+    console.log(11, value);
+    await onUpdateTodo({
+      id: clickedTodo.id,
+      category: value.join(','),
+    });
+    const { data } = await fetchTodoItem({ id: clickedTodo.id });
+    onClickedTodo(data);
   };
 
   const later4Hour = dayjs().hour() + 4;
@@ -542,8 +591,16 @@ const TodoDrawer = (props) => {
         </div>
       </div>
       <div className="pick-a-category">
-        <Icon component={() => <img src={myDaySmallSvg} />} />
-        <span>Pick a category</span>
+        <Icon component={() => <img src={pickACategorySvg} />} />
+        <Select
+          mode="multiple"
+          placeholder="Pick a category"
+          tagRender={tagRender}
+          value={clickedTodo.category?.split(',')}
+          style={{ width: '100%' }}
+          options={options}
+          onChange={handlePickACategoryChange}
+        />
       </div>
       <div className="add-file">
         <Icon component={() => <img src={myDaySmallSvg} />} />
