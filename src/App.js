@@ -64,7 +64,6 @@ function App() {
     });
 
     socketInstance.on('todo-message', (data) => {
-      console.log(`Received todo message:`, data);
       let chain = Promise.resolve();
       if (Array.isArray(data) && data.length) {
         data.forEach((todoItem, index) => {

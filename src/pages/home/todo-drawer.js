@@ -628,8 +628,11 @@ const TodoDrawer = (props) => {
             clickedTodo.file
               ? [
                   {
-                    uid: '2',
-                    name: 'a.png',
+                    uid: clickedTodo.id,
+                    name: clickedTodo.file.replace(
+                      'http://localhost:8000/todo-attachment/',
+                      ''
+                    ),
                     status: 'done',
                     url: clickedTodo.file,
                   },
@@ -645,6 +648,14 @@ const TodoDrawer = (props) => {
               const { data } = await fetchTodoItem({ id: clickedTodo.id });
               onClickedTodo(data);
             }
+          }}
+          onRemove={async () => {
+            await onUpdateTodo({
+              id: clickedTodo.id,
+              file: null,
+            });
+            const { data } = await fetchTodoItem({ id: clickedTodo.id });
+            onClickedTodo(data);
           }}
         >
           <div style={{ marginTop: 8 }}>Add file</div>

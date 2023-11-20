@@ -337,3 +337,7 @@
   align-items: center;
   column-gap: 8px;
 }
+
+.todo-drawer .add-file .ant-upload-list-item-container {
+  max-width: 270px;
+}
