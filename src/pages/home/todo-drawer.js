@@ -2,9 +2,8 @@ import React from 'react';
 
 import { Checkbox, Input, Drawer, Dropdown, Divider, DatePicker } from 'antd';
 import Icon, { StarOutlined, CloseOutlined } from '@ant-design/icons';
-import { Select, Tag } from 'antd';
+import { Select, Tag, Upload } from 'antd';
 import dayjs from 'dayjs';
-import _ from 'lodash';
 
 import {
   MARKED_AS_IMPORTANT,
@@ -20,6 +19,7 @@ import {
 } from '@constant/index';
 import {
   fetchTodoItem,
+  editTodo,
   addSubtask,
   editSubtask,
   deleteSubtask,
@@ -34,6 +34,7 @@ import dueDateSmallBlueSvg from '@assets/images/due_date_samll_blue.svg';
 import repeatSvg from '@assets/images/repeat.svg';
 import repeatBlueSvg from '@assets/images/repeat_blue.svg';
 import pickACategorySvg from '@assets/images/pick_a_category.svg';
+import addFileSvg from '@assets/images/add_file.svg';
 
 const { TextArea } = Input;
 
@@ -232,9 +233,15 @@ const TodoDrawer = (props) => {
 
   const handleNoteInputChange = async (e) => {
     const value = e.target.value;
+    const newClickedTodo = { ...clickedTodo };
+    newClickedTodo.note = value;
+    onClickedTodo(newClickedTodo);
+  };
+
+  const handleNoteInputBlur = async () => {
     await onUpdateTodo({
       id: clickedTodo.id,
-      note: value,
+      note: clickedTodo.note,
     });
     const { data } = await fetchTodoItem({ id: clickedTodo.id });
     onClickedTodo(data);
@@ -613,16 +620,45 @@ const TodoDrawer = (props) => {
         />
       </div>
       <div className="add-file">
-        <Icon component={() => <img src={myDaySmallSvg} />} />
-        <span>Add file</span>
+        <Icon component={() => <img src={addFileSvg} />} />
+        <Upload
+          name="avatar"
+          maxCount={1}
+          fileList={
+            clickedTodo.file
+              ? [
+                  {
+                    uid: '2',
+                    name: 'a.png',
+                    status: 'done',
+                    url: clickedTodo.file,
+                  },
+                ]
+              : []
+          }
+          beforeUpload={async (file) => {
+            if (file) {
+              const formData = new FormData();
+              formData.append('id', clickedTodo.id);
+              formData.append('file', file);
+              await editTodo(formData);
+              const { data } = await fetchTodoItem({ id: clickedTodo.id });
+              onClickedTodo(data);
+            }
+          }}
+        >
+          <div style={{ marginTop: 8 }}>Add file</div>
+        </Upload>
       </div>
       <div className="add-note">
         <TextArea
+          value={clickedTodo.note}
           showCount
           rows={4}
           maxLength={1000}
           placeholder="Add note"
-          onChange={_.debounce(handleNoteInputChange, 300)}
+          onChange={handleNoteInputChange}
+          onBlur={handleNoteInputBlur}
         />
       </div>
     </Drawer>

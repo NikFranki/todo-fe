@@ -331,7 +331,8 @@
   cursor: pointer;
 }
 
-.todo-drawer .pick-a-category {
+.todo-drawer .pick-a-category,
+.todo-drawer .add-file {
   display: flex;
   align-items: center;
   column-gap: 8px;
