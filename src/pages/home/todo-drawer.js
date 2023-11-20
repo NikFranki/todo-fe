@@ -4,6 +4,7 @@ import { Checkbox, Input, Drawer, Dropdown, Divider, DatePicker } from 'antd';
 import Icon, { StarOutlined, CloseOutlined } from '@ant-design/icons';
 import { Select, Tag } from 'antd';
 import dayjs from 'dayjs';
+import _ from 'lodash';
 
 import {
   MARKED_AS_IMPORTANT,
@@ -52,12 +53,12 @@ const COLOR_TEXT_TYPE = {
 };
 
 const options = [
-  { label: '橙色类别', value: COLOR_TEXT_TYPE.ORANGE },
-  { label: '红色类别', value: COLOR_TEXT_TYPE.RED },
-  { label: '紫色类别', value: COLOR_TEXT_TYPE.VIOLET },
-  { label: '绿色类别', value: COLOR_TEXT_TYPE.GREEN },
-  { label: '黄色类别', value: COLOR_TEXT_TYPE.YELLOW },
-  { label: '蓝色类别', value: COLOR_TEXT_TYPE.BLUE },
+  { label: 'orange catory', value: COLOR_TEXT_TYPE.ORANGE },
+  { label: 'red category', value: COLOR_TEXT_TYPE.RED },
+  { label: 'violet category', value: COLOR_TEXT_TYPE.VIOLET },
+  { label: 'green category', value: COLOR_TEXT_TYPE.GREEN },
+  { label: 'yellow category', value: COLOR_TEXT_TYPE.YELLOW },
+  { label: 'blue category', value: COLOR_TEXT_TYPE.BLUE },
 ];
 
 const tagRender = (props) => {
@@ -221,10 +222,19 @@ const TodoDrawer = (props) => {
   };
 
   const handlePickACategoryChange = async (value) => {
-    console.log(11, value);
     await onUpdateTodo({
       id: clickedTodo.id,
       category: value.join(','),
+    });
+    const { data } = await fetchTodoItem({ id: clickedTodo.id });
+    onClickedTodo(data);
+  };
+
+  const handleNoteInputChange = async (e) => {
+    const value = e.target.value;
+    await onUpdateTodo({
+      id: clickedTodo.id,
+      note: value,
     });
     const { data } = await fetchTodoItem({ id: clickedTodo.id });
     onClickedTodo(data);
@@ -607,7 +617,13 @@ const TodoDrawer = (props) => {
         <span>Add file</span>
       </div>
       <div className="add-note">
-        <TextArea rows={4} placeholder="Add note" />
+        <TextArea
+          showCount
+          rows={4}
+          maxLength={1000}
+          placeholder="Add note"
+          onChange={_.debounce(handleNoteInputChange, 300)}
+        />
       </div>
     </Drawer>
   );
