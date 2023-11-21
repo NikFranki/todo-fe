@@ -209,6 +209,10 @@ const Todo = () => {
     const isToday = item.due_date === dayjs().format('YYYY-MM-DD');
     const isTomorrow =
       item.due_date === dayjs().add(1, 'day').format('YYYY-MM-DD');
+    const finishedStepsLength = clickedSteps.filter(
+      (item) => item.marked_as_completed === MARKED_AS_COMPLETED
+    ).length;
+
     return (
       <>
         <Checkbox
@@ -223,6 +227,11 @@ const Todo = () => {
         >
           <span className="text">{item.content}</span>
           <div className="tags">
+            <div className="task-sign">
+              <span>
+                {finishedStepsLength}/{clickedSteps.length}
+              </span>
+            </div>
             {!!item.added_my_day && (
               <div className="my-day-sign">
                 <Icon component={() => <img src={myDaySmallSvg} />} />
