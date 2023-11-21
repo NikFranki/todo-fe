@@ -85,7 +85,9 @@
   text-decoration: line-through;
 }
 
-.my-day-sign {
+.my-day-sign,
+.task-sign,
+.due-date-sign {
   display: flex;
   align-items: center;
 }

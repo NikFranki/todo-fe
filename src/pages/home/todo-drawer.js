@@ -24,6 +24,7 @@ import {
   editSubtask,
   deleteSubtask,
 } from '@api/todo';
+import getDueDateDayText from '@utils/get-due-date-day-text';
 
 import myDaySmallSvg from '@assets/images/my_day_small.svg';
 import myDayBlueSvg from '@assets/images/my_day_bule.svg';
@@ -251,19 +252,13 @@ const TodoDrawer = (props) => {
   const reminderHour = dayjs(clickedTodo.reminder).hour();
   const reminderMinute = dayjs(clickedTodo.reminder).minute();
   const reminderDay = dayjs(clickedTodo.reminder).day();
-  const dueDateDay = dayjs(clickedTodo.due_date).day();
   const reminderDate = dayjs(clickedTodo.reminder).date();
   const reminderFormat = dayjs(clickedTodo.reminder).format(
     'YYYY-MM-DD HH:mm:ss'
   );
-  const dueDateDate = dayjs(clickedTodo.due_date).date();
-  const dueDateFormat = dayjs(clickedTodo.due_date).format('YYYY-MM-DD');
   const reminderMonth = dayjs(clickedTodo.reminder).month();
-  const dueDateMonth = dayjs(clickedTodo.due_date).month();
   const todayFormat = dayjs().format('YYYY-MM-DD HH:mm:ss');
-  const todayDateFormat = dayjs().format('YYYY-MM-DD');
   const tomorrowFormat = dayjs().add(1, 'day').format('YYYY-MM-DD HH:mm:ss');
-  const tomorrowDateFormat = dayjs().add(1, 'day').format('YYYY-MM-DD');
   const nextWeekMondayDistance = 7 - dayjs().day() + 1;
 
   const dayText =
@@ -273,13 +268,7 @@ const TodoDrawer = (props) => {
       ? 'Tomorrow'
       : // eslint-disable-next-line max-len
         `${LOCALE_DAY_OF_WEEK[reminderDay]}, ${LOCALE_MONTH[reminderMonth]} ${reminderDate}`;
-  const dueDateDayText =
-    dueDateFormat === todayDateFormat
-      ? 'Today'
-      : dueDateFormat === tomorrowDateFormat
-      ? 'Tomorrow'
-      : // eslint-disable-next-line max-len
-        `Due ${LOCALE_DAY_OF_WEEK[dueDateDay]}, ${LOCALE_MONTH[dueDateMonth]} ${dueDateDate}`;
+  const dueDateDayText = getDueDateDayText(clickedTodo.due_date);
 
   return (
     <Drawer

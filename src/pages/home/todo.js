@@ -35,8 +35,10 @@ import {
 } from '@constant/index';
 import moveToSvg from '@assets/images/moveout.svg';
 import myDaySmallSvg from '@assets/images/my_day_small.svg';
-import todayBlueSvg from '@assets/images/today_blue.svg';
 import dueDateSmallSvg from '@assets/images/due_date_small.svg';
+import dueDateSmallBlueSvg from '@assets/images/due_date_samll_blue.svg';
+import getDueDateDayText from '@utils/get-due-date-day-text';
+
 import TodoDrawer from './todo-drawer';
 
 const Todo = () => {
@@ -207,8 +209,6 @@ const Todo = () => {
   };
   const renderListItemContent = (item) => {
     const isToday = item.due_date === dayjs().format('YYYY-MM-DD');
-    const isTomorrow =
-      item.due_date === dayjs().add(1, 'day').format('YYYY-MM-DD');
     const finishedStepsLength = clickedSteps.filter(
       (item) => item.marked_as_completed === MARKED_AS_COMPLETED
     ).length;
@@ -227,27 +227,27 @@ const Todo = () => {
         >
           <span className="text">{item.content}</span>
           <div className="tags">
-            <div className="task-sign">
-              <span>
-                {finishedStepsLength}/{clickedSteps.length}
-              </span>
-            </div>
             {!!item.added_my_day && (
               <div className="my-day-sign">
                 <Icon component={() => <img src={myDaySmallSvg} />} />
                 <span>My Day</span>
               </div>
             )}
-            {isToday && (
-              <div className="today-sign">
-                <Icon component={() => <img src={todayBlueSvg} />} />
-                <span>Today</span>
-              </div>
-            )}
-            {isTomorrow && (
-              <div className="tomorrow-sign">
-                <Icon component={() => <img src={dueDateSmallSvg} />} />
-                <span>Tomorrow</span>
+            <div className="task-sign">
+              <span>
+                {finishedStepsLength}/{clickedSteps.length}
+              </span>
+            </div>
+            {item.due_date && (
+              <div className="due-date-sign">
+                <Icon
+                  component={() => (
+                    <img
+                      src={isToday ? dueDateSmallBlueSvg : dueDateSmallSvg}
+                    />
+                  )}
+                />
+                <span>{getDueDateDayText(item.due_date)}</span>
               </div>
             )}
           </div>
