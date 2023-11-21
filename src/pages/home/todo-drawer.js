@@ -630,7 +630,8 @@ const TodoDrawer = (props) => {
                   {
                     uid: clickedTodo.id,
                     name: clickedTodo.file.replace(
-                      'http://localhost:8000/todo-attachment/',
+                      // eslint-disable-next-line max-len
+                      `http://localhost:8000/todo-attachment/${clickedTodo.id}/`,
                       ''
                     ),
                     status: 'done',
@@ -653,6 +654,11 @@ const TodoDrawer = (props) => {
             await onUpdateTodo({
               id: clickedTodo.id,
               file: null,
+              removed_file: clickedTodo.file.replace(
+                // eslint-disable-next-line max-len
+                `http://localhost:8000/todo-attachment/${clickedTodo.id}/`,
+                ''
+              ),
             });
             const { data } = await fetchTodoItem({ id: clickedTodo.id });
             onClickedTodo(data);
