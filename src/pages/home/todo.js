@@ -77,6 +77,13 @@ const Todo = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleFetchTodo = async () => {
+    await onFetchTodo({
+      list_id: listItemInfo.id,
+      content: searchText,
+    });
+  };
+
   const updateTodo = async (todoInfo = {}) => {
     const originClikedTodo = _.omit(clickedTodo, [
       'reminder',
@@ -85,10 +92,7 @@ const Todo = () => {
       'create_time',
     ]);
     await editTodo({ ...originClikedTodo, ...todoInfo });
-    await onFetchTodo({
-      list_id: listItemInfo.id,
-      content: searchText,
-    });
+    await handleFetchTodo();
     await onFetchList();
   };
 
@@ -140,10 +144,7 @@ const Todo = () => {
           : null,
       content: addedContent,
     });
-    await onFetchTodo({
-      list_id: listItemInfo.id,
-      content: searchText,
-    });
+    await handleFetchTodo();
     await onFetchList();
     setAddedContent('');
     inputRef.current.focus();
@@ -209,7 +210,7 @@ const Todo = () => {
   };
   const renderListItemContent = (item) => {
     const isToday = item.due_date === dayjs().format('YYYY-MM-DD');
-    const finishedStepsLength = clickedSteps.filter(
+    const finishedStepsLength = item.subtask.filter(
       (item) => item.marked_as_completed === MARKED_AS_COMPLETED
     ).length;
 
@@ -233,11 +234,13 @@ const Todo = () => {
                 <span>My Day</span>
               </div>
             )}
-            <div className="task-sign">
-              <span>
-                {finishedStepsLength}/{clickedSteps.length}
-              </span>
-            </div>
+            {!!item.subtask.length && (
+              <div className="task-sign">
+                <span>
+                  {finishedStepsLength}/{item.subtask.length}
+                </span>
+              </div>
+            )}
             {item.due_date && (
               <div className="due-date-sign">
                 <Icon
@@ -448,6 +451,7 @@ const Todo = () => {
     onUpdateTodo: updateTodo,
     onClickedTodo: setClickedTodo,
     onClickedSteps: setClickedSteps,
+    onFetchTodoInDrawer: handleFetchTodo,
   };
 
   return (

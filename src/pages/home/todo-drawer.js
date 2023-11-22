@@ -93,6 +93,7 @@ const TodoDrawer = (props) => {
     onUpdateTodo,
     onClickedTodo,
     onClickedSteps,
+    onFetchTodoInDrawer,
   } = props;
 
   const [dropdownOpen, setDropdownOpen] = React.useState({});
@@ -135,6 +136,7 @@ const TodoDrawer = (props) => {
     const { data } = await fetchTodoItem({ id: clickedTodo.id });
     onClickedTodo(data);
     onClickedSteps(data.subtask);
+    await onFetchTodoInDrawer();
     setAddedStep('');
   };
 
@@ -177,6 +179,7 @@ const TodoDrawer = (props) => {
     const { data } = await fetchTodoItem({ id: clickedTodo.id });
     onClickedTodo(data);
     onClickedSteps(data.subtask);
+    await onFetchTodoInDrawer();
     setClickedSubtask({});
   };
 
