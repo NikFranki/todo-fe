@@ -37,6 +37,7 @@ import moveToSvg from '@assets/images/moveout.svg';
 import myDaySmallSvg from '@assets/images/my_day_small.svg';
 import dueDateSmallSvg from '@assets/images/due_date_small.svg';
 import dueDateSmallBlueSvg from '@assets/images/due_date_samll_blue.svg';
+import repeatSmallSvg from '@assets/images/repeat_small.svg';
 import getDueDateDayText from '@utils/get-due-date-day-text';
 
 import TodoDrawer from './todo-drawer';
@@ -251,6 +252,9 @@ const Todo = () => {
                   )}
                 />
                 <span>{getDueDateDayText(item.due_date)}</span>
+                {!!item.repeated && (
+                  <Icon component={() => <img src={repeatSmallSvg} />} />
+                )}
               </div>
             )}
           </div>
