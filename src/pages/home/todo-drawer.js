@@ -621,6 +621,7 @@ const TodoDrawer = (props) => {
               await editTodo(formData);
               const { data } = await fetchTodoItem({ id: clickedTodo.id });
               onClickedTodo(data);
+              await onFetchTodoInDrawer();
             }
           }}
           onRemove={async () => {
@@ -635,6 +636,7 @@ const TodoDrawer = (props) => {
             });
             const { data } = await fetchTodoItem({ id: clickedTodo.id });
             onClickedTodo(data);
+            await onFetchTodoInDrawer();
           }}
         >
           <div style={{ marginTop: 8 }}>Add file</div>
