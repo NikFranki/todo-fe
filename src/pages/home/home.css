@@ -88,6 +88,7 @@
 .my-day-sign,
 .task-sign,
 .due-date-sign,
+.reminder-sign,
 .color-sign {
   display: flex;
   align-items: center;

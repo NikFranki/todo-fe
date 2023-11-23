@@ -26,7 +26,7 @@ import {
   editSubtask,
   deleteSubtask,
 } from '@api/todo';
-import getDueDateDayText from '@utils/get-due-date-day-text';
+import getDateDayText from '@/utils/get-date-day-text';
 
 import myDaySmallSvg from '@assets/images/my_day_small.svg';
 import myDayBlueSvg from '@assets/images/my_day_bule.svg';
@@ -267,7 +267,7 @@ const TodoDrawer = (props) => {
       ? 'Tomorrow'
       : // eslint-disable-next-line max-len
         `${LOCALE_DAY_OF_WEEK[reminderDay]}, ${LOCALE_MONTH[reminderMonth]} ${reminderDate}`;
-  const dueDateDayText = getDueDateDayText(clickedTodo.due_date);
+  const dueDateDayText = `Due ${getDateDayText(clickedTodo.due_date)}`;
 
   return (
     <Drawer
