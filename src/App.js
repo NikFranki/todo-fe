@@ -8,10 +8,11 @@ import {
 } from 'react-router-dom';
 
 import { notification } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 import io from 'socket.io-client';
 
-import { LoadingOutlined } from '@ant-design/icons';
+import { BASE_URL } from '@utils/request';
 import TodoContext from './utils/todo-context';
 import Register from './pages/register';
 import Login from './pages/login';
@@ -56,7 +57,7 @@ function App() {
   };
 
   React.useEffect(() => {
-    const socketInstance = io('http://localhost:8000');
+    const socketInstance = io(BASE_URL);
 
     // listen for events emitted by the server
     socketInstance.on('connect', () => {

@@ -26,6 +26,7 @@ import {
   deleteSubtask,
 } from '@api/todo';
 import getDateDayText from '@/utils/get-date-day-text';
+import { BASE_URL } from '@utils/request';
 
 import myDaySmallSvg from '@assets/images/my_day_small.svg';
 import myDayBlueSvg from '@assets/images/my_day_bule.svg';
@@ -219,8 +220,6 @@ const TodoDrawer = (props) => {
   };
 
   const handlePickACategoryChange = async (value) => {
-    console.log(111, value);
-
     await onUpdateTodo({
       id: clickedTodo.id,
       // TODO: why return ['', xx] whether accosiated with select options
@@ -244,6 +243,33 @@ const TodoDrawer = (props) => {
     });
     const { data } = await fetchTodoItem({ id: clickedTodo.id });
     onClickedTodo(data);
+  };
+
+  const handleFileUpload = async (file) => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('id', clickedTodo.id);
+      formData.append('file', file);
+      await editTodo(formData);
+      const { data } = await fetchTodoItem({ id: clickedTodo.id });
+      onClickedTodo(data);
+      await onFetchTodoInDrawer();
+    }
+  };
+
+  const handleFileRemove = async () => {
+    await onUpdateTodo({
+      id: clickedTodo.id,
+      file: null,
+      removed_file: clickedTodo.file.replace(
+        // eslint-disable-next-line max-len
+        `${BASE_URL}todo-attachment/${clickedTodo.id}/`,
+        ''
+      ),
+    });
+    const { data } = await fetchTodoItem({ id: clickedTodo.id });
+    onClickedTodo(data);
+    await onFetchTodoInDrawer();
   };
 
   const later4Hour = dayjs().hour() + 4;
@@ -604,7 +630,7 @@ const TodoDrawer = (props) => {
                     uid: clickedTodo.id,
                     name: clickedTodo.file.replace(
                       // eslint-disable-next-line max-len
-                      `http://localhost:8000/todo-attachment/${clickedTodo.id}/`,
+                      `${BASE_URL}todo-attachment/${clickedTodo.id}/`,
                       ''
                     ),
                     status: 'done',
@@ -613,31 +639,8 @@ const TodoDrawer = (props) => {
                 ]
               : []
           }
-          beforeUpload={async (file) => {
-            if (file) {
-              const formData = new FormData();
-              formData.append('id', clickedTodo.id);
-              formData.append('file', file);
-              await editTodo(formData);
-              const { data } = await fetchTodoItem({ id: clickedTodo.id });
-              onClickedTodo(data);
-              await onFetchTodoInDrawer();
-            }
-          }}
-          onRemove={async () => {
-            await onUpdateTodo({
-              id: clickedTodo.id,
-              file: null,
-              removed_file: clickedTodo.file.replace(
-                // eslint-disable-next-line max-len
-                `http://localhost:8000/todo-attachment/${clickedTodo.id}/`,
-                ''
-              ),
-            });
-            const { data } = await fetchTodoItem({ id: clickedTodo.id });
-            onClickedTodo(data);
-            await onFetchTodoInDrawer();
-          }}
+          beforeUpload={handleFileUpload}
+          onRemove={handleFileRemove}
         >
           <div style={{ marginTop: 8 }}>Add file</div>
         </Upload>
