@@ -68,3 +68,21 @@ export const LOCALE_MONTH = [
 
 export const NO_REPEATED = 0;
 export const REPEATED = 1;
+
+export const TAG_BG_COLOR_MAP = {
+  ORANGE: '#fff1e0',
+  RED: '#fce9ea',
+  VIOLET: '#f0ecf6',
+  GREEN: '#e9f9e8',
+  YELLOW: '#fffde0',
+  BLUE: '#e0f7fd',
+};
+
+export const TAG_TEXT_COLOR_MAP = {
+  [TAG_BG_COLOR_MAP.ORANGE]: '#a35a00',
+  [TAG_BG_COLOR_MAP.RED]: '#d01b2a',
+  [TAG_BG_COLOR_MAP.VIOLET]: '#7d57b2',
+  [TAG_BG_COLOR_MAP.GREEN]: '#257e20',
+  [TAG_BG_COLOR_MAP.YELLOW]: '#7a7400',
+  [TAG_BG_COLOR_MAP.BLUE]: '#007899',
+};

@@ -16,6 +16,8 @@ import {
   LOCALE_MONTH,
   NO_REPEATED,
   REPEATED,
+  TAG_BG_COLOR_MAP,
+  TAG_TEXT_COLOR_MAP,
 } from '@constant/index';
 import {
   fetchTodoItem,
@@ -45,22 +47,13 @@ const DROPDOWN_TYPE = {
   REPEATED: 'repeated',
 };
 
-const COLOR_TEXT_TYPE = {
-  ORANGE: 'orange',
-  RED: 'red',
-  VIOLET: 'violet',
-  GREEN: 'green',
-  YELLOW: 'yellow',
-  BLUE: 'blue',
-};
-
 const options = [
-  { label: 'orange catory', value: COLOR_TEXT_TYPE.ORANGE },
-  { label: 'red category', value: COLOR_TEXT_TYPE.RED },
-  { label: 'violet category', value: COLOR_TEXT_TYPE.VIOLET },
-  { label: 'green category', value: COLOR_TEXT_TYPE.GREEN },
-  { label: 'yellow category', value: COLOR_TEXT_TYPE.YELLOW },
-  { label: 'blue category', value: COLOR_TEXT_TYPE.BLUE },
+  { label: 'orange catory', value: TAG_BG_COLOR_MAP.ORANGE },
+  { label: 'red category', value: TAG_BG_COLOR_MAP.RED },
+  { label: 'violet category', value: TAG_BG_COLOR_MAP.VIOLET },
+  { label: 'green category', value: TAG_BG_COLOR_MAP.GREEN },
+  { label: 'yellow category', value: TAG_BG_COLOR_MAP.YELLOW },
+  { label: 'blue category', value: TAG_BG_COLOR_MAP.BLUE },
 ];
 
 const tagRender = (props) => {
@@ -75,7 +68,7 @@ const tagRender = (props) => {
       onMouseDown={onPreventMouseDown}
       closable={closable}
       onClose={onClose}
-      style={{ marginRight: 3 }}
+      style={{ marginRight: 3, color: TAG_TEXT_COLOR_MAP[value] }}
     >
       {label}
     </Tag>
@@ -227,9 +220,12 @@ const TodoDrawer = (props) => {
   };
 
   const handlePickACategoryChange = async (value) => {
+    console.log(111, value);
+
     await onUpdateTodo({
       id: clickedTodo.id,
-      category: value.join(','),
+      // TODO: why return ['', xx] whether accosiated with select options
+      category: value.filter(Boolean).join(','),
     });
     const { data } = await fetchTodoItem({ id: clickedTodo.id });
     onClickedTodo(data);

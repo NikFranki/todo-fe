@@ -87,9 +87,20 @@
 
 .my-day-sign,
 .task-sign,
-.due-date-sign {
+.due-date-sign,
+.color-sign {
   display: flex;
   align-items: center;
+}
+
+.color-sign .circle {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border-width: 1px;
+  border-style: solid;
+  margin: 2px 4px 0px;
 }
 
 .todo-item .anticon-star {

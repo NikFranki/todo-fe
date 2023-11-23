@@ -32,6 +32,8 @@ import {
   UN_ADDED_MY_DAY,
   ADDED_MY_DAY,
   LIST_ICON_MAP,
+  TAG_BG_COLOR_MAP,
+  TAG_TEXT_COLOR_MAP,
 } from '@constant/index';
 import moveToSvg from '@assets/images/moveout.svg';
 import myDaySmallSvg from '@assets/images/my_day_small.svg';
@@ -41,6 +43,15 @@ import repeatSmallSvg from '@assets/images/repeat_small.svg';
 import getDueDateDayText from '@utils/get-due-date-day-text';
 
 import TodoDrawer from './todo-drawer';
+
+const COLOR_TEXT = {
+  [TAG_BG_COLOR_MAP.ORANGE]: 'orange catory',
+  [TAG_BG_COLOR_MAP.RED]: 'red category',
+  [TAG_BG_COLOR_MAP.VIOLET]: 'violet category',
+  [TAG_BG_COLOR_MAP.GREEN]: 'green category',
+  [TAG_BG_COLOR_MAP.YELLOW]: 'yellow category',
+  [TAG_BG_COLOR_MAP.BLUE]: 'blue category',
+};
 
 const Todo = () => {
   const [addedContent, setAddedContent] = React.useState('');
@@ -257,6 +268,26 @@ const Todo = () => {
                 )}
               </div>
             )}
+            {item.category &&
+              item.category.split(',').map((row) => {
+                return (
+                  <div key={row} className="color-sign">
+                    <span
+                      className="circle"
+                      style={{
+                        borderColor: TAG_TEXT_COLOR_MAP[row],
+                        backgroundColor: TAG_BG_COLOR_MAP[row],
+                      }}
+                    ></span>
+                    <span
+                      className="category"
+                      style={{ color: TAG_TEXT_COLOR_MAP[row] }}
+                    >
+                      {COLOR_TEXT[row]}
+                    </span>
+                  </div>
+                );
+              })}
           </div>
         </div>
         <StarOutlined
