@@ -13,7 +13,6 @@ import {
   MARKED_AS_COMPLETED,
   MARKED_AS_UNIMPORTANT,
   LOCALE_DAY_OF_WEEK,
-  LOCALE_MONTH,
   NO_REPEATED,
   REPEATED,
   TAG_BG_COLOR_MAP,
@@ -250,23 +249,9 @@ const TodoDrawer = (props) => {
   const later4Hour = dayjs().hour() + 4;
   const reminderHour = dayjs(clickedTodo.reminder).hour();
   const reminderMinute = dayjs(clickedTodo.reminder).minute();
-  const reminderDay = dayjs(clickedTodo.reminder).day();
-  const reminderDate = dayjs(clickedTodo.reminder).date();
-  const reminderFormat = dayjs(clickedTodo.reminder).format(
-    'YYYY-MM-DD HH:mm:ss'
-  );
-  const reminderMonth = dayjs(clickedTodo.reminder).month();
-  const todayFormat = dayjs().format('YYYY-MM-DD HH:mm:ss');
-  const tomorrowFormat = dayjs().add(1, 'day').format('YYYY-MM-DD HH:mm:ss');
   const nextWeekMondayDistance = 7 - dayjs().day() + 1;
 
-  const dayText =
-    reminderFormat === todayFormat
-      ? 'Today'
-      : reminderFormat === tomorrowFormat
-      ? 'Tomorrow'
-      : // eslint-disable-next-line max-len
-        `${LOCALE_DAY_OF_WEEK[reminderDay]}, ${LOCALE_MONTH[reminderMonth]} ${reminderDate}`;
+  const dayText = getDateDayText(clickedTodo.reminder);
   const dueDateDayText = `Due ${getDateDayText(clickedTodo.due_date)}`;
 
   return (

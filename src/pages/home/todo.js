@@ -41,6 +41,7 @@ import dueDateSmallSvg from '@assets/images/due_date_small.svg';
 import dueDateSmallBlueSvg from '@assets/images/due_date_samll_blue.svg';
 import repeatSmallSvg from '@assets/images/repeat_small.svg';
 import reminderSmallSvg from '@assets/images/reminder_small.svg';
+import attachmentSvg from '@assets/images/attachment.svg';
 import noteSvg from '@assets/images/note.svg';
 import getDateDayText from '@/utils/get-date-day-text';
 
@@ -279,6 +280,12 @@ const Todo = () => {
             {item.note && (
               <div className="note-sign">
                 <Icon component={() => <img src={noteSvg} />} />
+              </div>
+            )}
+            {item.file && (
+              <div className="attachment-sign">
+                <Icon component={() => <img src={attachmentSvg} />} />
+                <span>File attached</span>
               </div>
             )}
             {item.category &&
