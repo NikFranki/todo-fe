@@ -3,6 +3,9 @@ import React from 'react';
 import { PlusCircleOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { Space, Input, Divider, Button } from 'antd';
 
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import ContextMenu from '@components/context-menu';
 import { addList, updateList, deleteList } from '@api/list';
 import useContextInfo from '@hooks/use-context-info';
@@ -10,12 +13,13 @@ import getItem from '@utils/menu-get-item';
 import useContextMenu from '@hooks/use-context-menu';
 import { LIST_ICON_MAP } from '@constant/index';
 
+import List from './list';
+
 import './sider-bar.css';
 
 const SiderBar = () => {
   const [sbfixedList, setSbfixedlist] = React.useState([]);
   const [sbotherList, setSbotherlist] = React.useState([]);
-  const otherListRef = React.useRef(null);
 
   const [editInfo, setEditInfo] = React.useState({
     editable: false,
@@ -113,45 +117,6 @@ const SiderBar = () => {
       });
     }
   };
-  const renderOtherList = () => {
-    return (
-      <div ref={otherListRef} className="other-list list-wrapper">
-        {sbotherList.map((item) => {
-          return (
-            <div
-              key={item.id}
-              className="list-item"
-              onClick={() => handleListItemClick(item)}
-              onContextMenu={(e) => handleContextMenu(e, item)}
-            >
-              <div className="icon-text">
-                <UnorderedListOutlined style={{ fontSize: 16 }} />
-                {editInfo.editable && item.id === editInfo.clikedId ? (
-                  <Input
-                    className="edit-list-name"
-                    placeholder="Please input list name"
-                    value={editInfo.reListName}
-                    autoFocus
-                    onBlur={(e) => handleReListNameEnter(e, item)}
-                    onChange={(e) => {
-                      setEditInfo({
-                        ...editInfo,
-                        reListName: e.target.value,
-                      });
-                    }}
-                    onPressEnter={(e) => handleReListNameEnter(e, item)}
-                  />
-                ) : (
-                  <span className="text">{item.name}</span>
-                )}
-              </div>
-              <span className="number">{item.number}</span>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
 
   const handleContextMenu = (e, item) => {
     e.preventDefault();
@@ -193,17 +158,25 @@ const SiderBar = () => {
   const handleInput = (e) => {
     setListName(e.target.value);
   };
-  const scrollBottom = (element) => {
-    element.scrollTop = element.scrollHeight;
-  };
   const handlePressEnter = async (e) => {
     await addList({ name: e.target.value });
     await onFetchList();
     setListName('');
     inputRef.current.blur();
     setTimeout(() => {
-      scrollBottom(otherListRef.current.parentElement);
+      const listElement = document.querySelector('.other-list').parentElement;
+      listElement.scrollTop = listElement.scrollHeight;
     }, 50);
+  };
+
+  const otherListProps = {
+    sbotherList,
+    editInfo,
+    handleListItemClick,
+    handleContextMenu,
+    handleReListNameEnter,
+    setEditInfo,
+    setSbotherlist,
   };
 
   return (
@@ -215,7 +188,9 @@ const SiderBar = () => {
     >
       {renderFixedList()}
       <Divider style={{ margin: 0 }} />
-      {renderOtherList()}
+      <DndProvider backend={HTML5Backend}>
+        <List {...otherListProps} />
+      </DndProvider>
       <div className="add-list-wrapper">
         <PlusCircleOutlined className="add-icon" />
         <Input

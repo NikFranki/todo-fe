@@ -86,3 +86,7 @@ export const TAG_TEXT_COLOR_MAP = {
   [TAG_BG_COLOR_MAP.YELLOW]: '#7a7400',
   [TAG_BG_COLOR_MAP.BLUE]: '#007899',
 };
+
+export const ItemTypes = {
+  CARD: 'card',
+};
