@@ -6,4 +6,7 @@ export const addList = (params) => instance.post('/list/add', params);
 
 export const updateList = (params) => instance.post('/list/update', params);
 
+export const updateListByDragAndDrop = (params) =>
+  instance.post('/list/update-by-drag-and-drop', params);
+
 export const deleteList = (params) => instance.post('/list/delete', params);

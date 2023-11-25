@@ -4,6 +4,7 @@ import { useDrop } from 'react-dnd';
 import update from 'immutability-helper';
 
 import { ItemTypes } from '@constant/index';
+import { updateListByDragAndDrop } from '@api/list';
 
 import ListItem from './list-item';
 
@@ -31,16 +32,24 @@ const List = (props) => {
     [sbotherList]
   );
   const moveCard = React.useCallback(
-    (id, atIndex) => {
+    async (id, atIndex) => {
       const { card, index } = findCard(id);
-      setSbotherlist(
-        update(sbotherList, {
-          $splice: [
-            [index, 1],
-            [atIndex, 0, card],
-          ],
-        })
-      );
+      const indexOrders = sbotherList
+        .map((item) => item.index_order)
+        .sort((a, b) => a - b);
+      const newOtherList = update(sbotherList, {
+        $splice: [
+          [index, 1],
+          [atIndex, 0, card],
+        ],
+      });
+      newOtherList.forEach((item, index) => {
+        item.index_order = indexOrders[index];
+      });
+      setSbotherlist(newOtherList);
+      await updateListByDragAndDrop({
+        list: newOtherList,
+      });
     },
     [findCard, sbotherList, setSbotherlist]
   );
