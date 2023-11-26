@@ -1,13 +1,20 @@
 import React from 'react';
 
-import { PlusCircleOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined } from '@ant-design/icons';
 import { Space, Input, Divider, Button } from 'antd';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import _ from 'lodash';
+
 import ContextMenu from '@components/context-menu';
-import { addList, updateList, deleteList } from '@api/list';
+import {
+  addList,
+  updateList,
+  updateListByDragAndDrop,
+  deleteList,
+} from '@api/list';
 import useContextInfo from '@hooks/use-context-info';
 import getItem from '@utils/menu-get-item';
 import useContextMenu from '@hooks/use-context-menu';
@@ -53,15 +60,12 @@ const SiderBar = () => {
       };
     });
     setSbfixedlist(newFixedList);
-    const newOtherList = otherlist.map((item) => {
-      return {
-        ...item,
-        icon: (
-          <UnorderedListOutlined style={{ fontSize: 16, marginRight: 10 }} />
-        ),
-      };
-    });
-    setSbotherlist(newOtherList);
+
+    setSbotherlist(
+      otherlist.map((item) => {
+        return _.omit(item, 'icon');
+      })
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listFactor]);
 
@@ -137,6 +141,18 @@ const SiderBar = () => {
       const currentListItem = list[deletedIndex - 1];
       await deleteList({
         id: editInfo.clikedId,
+      });
+      const deletedIndexOrder = sbotherList.find(
+        (item) => item.id === editInfo.clikedId
+      ).index_order;
+      const newSBotherList = sbotherList
+        .slice(deletedIndex - 5 + 1)
+        .map((item, index) => {
+          item.index_order = index + deletedIndexOrder;
+          return item;
+        });
+      await updateListByDragAndDrop({
+        list: newSBotherList,
       });
       await onFetchTodo({
         content: searchText,

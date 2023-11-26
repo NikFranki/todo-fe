@@ -122,7 +122,6 @@ const Profile = () => {
             maxCount={1}
             accept=".jpg, .png"
             beforeUpload={(file) => {
-              console.log(1234);
               if (file) {
                 console.log('file', file);
                 setAvater(file);
