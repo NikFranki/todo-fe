@@ -15,6 +15,7 @@ const ListItem = ({
   setEditInfo,
   moveCard,
   findCard,
+  moveEnd,
 }) => {
   const id = listItem.id;
   const originalIndex = findCard(id).index;
@@ -44,6 +45,13 @@ const ListItem = ({
           moveCard(draggedId, overIndex);
         }
       },
+      drop(item) {
+        moveEnd(item.originalIndex, originalIndex);
+      },
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+      }),
     }),
     [findCard, moveCard]
   );
@@ -51,7 +59,6 @@ const ListItem = ({
 
   return (
     <div
-      // key={item.id}
       ref={(node) => drag(drop(node))}
       style={{ opacity }}
       className="list-item"

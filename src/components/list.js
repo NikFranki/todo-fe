@@ -3,7 +3,7 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 import update from 'immutability-helper';
 
-import { ItemTypes } from '@constant/index';
+import { ItemTypes, FIXED_LIST_ITEM_TASKS } from '@constant/index';
 import { updateListByDragAndDrop } from '@api/list';
 
 import ListItem from './list-item';
@@ -34,24 +34,33 @@ const List = (props) => {
   const moveCard = React.useCallback(
     async (id, atIndex) => {
       const { card, index } = findCard(id);
-      const indexOrders = sbotherList
-        .map((item) => item.index_order)
-        .sort((a, b) => a - b);
-      const newOtherList = update(sbotherList, {
-        $splice: [
-          [index, 1],
-          [atIndex, 0, card],
-        ],
-      });
-      newOtherList.forEach((item, index) => {
-        item.index_order = indexOrders[index];
-      });
-      setSbotherlist(newOtherList);
-      await updateListByDragAndDrop({
-        list: newOtherList,
-      });
+      setSbotherlist(
+        update(sbotherList, {
+          $splice: [
+            [index, 1],
+            [atIndex, 0, card],
+          ],
+        })
+      );
     },
     [findCard, sbotherList, setSbotherlist]
+  );
+  const moveEnd = React.useCallback(
+    async (prevIndex, currIndex) => {
+      const startIndex = Math.min(prevIndex, currIndex);
+      const endIndex = Math.max(prevIndex, currIndex);
+      const newSBotherList = sbotherList
+        .slice(startIndex, endIndex + 1)
+        .map((item, index) => {
+          // due to fixed list, it has 5 five items, so here shoule be started with plus 6
+          item.index_order = index + startIndex + FIXED_LIST_ITEM_TASKS + 1;
+          return item;
+        });
+      await updateListByDragAndDrop({
+        list: newSBotherList,
+      });
+    },
+    [sbotherList]
   );
 
   return (
@@ -66,6 +75,7 @@ const List = (props) => {
           setEditInfo,
           moveCard,
           findCard,
+          moveEnd,
         };
         return <ListItem key={listItem.id} {...listItemProps} />;
       })}
