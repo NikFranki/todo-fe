@@ -9,6 +9,3 @@ export const register = (params) => instance.post('/user/register', params);
 export const searchUser = (params) => instance.post('/user/searchUser', params);
 
 export const updateUser = (params) => instance.post('/user/update', params);
-
-export const validateToken = (params) =>
-  instance.post('/jwt/tokenValidate', params);

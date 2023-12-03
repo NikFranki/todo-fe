@@ -20,7 +20,6 @@ import Home from './pages/home';
 import Profile from './pages/profile';
 import ErrorPage from './error-page';
 import useGlobalContextDispatch from './hooks/use-global-context-dispatch';
-import { validateToken } from './api/user';
 
 import './App.css';
 
@@ -34,8 +33,7 @@ const ProtectedRoute = ({ isAllowed, children, redirectPath = '/login' }) => {
 
 function App() {
   const values = useGlobalContextDispatch();
-  const [authenticatedLoading, setAuthenticatedLoading] = React.useState(true);
-  const { authenticated, onAuthenticated, onUserInfoChange } = values;
+  const { authenticatedLoading, userInfo, onUserInfoChange } = values;
   const [api, contextHolder] = notification.useNotification();
 
   const openNotification = (todoItem, index) => {
@@ -81,17 +79,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const doValidateToken = async () => {
-    setAuthenticatedLoading(true);
-    const res = await validateToken({
-      token: localStorage.getItem('token'),
-    });
-    onAuthenticated(res.code === 200);
-    setAuthenticatedLoading(false);
-  };
-
   React.useEffect(() => {
-    doValidateToken();
     onUserInfoChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -115,7 +103,7 @@ function App() {
     <TodoContext.Provider value={values}>
       <Router>
         <Routes>
-          <Route element={<ProtectedRoute isAllowed={authenticated} />}>
+          <Route element={<ProtectedRoute isAllowed={userInfo.username} />}>
             <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
           </Route>
           <Route
@@ -124,7 +112,7 @@ function App() {
               <ProtectedRoute
                 redirectPath="/"
                 isAllowed={
-                  authenticated &&
+                  userInfo.username &&
                   permissions.includes('analyze') &&
                   roles.includes('admin')
                 }
@@ -141,8 +129,5 @@ function App() {
     </TodoContext.Provider>
   );
 }
-
-s;
-var s = '1';
 
 export default App;

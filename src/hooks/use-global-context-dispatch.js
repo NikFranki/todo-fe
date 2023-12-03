@@ -16,11 +16,13 @@ const useGlobalContextDispatch = () => {
     id: 1,
     name: 'My Day',
   });
-  const [authenticated, setAuthenticated] = React.useState(false);
+  const [authenticatedLoading, setAuthenticatedLoading] = React.useState(true);
 
   const onUserInfoChange = async () => {
+    setAuthenticatedLoading(true);
     const res = await searchUser({});
     setUserInfo(res.data || {});
+    setAuthenticatedLoading(false);
   };
 
   const onFetchTodo = async (params) => {
@@ -40,10 +42,6 @@ const useGlobalContextDispatch = () => {
     setListItemInfo(listId);
   };
 
-  const onAuthenticated = (authenticated) => {
-    setAuthenticated(authenticated);
-  };
-
   const onSetSearchText = (searchText) => {
     setSearchText(searchText);
   };
@@ -60,17 +58,15 @@ const useGlobalContextDispatch = () => {
     list,
     todo,
     todoId,
-    authenticated,
     searchText,
     fixedList,
     otherlist,
     listItemInfo,
+    authenticatedLoading,
     onUserInfoChange,
     onFetchList,
     onFetchTodo,
     onSetTodoId,
-    setAuthenticated,
-    onAuthenticated,
     onSetSearchText,
     onSetListItemInfo,
   };
