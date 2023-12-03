@@ -20,9 +20,14 @@ const useGlobalContextDispatch = () => {
 
   const onUserInfoChange = async () => {
     setAuthenticatedLoading(true);
-    const res = await searchUser({});
-    setUserInfo(res.data || {});
-    setAuthenticatedLoading(false);
+    try {
+      const res = await searchUser({});
+      setUserInfo(res.data || {});
+    } catch (error) {
+      /* empty */
+    } finally {
+      setAuthenticatedLoading(false);
+    }
   };
 
   const onFetchTodo = async (params) => {
