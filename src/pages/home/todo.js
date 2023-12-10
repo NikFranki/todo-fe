@@ -309,6 +309,7 @@ const Todo = () => {
           </div>
         </div>
         <Icon
+          className="important-blue-icon"
           component={() => (
             <img
               src={
