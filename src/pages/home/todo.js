@@ -2,12 +2,9 @@ import React from 'react';
 
 import { Button, Checkbox, Input } from 'antd';
 import Icon, {
-  StarOutlined,
   DownOutlined,
-  HomeOutlined,
   UnorderedListOutlined,
   ScheduleOutlined,
-  FireOutlined,
   DeleteOutlined,
   CheckSquareOutlined,
 } from '@ant-design/icons';
@@ -43,6 +40,7 @@ import repeatSmallSvg from '@assets/images/repeat_small.svg';
 import reminderSmallSvg from '@assets/images/reminder_small.svg';
 import attachmentSvg from '@assets/images/attachment.svg';
 import noteSvg from '@assets/images/note.svg';
+import imporantSvg from '@assets/images/important.svg';
 import imporantBorderBlueSvg from '@assets/images/important_border_blue.svg';
 import importantBlueSvg from '@assets/images/important_blue.svg';
 import getDateDayText from '@/utils/get-date-day-text';
@@ -382,7 +380,7 @@ const Todo = () => {
   };
 
   const decoratedTasklist = fixedList.slice(-1).map((item) => {
-    item.icon = <HomeOutlined style={{ fontSize: 16 }} />;
+    item.icon = <Icon component={() => <img src={myDaySmallSvg} />} />;
     return item;
   });
   const decoratedOtherlist = otherlist.map((item) => {
@@ -398,14 +396,14 @@ const Todo = () => {
         ? 'Remove from My Day'
         : 'Add to My Day',
       'added_my_day',
-      <FireOutlined />
+      <Icon component={() => <img src={myDaySmallSvg} />} />
     ),
     getItem(
       clickedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
         ? 'Mark as important'
         : 'Remove importance',
       'marked_as_important',
-      <StarOutlined />
+      <Icon component={() => <img src={imporantSvg} />} />
     ),
     getItem(
       clickedTodo.marked_as_completed === MARKED_AS_COMPLETED

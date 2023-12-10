@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Checkbox, Input, Drawer, Dropdown, Divider, DatePicker } from 'antd';
-import Icon, { CloseOutlined } from '@ant-design/icons';
+import Icon from '@ant-design/icons';
 import { Select, Tag, Upload } from 'antd';
 import dayjs from 'dayjs';
 
@@ -40,6 +40,7 @@ import pickACategorySvg from '@assets/images/pick_a_category.svg';
 import addFileSvg from '@assets/images/add_file.svg';
 import imporantBorderBlueSvg from '@assets/images/important_border_blue.svg';
 import importantBlueSvg from '@assets/images/important_blue.svg';
+import closeSvg from '@assets/images/close.svg';
 
 const { TextArea } = Input;
 
@@ -371,8 +372,13 @@ const TodoDrawer = (props) => {
                     onBlur={handleEditStep}
                     onPressEnter={handleEditStep}
                     suffix={
-                      <CloseOutlined
-                        onClick={() => handleDeleteStep(item.id)}
+                      <Icon
+                        component={() => (
+                          <img
+                            src={closeSvg}
+                            onClick={() => handleDeleteStep(item.id)}
+                          />
+                        )}
                       />
                     }
                   />
@@ -414,11 +420,16 @@ const TodoDrawer = (props) => {
             : 'Add to My Day'}
         </span>
         {!!clickedTodo.added_my_day && (
-          <CloseOutlined
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddedMyDay(UN_ADDED_MY_DAY);
-            }}
+          <Icon
+            component={() => (
+              <img
+                src={closeSvg}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddedMyDay(UN_ADDED_MY_DAY);
+                }}
+              />
+            )}
           />
         )}
       </div>
@@ -516,11 +527,19 @@ const TodoDrawer = (props) => {
               )}
             </div>
             {clickedTodo.reminder && (
-              <CloseOutlined
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownQuickshortSelect(DROPDOWN_TYPE.REMINDER, null);
-                }}
+              <Icon
+                component={() => (
+                  <img
+                    src={closeSvg}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDropdownQuickshortSelect(
+                        DROPDOWN_TYPE.REMINDER,
+                        null
+                      );
+                    }}
+                  />
+                )}
               />
             )}
           </div>
@@ -604,11 +623,19 @@ const TodoDrawer = (props) => {
               </span>
             </div>
             {clickedTodo.due_date && (
-              <CloseOutlined
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownQuickshortSelect(DROPDOWN_TYPE.DUE_DATE, null);
-                }}
+              <Icon
+                component={() => (
+                  <img
+                    src={closeSvg}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDropdownQuickshortSelect(
+                        DROPDOWN_TYPE.DUE_DATE,
+                        null
+                      );
+                    }}
+                  />
+                )}
               />
             )}
           </div>
@@ -632,14 +659,19 @@ const TodoDrawer = (props) => {
             </span>
           </div>
           {!!clickedTodo.repeated && (
-            <CloseOutlined
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDropdownQuickshortSelect(
-                  DROPDOWN_TYPE.REPEATED,
-                  NO_REPEATED
-                );
-              }}
+            <Icon
+              component={() => (
+                <img
+                  src={closeSvg}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDropdownQuickshortSelect(
+                      DROPDOWN_TYPE.REPEATED,
+                      NO_REPEATED
+                    );
+                  }}
+                />
+              )}
             />
           )}
         </div>
