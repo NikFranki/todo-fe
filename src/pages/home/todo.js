@@ -6,7 +6,6 @@ import Icon, {
   UnorderedListOutlined,
   ScheduleOutlined,
   DeleteOutlined,
-  CheckSquareOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import _ from 'lodash';
@@ -43,6 +42,7 @@ import noteSvg from '@assets/images/note.svg';
 import imporantSvg from '@assets/images/important.svg';
 import imporantBorderBlueSvg from '@assets/images/important_border_blue.svg';
 import importantBlueSvg from '@assets/images/important_blue.svg';
+import checkedGreySvg from '@assets/images/checked_grey.svg';
 import getDateDayText from '@/utils/get-date-day-text';
 
 import TodoDrawer from './todo-drawer';
@@ -410,7 +410,7 @@ const Todo = () => {
         ? 'Mark as not completed'
         : 'Mark as completed',
       'marked_as_completed',
-      <CheckSquareOutlined />
+      <Icon component={() => <img src={checkedGreySvg} />} />
     ),
     { type: 'divider' },
     getItem('Due today', 'due_today', <ScheduleOutlined />),
