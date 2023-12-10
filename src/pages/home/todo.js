@@ -1,12 +1,7 @@
 import React from 'react';
 
 import { Button, Checkbox, Input } from 'antd';
-import Icon, {
-  DownOutlined,
-  UnorderedListOutlined,
-  ScheduleOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
+import Icon, { DownOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 
@@ -43,6 +38,11 @@ import imporantSvg from '@assets/images/important.svg';
 import imporantBorderBlueSvg from '@assets/images/important_border_blue.svg';
 import importantBlueSvg from '@assets/images/important_blue.svg';
 import checkedGreySvg from '@assets/images/checked_grey.svg';
+import dueTodaySvg from '@assets/images/due_today.svg';
+import dueTomorrowSvg from '@assets/images/due_tomorrow.svg';
+import removeDueDateSvg from '@assets/images/remove_due_date.svg';
+import deleteSvg from '@assets/images/delete.svg';
+import listSvg from '@assets/images/list.svg';
 import getDateDayText from '@/utils/get-date-day-text';
 
 import TodoDrawer from './todo-drawer';
@@ -116,7 +116,7 @@ const Todo = () => {
       <div className="position">
         <h3>
           {LIST_ICON_MAP[listItemInfo.id] || (
-            <UnorderedListOutlined style={{ fontSize: 16 }} />
+            <Icon component={() => <img src={listSvg} />} />
           )}
           <span className="name">{listItemInfo.name}</span>
         </h3>
@@ -384,7 +384,7 @@ const Todo = () => {
     return item;
   });
   const decoratedOtherlist = otherlist.map((item) => {
-    item.icon = <UnorderedListOutlined style={{ fontSize: 16 }} />;
+    item.icon = <Icon component={() => <img src={listSvg} />} />;
     return item;
   });
   const moveToSubItems = [...decoratedTasklist, ...decoratedOtherlist]
@@ -413,10 +413,22 @@ const Todo = () => {
       <Icon component={() => <img src={checkedGreySvg} />} />
     ),
     { type: 'divider' },
-    getItem('Due today', 'due_today', <ScheduleOutlined />),
-    getItem('Due tomorrow', 'due_tomorrow', <ScheduleOutlined />),
+    getItem(
+      'Due today',
+      'due_today',
+      <Icon component={() => <img src={dueTodaySvg} />} />
+    ),
+    getItem(
+      'Due tomorrow',
+      'due_tomorrow',
+      <Icon component={() => <img src={dueTomorrowSvg} />} />
+    ),
     clickedTodo.due_date
-      ? getItem('Remove due date', 'remove_due_date', <ScheduleOutlined />)
+      ? getItem(
+          'Remove due date',
+          'remove_due_date',
+          <Icon component={() => <img src={removeDueDateSvg} />} />
+        )
       : null,
     { type: 'divider' },
     getItem(
@@ -426,7 +438,11 @@ const Todo = () => {
       moveToSubItems
     ),
     { type: 'divider' },
-    getItem('Delete', 'delete', <DeleteOutlined />),
+    getItem(
+      'Delete',
+      'delete',
+      <Icon component={() => <img src={deleteSvg} />} />
+    ),
   ];
   const handleMenuClick = async (e) => {
     if (e.keyPath.includes('added_my_day')) {
