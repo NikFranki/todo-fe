@@ -2,9 +2,10 @@ import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
 import { Input } from 'antd';
-import { UnorderedListOutlined } from '@ant-design/icons';
+import Icon from '@ant-design/icons';
 
 import { ItemTypes } from '@constant/index';
+import listSvg from '@assets/images/list.svg';
 
 const ListItem = ({
   listItem,
@@ -66,7 +67,7 @@ const ListItem = ({
       onContextMenu={(e) => handleContextMenu(e, listItem)}
     >
       <div className="icon-text">
-        <UnorderedListOutlined style={{ fontSize: 16 }} />
+        <Icon component={() => <img src={listSvg} />} />
         {editInfo.editable && listItem.id === editInfo.clikedId ? (
           <Input
             className="edit-list-name"

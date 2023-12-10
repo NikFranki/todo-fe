@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PlusCircleOutlined } from '@ant-design/icons';
+import Icon from '@ant-design/icons';
 import { Space, Input, Divider, Button } from 'antd';
 
 import { DndProvider } from 'react-dnd';
@@ -19,6 +19,8 @@ import useContextInfo from '@hooks/use-context-info';
 import getItem from '@utils/menu-get-item';
 import useContextMenu from '@hooks/use-context-menu';
 import { LIST_ICON_MAP } from '@constant/index';
+
+import plusSvg from '@assets/images/plus.svg';
 
 import List from './list';
 
@@ -208,7 +210,7 @@ const SiderBar = () => {
         <List {...otherListProps} />
       </DndProvider>
       <div className="add-list-wrapper">
-        <PlusCircleOutlined className="add-icon" />
+        <Icon component={() => <img src={plusSvg} />} />
         <Input
           ref={inputRef}
           placeholder="New list"

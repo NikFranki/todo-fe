@@ -38,7 +38,7 @@ import {
 import moveToSvg from '@assets/images/moveout.svg';
 import myDaySmallSvg from '@assets/images/my_day_small.svg';
 import dueDateSmallSvg from '@assets/images/due_date_small.svg';
-import dueDateSmallBlueSvg from '@assets/images/due_date_samll_blue.svg';
+import dueDateBlueSvg from '@assets/images/due_date_blue.svg';
 import repeatSmallSvg from '@assets/images/repeat_small.svg';
 import reminderSmallSvg from '@assets/images/reminder_small.svg';
 import attachmentSvg from '@assets/images/attachment.svg';
@@ -260,9 +260,7 @@ const Todo = () => {
               <div className="due-date-sign">
                 <Icon
                   component={() => (
-                    <img
-                      src={isToday ? dueDateSmallBlueSvg : dueDateSmallSvg}
-                    />
+                    <img src={isToday ? dueDateBlueSvg : dueDateSmallSvg} />
                   )}
                 />
                 <span>{getDateDayText(item.due_date)}</span>

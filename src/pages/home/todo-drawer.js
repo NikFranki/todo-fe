@@ -32,8 +32,8 @@ import myDaySmallSvg from '@assets/images/my_day_small.svg';
 import myDayBlueSvg from '@assets/images/my_day_bule.svg';
 import reminderSvg from '@assets/images/reminder.svg';
 import reminderBlueSvg from '@assets/images/reminder_blue.svg';
-import dueDateSmallSvg from '@assets/images/due_date_small.svg';
-import dueDateSmallBlueSvg from '@assets/images/due_date_samll_blue.svg';
+import dueDateSvg from '@assets/images/due_date.svg';
+import dueDateBlueSvg from '@assets/images/due_date_blue.svg';
 import repeatSvg from '@assets/images/repeat.svg';
 import repeatBlueSvg from '@assets/images/repeat_blue.svg';
 import pickACategorySvg from '@assets/images/pick_a_category.svg';
@@ -584,11 +584,7 @@ const TodoDrawer = (props) => {
           <div className="add-due-date">
             <Icon
               component={() => (
-                <img
-                  src={
-                    clickedTodo.due_date ? dueDateSmallBlueSvg : dueDateSmallSvg
-                  }
-                />
+                <img src={clickedTodo.due_date ? dueDateBlueSvg : dueDateSvg} />
               )}
             />
             <div className="notice-text">
