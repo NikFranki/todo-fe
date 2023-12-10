@@ -92,6 +92,9 @@ const TodoDrawer = (props) => {
   const [dropdownOpen, setDropdownOpen] = React.useState({});
   const [addedStep, setAddedStep] = React.useState('');
   const [clickedSubtask, setClickedSubtask] = React.useState({});
+  const [todoContentFocus, setTodoContentFocus] = React.useState(false);
+
+  console.log(111, todoContentFocus);
 
   const closeDrawer = () => {
     onDrawerOpen(false);
@@ -115,6 +118,27 @@ const TodoDrawer = (props) => {
         ? MARKED_AS_IMPORTANT
         : MARKED_AS_UNIMPORTANT;
     onClickedTodo(newClickedTodo);
+  };
+
+  const handleTodoContentInput = (e) => {
+    const value = e.target.value;
+    const newClickedTodo = { ...clickedTodo };
+    newClickedTodo.content = value;
+    onClickedTodo(newClickedTodo);
+  };
+
+  const handleTodoContentEdit = async () => {
+    await onUpdateTodo({
+      id: clickedTodo.id,
+      content: clickedTodo.content,
+    });
+    const { data } = await fetchTodoItem({ id: clickedTodo.id });
+    onClickedTodo(data);
+  };
+
+  const handleTodoContentBlur = () => {
+    handleTodoContentEdit();
+    setTodoContentFocus(false);
   };
 
   const handleAddStepInput = (e) => {
@@ -301,7 +325,20 @@ const TodoDrawer = (props) => {
               clickedTodo.marked_as_completed ? 'completed' : 'uncompleted'
             }`}
           >
-            <span className="text">{clickedTodo.content}</span>
+            {todoContentFocus ? (
+              <Input
+                autoFocus
+                autosize
+                value={clickedTodo.content}
+                onChange={handleTodoContentInput}
+                onBlur={handleTodoContentBlur}
+                onPressEnter={handleTodoContentBlur}
+              />
+            ) : (
+              <span onClick={() => setTodoContentFocus(true)} className="text">
+                {clickedTodo.content}
+              </span>
+            )}
           </div>
           <StarOutlined
             style={{

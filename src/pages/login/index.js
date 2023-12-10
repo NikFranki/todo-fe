@@ -69,7 +69,7 @@ const Login = () => {
           >
             Log in
           </Button>{' '}
-          Or <Link to="/Login">Login now!</Link>
+          Or <Link to="/register">Register now!</Link>
         </Form.Item>
       </Form>
     </div>
