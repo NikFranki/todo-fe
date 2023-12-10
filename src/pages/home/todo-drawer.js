@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Checkbox, Input, Drawer, Dropdown, Divider, DatePicker } from 'antd';
-import Icon, { StarOutlined, CloseOutlined } from '@ant-design/icons';
+import Icon, { CloseOutlined } from '@ant-design/icons';
 import { Select, Tag, Upload } from 'antd';
 import dayjs from 'dayjs';
 
@@ -38,6 +38,8 @@ import repeatSvg from '@assets/images/repeat.svg';
 import repeatBlueSvg from '@assets/images/repeat_blue.svg';
 import pickACategorySvg from '@assets/images/pick_a_category.svg';
 import addFileSvg from '@assets/images/add_file.svg';
+import imporantBorderBlueSvg from '@assets/images/important_border_blue.svg';
+import importantBlueSvg from '@assets/images/important_blue.svg';
 
 const { TextArea } = Input;
 
@@ -340,13 +342,16 @@ const TodoDrawer = (props) => {
               </span>
             )}
           </div>
-          <StarOutlined
-            style={{
-              color:
-                clickedTodo.marked_as_important === MARKED_AS_IMPORTANT
-                  ? '#2564cf'
-                  : '',
-            }}
+          <Icon
+            component={() => (
+              <img
+                src={
+                  clickedTodo.marked_as_important === MARKED_AS_IMPORTANT
+                    ? importantBlueSvg
+                    : imporantBorderBlueSvg
+                }
+              />
+            )}
             onClick={makeImportantTodoInDrawer}
           />
         </div>

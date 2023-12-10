@@ -43,8 +43,8 @@ import repeatSmallSvg from '@assets/images/repeat_small.svg';
 import reminderSmallSvg from '@assets/images/reminder_small.svg';
 import attachmentSvg from '@assets/images/attachment.svg';
 import noteSvg from '@assets/images/note.svg';
-import importBorderBlueSvg from '@assets/images/import_border_blue.svg';
-import importBlueSvg from '@assets/images/import_blue.svg';
+import imporantBorderBlueSvg from '@assets/images/important_border_blue.svg';
+import importantBlueSvg from '@assets/images/important_blue.svg';
 import getDateDayText from '@/utils/get-date-day-text';
 
 import TodoDrawer from './todo-drawer';
@@ -310,17 +310,18 @@ const Todo = () => {
               })}
           </div>
         </div>
-        {item.marked_as_important === MARKED_AS_IMPORTANT ? (
-          <Icon
-            component={() => <img src={importBlueSvg} />}
-            onClick={() => handleMarkedAsImportant(item)}
-          />
-        ) : (
-          <Icon
-            component={() => <img src={importBorderBlueSvg} />}
-            onClick={() => handleMarkedAsImportant(item)}
-          />
-        )}
+        <Icon
+          component={() => (
+            <img
+              src={
+                item.marked_as_important === MARKED_AS_IMPORTANT
+                  ? importantBlueSvg
+                  : imporantBorderBlueSvg
+              }
+            />
+          )}
+          onClick={() => handleMarkedAsImportant(item)}
+        />
       </>
     );
   };
