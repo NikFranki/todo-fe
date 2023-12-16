@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-export const BASE_URL = 'http://localhost:8000/';
+export const BASE_URL =
+  // eslint-disable-next-line no-undef
+  process.env.NODE_ENV === 'production'
+    ? 'https://todo-be-psi.vercel.app/'
+    : 'http://localhost:8000/';
 
 const instance = axios.create({
   baseURL: BASE_URL,

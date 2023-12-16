@@ -97,8 +97,6 @@ const TodoDrawer = (props) => {
   const [clickedSubtask, setClickedSubtask] = React.useState({});
   const [todoContentFocus, setTodoContentFocus] = React.useState(false);
 
-  console.log(111, todoContentFocus);
-
   const closeDrawer = () => {
     onDrawerOpen(false);
   };

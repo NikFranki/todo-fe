@@ -17,6 +17,8 @@ const Menu = () => {
   const { username, avatar } = userInfo;
   const userLogined = userInfo.username;
 
+  console.log(123, userInfo);
+
   const onExport = async () => {
     const res = await exportTodo();
 
