@@ -6,7 +6,7 @@ import { Button, Form, Input, Upload, message } from 'antd';
 
 import { register } from '@api/user';
 
-import './index.css';
+import './index.scss';
 
 const formItemLayout = {
   labelCol: {

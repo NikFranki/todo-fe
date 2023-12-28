@@ -21,7 +21,7 @@ import Profile from './pages/profile';
 import ErrorPage from './error-page';
 import useGlobalContextDispatch from './hooks/use-global-context-dispatch';
 
-import './App.css';
+import './App.scss';
 
 const ProtectedRoute = ({ isAllowed, children, redirectPath = '/login' }) => {
   if (!isAllowed) {

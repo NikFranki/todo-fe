@@ -8,7 +8,7 @@ import { importTodo, exportTodo } from '@api/todo';
 import downloadFile from '@utils/download-file';
 import TodoContext from '@utils/todo-context';
 
-import './menu.css';
+import './menu.scss';
 
 const Menu = () => {
   const navigate = useNavigate();

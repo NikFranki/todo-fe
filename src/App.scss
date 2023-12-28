@@ -1,0 +1,43 @@
+.user-authentication-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+// TODO: only todo real content can scroll, the addition area keeps fixed!
+.ant-space .ant-layout-content {
+  height: calc(100vh - 129px);
+  overflow: auto;
+}
+
+.position {
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  line-height: 30px;
+
+  h3 {
+    display: inline-flex;
+    margin: 0;
+    color: #000;
+
+    .name {
+      padding-left: 10px;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.notification-msg {
+  margin-right: 20px;
+}
+
+// TODO: maybe find the appreciate way to fix the max height
+.ant-menu {
+  max-height: 500px !important;
+}

@@ -1,0 +1,87 @@
+.sider-bar-wrapper {
+  .ant-tree-node-content-wrapper {
+    white-space: nowrap;
+  }
+
+  .ant-space-item {
+    &:nth-child(1) {
+      margin-top: 8px;
+    }
+
+    &:nth-child(7) {
+      position: relative;
+      height: calc(100vh - 384px);
+      padding: 0 20px;
+      overflow: auto;
+      padding-bottom: 10px;
+    }
+  }
+}
+
+.shortcut-menu .ant-btn {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  color: #000;
+  padding: 0 20px;
+  border: none;
+}
+
+.add-list-wrapper {
+  display: flex;
+  padding-left: 15px;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  &:hover {
+    background: #dab590;
+  }
+
+  .ant-input {
+    border: none;
+    outline: none;
+    background: inherit;
+    border-radius: 0;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.other-list {
+  .list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 32px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+    &:hover {
+      color: #c89541;
+    }
+
+    .icon-text {
+      display: flex;
+      align-items: center;
+      flex: 1;
+
+      .text {
+        width: 230px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0 10px;
+      }
+    }
+
+    .edit-list-name {
+      padding: 0 10px;
+      border-radius: 0;
+      outline: none;
+      box-shadow: none;
+      border: none;
+      background: inherit;
+    }
+  }
+}

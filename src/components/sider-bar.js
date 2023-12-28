@@ -24,7 +24,7 @@ import plusSvg from '@assets/images/plus.svg';
 
 import List from './list';
 
-import './sider-bar.css';
+import './sider-bar.scss';
 
 const SiderBar = () => {
   const [sbfixedList, setSbfixedlist] = React.useState([]);

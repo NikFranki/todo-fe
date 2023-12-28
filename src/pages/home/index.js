@@ -11,7 +11,7 @@ import SiderBar from '@components/sider-bar';
 import useContextInfo from '@hooks/use-context-info';
 import { FIXED_LIST_ITEM_MY_DAY } from '@constant/index';
 
-import './home.css';
+import './home.scss';
 
 const { Header, Footer, Sider, Content } = Layout;
 

@@ -7,7 +7,7 @@ import { Button, Checkbox, Form, Input, message } from 'antd';
 import TodoContext from '@utils/todo-context';
 import { login } from '@api/user';
 
-import './index.css';
+import './index.scss';
 
 const Login = () => {
   const navigate = useNavigate();
