@@ -210,7 +210,10 @@ const SiderBar = () => {
         <List {...otherListProps} />
       </DndProvider>
       <div className="add-list-wrapper">
-        <Icon component={() => <img src={plusSvg} />} />
+        <Icon
+          style={{ color: '#000' }}
+          component={() => <img src={plusSvg} />}
+        />
         <Input
           ref={inputRef}
           placeholder="New list"

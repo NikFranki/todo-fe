@@ -46,11 +46,17 @@
   width: 100%;
   padding-left: 20px;
   border-bottom: 1px solid #ddd;
+  background: #fff;
 }
 
 .addition-wrapper .add-btn {
   padding: 6px;
   text-align: right;
+  background: #faf9f8;
+}
+
+.addition-wrapper .add-btn button {
+  padding: 4px 10px;
 }
 
 .addition-wrapper .anticon-plus {
@@ -98,6 +104,7 @@
 .color-sign {
   display: flex;
   align-items: center;
+  column-gap: 2px;
 }
 
 .color-sign .circle {
@@ -120,7 +127,7 @@
   color: #fff;
   height: 64px;
   line-height: 64px;
-  background: #7dbcea;
+  background: #8db0c4;
 }
 
 .todo-layout .header .logo {
@@ -140,8 +147,9 @@
   width: 300px !important;
   height: calc(100vh - 129px);
   text-align: left;
-  color: #fff;
-  background: #3ba0e9;
+  color: #000;
+  background: #f5f5d5;
+  border-right: 1px solid #fff;
 }
 
 .todo-layout .content-layout .content-wrapper {
@@ -151,7 +159,7 @@
 .todo-layout .footer {
   text-align: center;
   color: #fff;
-  background: #7dbcea;
+  background: #8db0c4;
 }
 
 .todo-completed-wrapper .dropdown-btn {

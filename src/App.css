@@ -23,8 +23,9 @@
 }
 
 .position h3 {
+  display: inline-flex;
   margin: 0;
-  color: #1b82f1;
+  color: #000;
 }
 
 .position h3 .name {
@@ -99,4 +100,8 @@
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.notification-msg {
+  margin-right: 20px;
 }

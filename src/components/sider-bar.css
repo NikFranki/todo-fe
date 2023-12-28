@@ -12,9 +12,13 @@
   align-items: center;
   width: 100%;
   text-align: left;
-  color: #fff;
+  color: #000;
   padding: 0 20px;
   border: none;
+}
+
+.shortcut-menu .ant-btn:hover {
+  color: #c89541 !important;
 }
 
 .shortcut-menu .ant-btn .ant-btn-icon {
@@ -65,6 +69,11 @@
 .add-list-wrapper {
   display: flex;
   padding-left: 15px;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.add-list-wrapper:hover {
+  background: #dab590;
 }
 
 .add-list-wrapper .add-icon {
@@ -88,6 +97,11 @@
   justify-content: space-between;
   line-height: 32px;
   cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.other-list .list-item:hover {
+  color: #c89541;
 }
 
 .other-list .list-item .icon-text {

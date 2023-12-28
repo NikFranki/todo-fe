@@ -42,7 +42,11 @@ function App() {
         const time = index * 500;
         setTimeout(() => {
           api.open({
-            message: `Reminder: ${todoItem.content}`,
+            message: (
+              <div className="notification-msg">
+                {`Reminder: ${todoItem.content}`}
+              </div>
+            ),
             description: '',
             duration: 0,
           });
