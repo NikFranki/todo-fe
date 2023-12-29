@@ -16,6 +16,7 @@ module.exports = {
       '@constant': path.resolve(__dirname, 'src/constant'),
       '@hooks': path.resolve(__dirname, 'src/hooks'),
       '@utils': path.resolve(__dirname, 'src/utils'),
+      '@styles': path.resolve(__dirname, 'src/styles'),
     },
   },
 };

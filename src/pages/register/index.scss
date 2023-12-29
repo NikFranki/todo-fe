@@ -1,5 +1,5 @@
-@use '../../styles/color.scss';
-@use '../../styles/common.scss';
+@use '@styles/color.scss';
+@use '@styles/common.scss';
 
 .register-wrapper {
   @include common.page;
