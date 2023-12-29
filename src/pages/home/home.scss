@@ -6,6 +6,12 @@ $bg-grey-color: #faf9f8;
 $font-grey-color: #605e5c;
 $font-blue-color: #2564cf;
 
+@mixin round($size) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+}
+
 .todo-layout {
   .header {
     display: flex;
@@ -137,9 +143,7 @@ $font-blue-color: #2564cf;
             .color-sign {
               .circle {
                 display: inline-block;
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
+                @include round(8px);
                 border-width: 1px;
                 border-style: solid;
                 margin: 2px 4px 0px;

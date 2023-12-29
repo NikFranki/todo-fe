@@ -15,7 +15,7 @@
 }
 
 // Content Blocks
-@mixin hover {
+@mixin hover() {
   &:hover {
     @content;
   }
