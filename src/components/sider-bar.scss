@@ -39,7 +39,7 @@
         cursor: pointer;
         transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 
-        &:hover {
+        @include common.hover {
           color: #c89541;
         }
 
@@ -71,7 +71,7 @@
       padding-left: 15px;
       transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 
-      &:hover {
+      @include common.hover {
         background: #dab590;
       }
 
