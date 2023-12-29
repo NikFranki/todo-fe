@@ -20,14 +20,18 @@
     }
 
     .shortcut-menu {
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      text-align: left;
+      color: color.$color-main-black;
+      padding: 0 20px;
+      border: none;
+
       .ant-btn {
-        display: inline-flex;
-        align-items: center;
-        width: 100%;
-        text-align: left;
+        padding: 0;
         color: color.$color-main-black;
-        padding: 0 20px;
-        border: none;
       }
     }
 

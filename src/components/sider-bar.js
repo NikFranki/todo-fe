@@ -91,8 +91,8 @@ const SiderBar = () => {
             icon={item.icon}
           >
             {item.name}
-            <span className="number">{item.number}</span>
           </Button>
+          <span className="number">{item.number}</span>
         </div>
       );
     });
