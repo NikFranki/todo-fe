@@ -1,4 +1,5 @@
 @use '../../styles/color.scss';
+@use '../../styles/common.scss';
 
 $bg-blue-color: #8db0c4;
 $bg-grey-color: #faf9f8;
@@ -98,8 +99,7 @@ $font-blue-color: #2564cf;
       list-style: none;
 
       .todo-item {
-        display: flex;
-        align-items: center;
+        @include common.vertical-center;
         width: 100%;
         color: color.$color-main-black;
         border: 1px solid color.$border-main-color;
@@ -241,8 +241,7 @@ $font-blue-color: #2564cf;
       padding: 16px;
 
       .content-area {
-        display: flex;
-        align-items: center;
+        @include common.vertical-center;
         column-gap: 8px;
         margin-bottom: 16px;
 
@@ -289,8 +288,7 @@ $font-blue-color: #2564cf;
     }
 
     .added-to-my-day {
-      display: flex;
-      align-items: center;
+      @include common.vertical-center;
       column-gap: 8px;
 
       .text {
@@ -315,8 +313,7 @@ $font-blue-color: #2564cf;
       .remind-me,
       .add-due-date,
       .repeat {
-        display: flex;
-        align-items: center;
+        @include common.vertical-center;
         column-gap: 8px;
         padding: 16px;
         background: color.$color-main-white;

@@ -1,4 +1,5 @@
 @use '../styles/color.scss';
+@use '../styles/common.scss';
 
 .sider-bar-wrapper {
   .ant-tree-node-content-wrapper {
@@ -32,8 +33,7 @@
 
     .other-list {
       .list-item {
-        display: flex;
-        align-items: center;
+        @include common.vertical-center;
         justify-content: space-between;
         line-height: 32px;
         cursor: pointer;
@@ -44,8 +44,7 @@
         }
 
         .icon-text {
-          display: flex;
-          align-items: center;
+          @include common.vertical-center;
           flex: 1;
 
           .text {

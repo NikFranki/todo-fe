@@ -1,10 +1,10 @@
 @use 'styles/color.scss';
+@use 'styles/common.scss';
 
 .user-authentication-loading {
-  display: flex;
+  @include common.center;
+
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
 }
 
@@ -15,8 +15,7 @@
 }
 
 .position {
-  display: flex;
-  align-items: center;
+  @include common.vertical-center;
   padding-left: 15px;
   line-height: 30px;
 
