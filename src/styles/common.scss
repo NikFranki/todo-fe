@@ -1,3 +1,5 @@
+@use 'color.scss';
+
 @mixin horizontal-center() {
   display: flex;
   justify-content: center;
@@ -19,4 +21,21 @@
   &:hover {
     @content;
   }
+}
+
+@mixin page() {
+  width: 100vw;
+  height: 100vh;
+  background: color.$bg-orange-color;
+}
+
+@mixin modal($width: 300px) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: $width;
+  padding: 24px 24px 0;
+  border: 1px solid color.$border-main-color;
+  border-radius: 4px;
 }
