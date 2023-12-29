@@ -1,23 +1,28 @@
+@use '../../styles/color.scss';
+
 .todo-layout {
-  header {
-    padding: 0;
-
-    .logo {
-      width: 100px;
-      padding-left: 15px;
-    }
-  }
-
   .header {
     display: flex;
     color: #fff;
     height: 64px;
     line-height: 64px;
+    padding: 0;
     background: #8db0c4;
 
     .logo {
+      width: 100px;
+      padding-left: 15px;
       font-size: 16;
       font-weight: 600;
+    }
+
+    .global-search-wrapper {
+      flex: 1 1 0;
+      text-align: center;
+
+      .ant-input-affix-wrapper {
+        width: 500px;
+      }
     }
   }
 
@@ -32,7 +37,7 @@
       width: 300px !important;
       height: calc(100vh - 129px);
       text-align: left;
-      color: #000;
+      color: color.$color-main-black;
       background: #f5f5d5;
       border-right: 1px solid #fff;
     }
@@ -40,156 +45,149 @@
     .content-wrapper {
       flex: 1;
     }
+
+    .addition-wrapper {
+      padding: 15px;
+
+      .addition-content {
+        display: flex;
+        width: 100%;
+        padding-left: 20px;
+        border-bottom: 1px solid #ddd;
+        background: #fff;
+      }
+
+      .add-btn {
+        padding: 6px;
+        text-align: right;
+        background: #faf9f8;
+
+        button {
+          padding: 4px 10px;
+        }
+      }
+
+      .anticon-plus {
+        margin-right: 8px;
+      }
+
+      .ant-input {
+        flex: 1 1 0;
+        border: none;
+        outline: none;
+        background: inherit;
+
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+
+    .todo-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 0;
+      padding: 0;
+      padding: 0 15px;
+      list-style: none;
+
+      .todo-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        color: color.$color-main-black;
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
+        padding: 8px 0;
+        cursor: pointer;
+
+        .ant-checkbox-wrapper {
+          margin: 0 20px;
+        }
+
+        .content {
+          flex: 1;
+
+          .tags {
+            display: flex;
+
+            & > div:not(:last-child):after {
+              content: '\2022';
+              margin: 0 6px;
+              color: #605e5c;
+            }
+
+            .my-day-sign,
+            .task-sign,
+            .due-date-sign,
+            .reminder-sign,
+            .attachment-sign,
+            .color-sign {
+              display: flex;
+              align-items: center;
+              column-gap: 2px;
+            }
+
+            .color-sign {
+              .circle {
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                border-width: 1px;
+                border-style: solid;
+                margin: 2px 4px 0px;
+              }
+            }
+          }
+
+          &.completed {
+            .text {
+              text-decoration: line-through;
+            }
+          }
+        }
+
+        .anticon {
+          &.important-blue-icon {
+            justify-content: center;
+            margin-right: 20px;
+          }
+        }
+      }
+    }
+
+    .todo-completed-wrapper {
+      .dropdown-btn {
+        display: inline-flex;
+        margin: 15px;
+      }
+
+      .dropdown-btn .anticon-down.down svg {
+        transform: rotate(0);
+      }
+
+      .dropdown-btn .anticon-down.up svg {
+        transform: rotate(180deg);
+      }
+
+      .dropdown-btn .completed-label {
+        margin: 0;
+        margin-left: 12px;
+      }
+
+      .dropdown-btn .completed-list-num {
+        margin: 0;
+        margin-left: 12px;
+      }
+    }
   }
 
   .footer {
     text-align: center;
     color: #fff;
     background: #8db0c4;
-  }
-}
-
-.global-search-wrapper {
-  flex: 1 1 0;
-  text-align: center;
-
-  .ant-input-affix-wrapper {
-    width: 500px;
-  }
-}
-
-.todo-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 0;
-  padding: 0;
-  padding: 0 15px;
-  list-style: none;
-}
-
-.todo-item {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  color: #000;
-  border: 1px solid #ddd;
-  margin-bottom: 15px;
-  padding: 8px 0;
-  cursor: pointer;
-
-  .ant-checkbox-wrapper {
-    margin: 0 20px;
-  }
-
-  .content {
-    flex: 1;
-
-    .tags {
-      display: flex;
-
-      & > div:not(:last-child):after {
-        content: '\2022';
-        margin: 0 6px;
-        color: #605e5c;
-      }
-
-      .my-day-sign,
-      .task-sign,
-      .due-date-sign,
-      .reminder-sign,
-      .attachment-sign,
-      .color-sign {
-        display: flex;
-        align-items: center;
-        column-gap: 2px;
-      }
-    }
-
-    &.completed {
-      .text {
-        text-decoration: line-through;
-      }
-    }
-  }
-
-  .anticon {
-    &.important-blue-icon {
-      justify-content: center;
-      margin-right: 20px;
-    }
-  }
-}
-
-.addition-wrapper {
-  padding: 15px;
-
-  .addition-content {
-    display: flex;
-    width: 100%;
-    padding-left: 20px;
-    border-bottom: 1px solid #ddd;
-    background: #fff;
-  }
-
-  .add-btn {
-    padding: 6px;
-    text-align: right;
-    background: #faf9f8;
-
-    button {
-      padding: 4px 10px;
-    }
-  }
-
-  .anticon-plus {
-    margin-right: 8px;
-  }
-
-  .ant-input {
-    flex: 1 1 0;
-    border: none;
-    outline: none;
-    background: inherit;
-
-    &:focus {
-      box-shadow: none;
-    }
-  }
-}
-
-.color-sign .circle {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border-width: 1px;
-  border-style: solid;
-  margin: 2px 4px 0px;
-}
-
-.todo-completed-wrapper {
-  .dropdown-btn {
-    display: inline-flex;
-    margin: 15px;
-  }
-
-  .dropdown-btn .anticon-down.down svg {
-    transform: rotate(0);
-  }
-
-  .dropdown-btn .anticon-down.up svg {
-    transform: rotate(180deg);
-  }
-
-  .dropdown-btn .completed-label {
-    margin: 0;
-    margin-left: 12px;
-  }
-
-  .dropdown-btn .completed-list-num {
-    margin: 0;
-    margin-left: 12px;
   }
 }
 

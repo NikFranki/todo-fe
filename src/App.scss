@@ -1,3 +1,5 @@
+@use 'styles/color.scss';
+
 .user-authentication-loading {
   display: flex;
   flex-direction: column;
@@ -21,7 +23,7 @@
   h3 {
     display: inline-flex;
     margin: 0;
-    color: #000;
+    color: color.$color-main-black;
 
     .name {
       padding-left: 10px;
