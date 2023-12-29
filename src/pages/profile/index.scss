@@ -1,12 +1,14 @@
+@use '../../styles/color.scss';
+
 .profile-wrapper {
   width: 100vw;
   height: 100vh;
   padding: 15px;
-  background: #f5f5d5;
+  background: color.$bg-orange-color;
 
   .profile-form {
     padding: 15px 7px;
-    border: 1px solid #ddd;
+    border: 1px solid color.$border-main-color;
     border-radius: 4px;
   }
 }

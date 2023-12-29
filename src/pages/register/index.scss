@@ -1,7 +1,9 @@
+@use '../../styles/color.scss';
+
 .register-wrapper {
   width: 100vw;
   height: 100vh;
-  background: #f5f5d5;
+  background: color.$bg-orange-color;
 
   #register {
     position: absolute;
@@ -10,7 +12,7 @@
     transform: translate(-50%, -50%);
     width: 500px;
     padding: 24px 24px 0;
-    border: 1px solid #ddd;
+    border: 1px solid color.$border-main-color;
     border-radius: 4px;
   }
 }

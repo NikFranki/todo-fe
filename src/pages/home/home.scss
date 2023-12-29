@@ -1,6 +1,9 @@
 @use '../../styles/color.scss';
 
-$bg-shadow-color: #8db0c4;
+$bg-blue-color: #8db0c4;
+$bg-grey-color: #faf9f8;
+$font-grey-color: #605e5c;
+$font-blue-color: #2564cf;
 
 .todo-layout {
   .header {
@@ -9,7 +12,7 @@ $bg-shadow-color: #8db0c4;
     height: 64px;
     line-height: 64px;
     padding: 0;
-    background: $bg-shadow-color;
+    background: $bg-blue-color;
 
     .logo {
       width: 100px;
@@ -31,7 +34,7 @@ $bg-shadow-color: #8db0c4;
   .content-layout {
     width: 100%;
     height: calc(100vh - 129px);
-    background: #f5f5d5;
+    background: color.$bg-orange-color;
 
     .menu-side-bar {
       flex: initial !important;
@@ -40,7 +43,7 @@ $bg-shadow-color: #8db0c4;
       height: calc(100vh - 129px);
       text-align: left;
       color: color.$color-main-black;
-      background: #f5f5d5;
+      background: color.$bg-orange-color;
       border-right: 1px solid color.$color-main-white;
     }
 
@@ -55,14 +58,14 @@ $bg-shadow-color: #8db0c4;
         display: flex;
         width: 100%;
         padding-left: 20px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid color.$border-main-color;
         background: color.$color-main-white;
       }
 
       .add-btn {
         padding: 6px;
         text-align: right;
-        background: #faf9f8;
+        background: $bg-grey-color;
 
         button {
           padding: 4px 10px;
@@ -99,7 +102,7 @@ $bg-shadow-color: #8db0c4;
         align-items: center;
         width: 100%;
         color: color.$color-main-black;
-        border: 1px solid #ddd;
+        border: 1px solid color.$border-main-color;
         margin-bottom: 15px;
         padding: 8px 0;
         cursor: pointer;
@@ -117,7 +120,7 @@ $bg-shadow-color: #8db0c4;
             & > div:not(:last-child):after {
               content: '\2022';
               margin: 0 6px;
-              color: #605e5c;
+              color: $font-grey-color;
             }
 
             .my-day-sign,
@@ -189,7 +192,7 @@ $bg-shadow-color: #8db0c4;
   .footer {
     text-align: center;
     color: color.$color-main-white;
-    background: $bg-shadow-color;
+    background: $bg-blue-color;
   }
 }
 
@@ -200,7 +203,7 @@ $bg-shadow-color: #8db0c4;
 
 .ant-drawer-content {
   &.todo-drawer {
-    background: #faf9f8;
+    background: $bg-grey-color;
 
     .subject-operation,
     .add-step,
@@ -294,7 +297,7 @@ $bg-shadow-color: #8db0c4;
         flex: 1;
 
         &.added {
-          color: #2564cf;
+          color: $font-blue-color;
         }
       }
     }
@@ -325,14 +328,14 @@ $bg-shadow-color: #8db0c4;
         }
 
         .time-text.setted {
-          color: #2564cf;
+          color: $font-blue-color;
         }
       }
 
       .remind-me {
         .day-text {
           font-size: 12px;
-          color: #605e5c;
+          color: $font-grey-color;
         }
       }
     }
