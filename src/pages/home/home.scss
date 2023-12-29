@@ -1,15 +1,42 @@
 @use '../../styles/color.scss';
 @use '../../styles/common.scss';
 
+@use 'sass:meta';
+
 $bg-blue-color: #8db0c4;
 $bg-grey-color: #faf9f8;
 $font-grey-color: #605e5c;
 $font-blue-color: #2564cf;
 
-@mixin round($size) {
+@mixin circle($size) {
   width: $size;
   height: $size;
   border-radius: 50%;
+}
+
+@mixin syntax-colors($args...) {
+  @debug meta.keywords($args);
+  // (string: #080, comment: #800, variable: #60b)
+
+  @each $name, $color in meta.keywords($args) {
+    pre span.stx-#{$name} {
+      color: $color;
+    }
+  }
+}
+
+// @include syntax-colors(
+//   $string: #080,
+//   $comment: #800,
+//   $variable: #60b,
+// )
+
+@mixin boxshadow($selectors...) {
+  @for $i from 0 to length($selectors) {
+    #{nth($selectors, $i + 1)} {
+      box-shadow: none;
+    }
+  }
 }
 
 .todo-layout {
@@ -100,7 +127,6 @@ $font-blue-color: #2564cf;
       flex-direction: column;
       align-items: flex-start;
       margin: 0;
-      padding: 0;
       padding: 0 15px;
       list-style: none;
 
@@ -143,7 +169,7 @@ $font-blue-color: #2564cf;
             .color-sign {
               .circle {
                 display: inline-block;
-                @include round(8px);
+                @include circle(8px);
                 border-width: 1px;
                 border-style: solid;
                 margin: 2px 4px 0px;
@@ -171,24 +197,22 @@ $font-blue-color: #2564cf;
       .dropdown-btn {
         display: inline-flex;
         margin: 15px;
-      }
 
-      .dropdown-btn .anticon-down.down svg {
-        transform: rotate(0);
-      }
+        .anticon-down.down {
+          svg {
+            transform: rotate(0);
+          }
+        }
 
-      .dropdown-btn .anticon-down.up svg {
-        transform: rotate(180deg);
-      }
+        .completed-label {
+          margin: 0;
+          margin-left: 12px;
+        }
 
-      .dropdown-btn .completed-label {
-        margin: 0;
-        margin-left: 12px;
-      }
-
-      .dropdown-btn .completed-list-num {
-        margin: 0;
-        margin-left: 12px;
+        .completed-list-num {
+          margin: 0;
+          margin-left: 12px;
+        }
       }
     }
   }
@@ -221,13 +245,13 @@ $font-blue-color: #2564cf;
       padding: 0;
     }
 
-    .subject-operation,
-    .add-step,
-    .steps,
-    .edited-step,
-    .ant-input-affix-wrapper:focus-within {
-      box-shadow: none;
-    }
+    @include boxshadow(
+      '.subject-operation',
+      '.add-step',
+      '.steps',
+      '.edited-step',
+      '.ant-input-affix-wrapper:focus-within'
+    );
 
     .subject-operation,
     .add-step,
