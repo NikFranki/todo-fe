@@ -1,3 +1,5 @@
+// If you are already using Vite, add test property in your Vite config. You'll also need to add a reference to Vitest types using a triple slash directive at the top of your config file.
+/// <reference types="vitest" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { fileURLToPath, URL } from "url"
@@ -15,6 +17,18 @@ export default defineConfig({
       }
     )
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.ts',
+    css: true,
+    reporters: ['verbose'],
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+      include: ['src/**/*'],
+      exclude: [],
+    }
+  },
   server: {
     // this ensures that the browser opens upon server start
     open: true,
