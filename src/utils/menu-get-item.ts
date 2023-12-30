@@ -1,4 +1,16 @@
-function getItem(label: any, key: any, icon?: any, children?: any, type?: any) {
+function getItem(
+  label: string,
+  key: string,
+  icon?: any,
+  children?: {
+    key: string;
+    icon?: any;
+    children?: any;
+    label: string;
+    type?: string;
+  }[],
+  type?: string
+) {
   return {
     key,
     icon,

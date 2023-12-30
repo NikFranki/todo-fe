@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { LOCALE_DAY_OF_WEEK, LOCALE_MONTH } from '@constant/index';
 
-const getDateDayText = (date: any) => {
+const getDateDayText = (date: string) => {
   const dateDay = dayjs(date).day();
   const dateDate = dayjs(date).date();
   const dateFormat = dayjs(date).format('YYYY-MM-DD');

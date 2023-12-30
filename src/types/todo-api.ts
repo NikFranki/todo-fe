@@ -16,7 +16,7 @@ export interface EditTodoParamsType {
   category?: string;
   create_time?: string;
   update_time?: string;
-  subtask?: any[];
+  subtask?: Subtask[];
 }
 
 export interface TODO_RESPONSE_TYPE {
@@ -36,7 +36,7 @@ interface List {
   reminder: string;
   due_date: string;
   repeated: number;
-  file: any;
+  file: File;
   note: string;
   category: string;
   create_time: string;
