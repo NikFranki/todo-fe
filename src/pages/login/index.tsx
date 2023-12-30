@@ -12,10 +12,10 @@ import './index.scss';
 const Login = () => {
   const navigate = useNavigate();
 
-  const { onUserInfoChange } = React.useContext(TodoContext);
+  const { onUserInfoChange } = React.useContext(TodoContext) as any;
 
-  const onFinish = async (values) => {
-    const res = await login(values);
+  const onFinish = async (values: any) => {
+    const res = await login(values) as any;
     if (res.code !== 200) {
       message.error(res.message);
       return { ok: false };

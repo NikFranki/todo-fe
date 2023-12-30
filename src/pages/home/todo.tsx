@@ -58,14 +58,14 @@ const COLOR_TEXT = {
 
 const Todo = () => {
   const [addedContent, setAddedContent] = React.useState('');
-  const [clickedTodo, setClickedTodo] = React.useState({});
-  const inputRef = React.useRef(null);
+  const [clickedTodo, setClickedTodo] = React.useState<any>({});
+  const inputRef = React.useRef<any>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [clickedSteps, setClickedSteps] = React.useState([]);
 
   const TODO_CONTEXT_MENU_HEIGHT = 327;
   const { visible, points, setPoints, onContextMenuOpen } = useContextMenu({
-    onOpen: ({ x, y }) => {
+    onOpen: ({ x, y }: any) => {
       setPoints({
         x,
         y:
@@ -85,7 +85,7 @@ const Todo = () => {
     onFetchTodo,
     onFetchList,
     onSetTodoId,
-  } = useContextInfo();
+  } = useContextInfo() as any;
 
   React.useEffect(() => {
     onSetTodoId(undefined);
@@ -115,7 +115,7 @@ const Todo = () => {
     return (
       <div className="position">
         <h3>
-          {LIST_ICON_MAP[listItemInfo.id] || (
+          {(LIST_ICON_MAP as any)[listItemInfo.id] || (
             <Icon component={() => <img src={listSvg} />} />
           )}
           <span className="name">{listItemInfo.name}</span>
@@ -124,7 +124,7 @@ const Todo = () => {
     );
   };
 
-  const handleInput = (e) => {
+  const handleInput = (e: any) => {
     setAddedContent(e.target.value);
   };
 
@@ -185,20 +185,20 @@ const Todo = () => {
     );
   };
 
-  const handleContextMenu = (e, item) => {
+  const handleContextMenu = (e: any, item: any) => {
     e.preventDefault();
     onContextMenuOpen(e);
     setClickedTodo(item);
   };
 
-  const handleTodoItemClick = async (item) => {
+  const handleTodoItemClick = async (item: any) => {
     const { data } = await fetchTodoItem({ id: item.id });
     setClickedTodo(data);
     setClickedSteps(data.subtask);
     setDrawerOpen(true);
   };
 
-  const handleMarkedAsImportant = async (item) => {
+  const handleMarkedAsImportant = async (item: any) => {
     updateTodo({
       ..._.omit(item, ['update_time', 'create_time']),
       marked_as_important:
@@ -208,7 +208,7 @@ const Todo = () => {
     });
   };
 
-  const handleCompleteChange = async (item) => {
+  const handleCompleteChange = async (item: any) => {
     updateTodo({
       ..._.omit(item, ['update_time', 'create_time']),
       marked_as_completed:
@@ -220,13 +220,13 @@ const Todo = () => {
 
   const filterTodo = (marked_as_completed = MARKED_AS_UNCOMPLETED) => {
     return todo.filter(
-      (item) => item.marked_as_completed === marked_as_completed
+      (item: any) => item.marked_as_completed === marked_as_completed
     );
   };
-  const renderListItemContent = (item) => {
+  const renderListItemContent = (item: any) => {
     const isToday = item.due_date === dayjs().format('YYYY-MM-DD');
     const finishedStepsLength = item.subtask.filter(
-      (item) => item.marked_as_completed === MARKED_AS_COMPLETED
+      (item: any) => item.marked_as_completed === MARKED_AS_COMPLETED
     ).length;
 
     return (
@@ -236,9 +236,8 @@ const Todo = () => {
           onChange={() => handleCompleteChange(item)}
         />
         <div
-          className={`content ${
-            item.marked_as_completed ? 'completed' : 'uncompleted'
-          }`}
+          className={`content ${item.marked_as_completed ? 'completed' : 'uncompleted'
+            }`}
           onClick={() => handleTodoItemClick(item)}
         >
           <span className="text">{item.content}</span>
@@ -287,14 +286,14 @@ const Todo = () => {
               </div>
             )}
             {item.category &&
-              item.category.split(',').map((row) => {
+              item.category.split(',').map((row: any) => {
                 return (
                   <div key={row} className="color-sign">
                     <span
                       className="circle"
                       style={{
                         borderColor: TAG_TEXT_COLOR_MAP[row],
-                        backgroundColor: TAG_BG_COLOR_MAP[row],
+                        backgroundColor: (TAG_BG_COLOR_MAP as any)[row],
                       }}
                     ></span>
                     <span
@@ -324,7 +323,7 @@ const Todo = () => {
       </>
     );
   };
-  const renderListItem = (item) => {
+  const renderListItem = (item: any) => {
     return (
       <li
         key={item.id}
@@ -338,7 +337,7 @@ const Todo = () => {
   const renderList = (marked_as_completed = MARKED_AS_UNCOMPLETED) => {
     return (
       <ul className="todo-wrapper">
-        {filterTodo(marked_as_completed).map((item) => {
+        {filterTodo(marked_as_completed).map((item: any) => {
           return renderListItem(item);
         })}
       </ul>
@@ -380,11 +379,11 @@ const Todo = () => {
     );
   };
 
-  const decoratedTasklist = fixedList.slice(-1).map((item) => {
+  const decoratedTasklist = fixedList.slice(-1).map((item: any) => {
     item.icon = <Icon component={() => <img src={myDaySmallSvg} />} />;
     return item;
   });
-  const decoratedOtherlist = otherlist.map((item) => {
+  const decoratedOtherlist = otherlist.map((item: any) => {
     item.icon = <Icon component={() => <img src={listSvg} />} />;
     return item;
   });
@@ -426,10 +425,10 @@ const Todo = () => {
     ),
     clickedTodo.due_date
       ? getItem(
-          'Remove due date',
-          'remove_due_date',
-          <Icon component={() => <img src={removeDueDateSvg} />} />
-        )
+        'Remove due date',
+        'remove_due_date',
+        <Icon component={() => <img src={removeDueDateSvg} />} />
+      )
       : null,
     { type: 'divider' },
     getItem(
@@ -445,7 +444,7 @@ const Todo = () => {
       <Icon component={() => <img src={deleteSvg} />} />
     ),
   ];
-  const handleMenuClick = async (e) => {
+  const handleMenuClick = async (e: any) => {
     if (e.keyPath.includes('added_my_day')) {
       updateTodo({
         added_my_day:

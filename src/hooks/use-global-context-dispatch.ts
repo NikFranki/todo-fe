@@ -30,29 +30,29 @@ const useGlobalContextDispatch = () => {
     }
   };
 
-  const onFetchTodo = async (params) => {
+  const onFetchTodo = async (params: any) => {
     params = {
       id: todoId,
       ...params,
     };
-    const res = await fetchTodoList(params);
+    const res = await fetchTodoList(params) as any;
     setTodo(res.list);
   };
 
-  const onSetTodoId = (todoId) => {
+  const onSetTodoId = (todoId: any) => {
     setTodoId(todoId);
   };
 
-  const onSetListItemInfo = (listId) => {
+  const onSetListItemInfo = (listId: any) => {
     setListItemInfo(listId);
   };
 
-  const onSetSearchText = (searchText) => {
+  const onSetSearchText = (searchText: any) => {
     setSearchText(searchText);
   };
 
   const onFetchList = async () => {
-    const res = await fetchList({});
+    const res = await fetchList({}) as any;
     setFixedList(res.list.slice(0, 5));
     setOtherList(res.list.slice(5));
     setList(res.list);

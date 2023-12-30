@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useContextMenu = ({ onOpen } = {}) => {
+const useContextMenu = ({ onOpen }: any = {}) => {
   const [visible, setVisible] = useState(false);
   const [points, setPoints] = useState({
     x: 0,
@@ -18,7 +18,7 @@ const useContextMenu = ({ onOpen } = {}) => {
     setVisible(false);
   };
 
-  const handleContextMenuOpen = (e) => {
+  const handleContextMenuOpen = (e: any) => {
     setVisible(true);
     if (onOpen) {
       onOpen({

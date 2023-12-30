@@ -13,7 +13,7 @@ import './menu.scss';
 const Menu = () => {
   const navigate = useNavigate();
 
-  const { userInfo } = React.useContext(TodoContext);
+  const { userInfo } = React.useContext<any>(TodoContext);
   const { username, avatar } = userInfo;
   const userLogined = userInfo.username;
 
@@ -27,7 +27,7 @@ const Menu = () => {
     try {
       await logout({});
       navigate('/login', { replace: true });
-    } catch (error) {
+    } catch (error: any) {
       message.error(error.message);
     }
   };
@@ -39,7 +39,7 @@ const Menu = () => {
       maxCount: 1,
       accept: '.xlsx',
       withCredentials: true,
-      beforeUpload: async (file) => {
+      beforeUpload: async (file: any) => {
         if (file) {
           const formData = new FormData();
           formData.append('todos', file);
@@ -65,32 +65,32 @@ const Menu = () => {
 
   const items = !userLogined
     ? [
-        {
-          label: <Link to="/login">Login</Link>,
-          key: '0',
-        },
-      ]
+      {
+        label: <Link to="/login">Login</Link>,
+        key: '0',
+      },
+    ]
     : [
-        {
-          label: <a onClick={handleLogout}>Logout</a>,
-          key: '1',
-        },
-        {
-          type: 'divider',
-        },
-        {
-          label: renderImport(),
-          key: '2',
-        },
-        {
-          label: <a onClick={onExport}>Export Todo</a>,
-          key: '3',
-        },
-        {
-          label: <Link to="/profile">Profile</Link>,
-          key: '4',
-        },
-      ];
+      {
+        label: <a onClick={handleLogout}>Logout</a>,
+        key: '1',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        label: renderImport(),
+        key: '2',
+      },
+      {
+        label: <a onClick={onExport}>Export Todo</a>,
+        key: '3',
+      },
+      {
+        label: <Link to="/profile">Profile</Link>,
+        key: '4',
+      },
+    ] as any;
 
   return (
     <div className="header-menu-wrapper">

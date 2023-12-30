@@ -6,17 +6,19 @@ import { Input } from 'antd';
 import { ItemTypes } from '@constant/index';
 import listSvg from '@assets/images/list.svg';
 
-const ListItem = ({
-  listItem,
-  editInfo,
-  handleListItemClick,
-  handleContextMenu,
-  handleReListNameEnter,
-  setEditInfo,
-  moveCard,
-  findCard,
-  moveEnd,
-}) => {
+const ListItem = (props: any) => {
+  const {
+    listItem,
+    editInfo,
+    handleListItemClick,
+    handleContextMenu,
+    handleReListNameEnter,
+    setEditInfo,
+    moveCard,
+    findCard,
+    moveEnd,
+  } = props;
+
   const id = listItem.id;
   const originalIndex = findCard(id).index;
   const [{ isDragging }, drag] = useDrag(
@@ -39,20 +41,20 @@ const ListItem = ({
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.CARD,
-      hover({ id: draggedId }) {
+      hover({ id: draggedId }: { id: any }) {
         if (draggedId !== id) {
           const { index: overIndex } = findCard(id);
           moveCard(draggedId, overIndex);
         }
       },
-      drop(item) {
+      drop(item: any) {
         moveEnd(item.originalIndex, originalIndex);
       },
-      collect: (monitor) => ({
+      collect: (monitor: any) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
       }),
-    }),
+    }) as any,
     [findCard, moveCard]
   );
   const opacity = isDragging ? 0 : 1;

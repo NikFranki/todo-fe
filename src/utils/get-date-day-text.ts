@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { LOCALE_DAY_OF_WEEK, LOCALE_MONTH } from '@constant/index';
 
-const getDateDayText = (date) => {
+const getDateDayText = (date: any) => {
   const dateDay = dayjs(date).day();
   const dateDate = dayjs(date).date();
   const dateFormat = dayjs(date).format('YYYY-MM-DD');
@@ -12,8 +12,8 @@ const getDateDayText = (date) => {
   return dateFormat === todayDateFormat
     ? 'Today'
     : dateFormat === tomorrowDateFormat
-    ? 'Tomorrow'
-    : // eslint-disable-next-line max-len
+      ? 'Tomorrow'
+      : // eslint-disable-next-line max-len
       `${LOCALE_DAY_OF_WEEK[dateDay]}, ${LOCALE_MONTH[dateMonth]} ${dateDate}`;
 };
 

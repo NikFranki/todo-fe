@@ -16,7 +16,7 @@ import './home.scss';
 const { Header, Footer, Sider, Content } = Layout;
 
 function Home() {
-  const { onFetchTodo, onFetchList, onSetSearchText } = useContextInfo();
+  const { onFetchTodo, onFetchList, onSetSearchText } = useContextInfo() as any;
 
   React.useEffect(() => {
     sequenceRequest();
@@ -28,7 +28,7 @@ function Home() {
     await onFetchList();
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: any) => {
     const content = e.target.value;
     onSetSearchText(content);
     onFetchTodo({ content });

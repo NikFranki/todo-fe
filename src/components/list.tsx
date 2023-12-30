@@ -8,7 +8,7 @@ import { updateListByDragAndDrop } from '@api/list';
 
 import ListItem from './list-item';
 
-const List = (props) => {
+const List = (props: any) => {
   const {
     sbotherList,
     editInfo,
@@ -22,8 +22,8 @@ const List = (props) => {
   const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
 
   const findCard = React.useCallback(
-    (id) => {
-      const card = sbotherList.filter((c) => c.id === id)[0];
+    (id: any) => {
+      const card = sbotherList.filter((c: any) => c.id === id)[0];
       return {
         card,
         index: sbotherList.indexOf(card),
@@ -32,7 +32,7 @@ const List = (props) => {
     [sbotherList]
   );
   const moveCard = React.useCallback(
-    async (id, atIndex) => {
+    async (id: any, atIndex: any) => {
       const { card, index } = findCard(id);
       setSbotherlist(
         update(sbotherList, {
@@ -46,12 +46,12 @@ const List = (props) => {
     [findCard, sbotherList, setSbotherlist]
   );
   const moveEnd = React.useCallback(
-    async (prevIndex, currIndex) => {
+    async (prevIndex: any, currIndex: any) => {
       const startIndex = Math.min(prevIndex, currIndex);
       const endIndex = Math.max(prevIndex, currIndex);
       const newSBotherList = sbotherList
         .slice(startIndex, endIndex + 1)
-        .map((item, index) => {
+        .map((item: any, index: any) => {
           // due to fixed list, it has 5 five items, so here shoule be started with plus 6
           item.index_order = index + startIndex + FIXED_LIST_ITEM_TASKS + 1;
           return item;
@@ -65,7 +65,7 @@ const List = (props) => {
 
   return (
     <div ref={drop} className="other-list list-wrapper">
-      {sbotherList.map((listItem) => {
+      {sbotherList.map((listItem: any) => {
         const listItemProps = {
           listItem,
           editInfo,

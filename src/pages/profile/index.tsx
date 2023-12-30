@@ -45,17 +45,17 @@ const Profile = () => {
   const [form] = Form.useForm();
   const [avatar, setAvater] = React.useState(null);
 
-  const { userInfo, onUserInfoChange } = React.useContext(TodoContext);
+  const { userInfo, onUserInfoChange } = React.useContext(TodoContext) as any;
   const { username, avatar: userInfoAvatar } = userInfo;
 
-  const onFinish = async (values) => {
+  const onFinish = async (values: any) => {
     values.avatar = avatar;
     const formData = new FormData();
     formData.append('username', values.username);
     if (values.avatar) {
       formData.append('avatar', values.avatar);
     }
-    const res = await updateUser(formData);
+    const res = await updateUser(formData) as any;
     if (res.code !== 200) {
       message.error(res.message);
       return { ok: false };
@@ -121,7 +121,7 @@ const Profile = () => {
             listType="picture-card"
             maxCount={1}
             accept=".jpg, .png"
-            beforeUpload={(file) => {
+            beforeUpload={(file: any) => {
               if (file) {
                 console.log('file', file);
                 setAvater(file);

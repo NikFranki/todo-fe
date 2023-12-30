@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu } from 'antd';
 
-const ContextMenu = (props) => {
+const ContextMenu = (props: any) => {
   const {
     items,
     visible,
@@ -9,7 +9,7 @@ const ContextMenu = (props) => {
     onMenuClick,
   } = props;
 
-  const handleMenuClick = async (e) => {
+  const handleMenuClick = async (e: any) => {
     onMenuClick?.(e);
   };
 

@@ -16,7 +16,7 @@ const instance = axios.create({
 
 // Add a request interceptor
 instance.interceptors.request.use(
-  function (config) {
+  function (config: any) {
     // Do something before request is sent
     config.headers = { gfg_token_header_key: localStorage.getItem('token') };
     return config;

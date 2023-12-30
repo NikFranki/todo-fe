@@ -44,7 +44,7 @@ const Register = () => {
   const [form] = Form.useForm();
   const [avatar, setAvater] = React.useState(null);
 
-  const onFinish = async (values) => {
+  const onFinish = async (values: any) => {
     values.avatar = avatar;
     const formData = new FormData();
     formData.append('username', values.username);
@@ -53,7 +53,7 @@ const Register = () => {
     if (values.avatar) {
       formData.append('avatar', values.avatar);
     }
-    const res = await register(formData);
+    const res = await register(formData) as any;
     if (res.code !== 200) {
       message.error(res.message);
       return { ok: false };
@@ -147,7 +147,7 @@ const Register = () => {
               listType="picture-card"
               maxCount={1}
               accept=".jpg, .png"
-              beforeUpload={(file) => {
+              beforeUpload={(file: any) => {
                 if (file) {
                   setAvater(file);
                 }

@@ -59,9 +59,9 @@ const options = [
   { label: 'blue category', value: TAG_BG_COLOR_MAP.BLUE },
 ];
 
-const tagRender = (props) => {
+const tagRender = (props: any) => {
   const { label, value, closable, onClose } = props;
-  const onPreventMouseDown = (event) => {
+  const onPreventMouseDown = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
   };
@@ -78,7 +78,7 @@ const tagRender = (props) => {
   );
 };
 
-const TodoDrawer = (props) => {
+const TodoDrawer = (props: any) => {
   const {
     drawerOpen,
     clickedTodo,
@@ -92,9 +92,9 @@ const TodoDrawer = (props) => {
     onFetchTodoInDrawer,
   } = props;
 
-  const [dropdownOpen, setDropdownOpen] = React.useState({});
+  const [dropdownOpen, setDropdownOpen] = React.useState<any>({});
   const [addedStep, setAddedStep] = React.useState('');
-  const [clickedSubtask, setClickedSubtask] = React.useState({});
+  const [clickedSubtask, setClickedSubtask] = React.useState<any>({});
   const [todoContentFocus, setTodoContentFocus] = React.useState(false);
 
   const closeDrawer = () => {
@@ -121,7 +121,7 @@ const TodoDrawer = (props) => {
     onClickedTodo(newClickedTodo);
   };
 
-  const handleTodoContentInput = (e) => {
+  const handleTodoContentInput = (e: any) => {
     const value = e.target.value;
     const newClickedTodo = { ...clickedTodo };
     newClickedTodo.content = value;
@@ -142,7 +142,7 @@ const TodoDrawer = (props) => {
     setTodoContentFocus(false);
   };
 
-  const handleAddStepInput = (e) => {
+  const handleAddStepInput = (e: any) => {
     setAddedStep(e.target.value);
   };
 
@@ -158,7 +158,7 @@ const TodoDrawer = (props) => {
     setAddedStep('');
   };
 
-  const handleEditStepInput = (index, newContent) => {
+  const handleEditStepInput = (index: any, newContent: any) => {
     const newClickedSteps = [...clickedSteps];
     newClickedSteps[index].content = newContent;
     onClickedSteps(newClickedSteps);
@@ -178,7 +178,7 @@ const TodoDrawer = (props) => {
     setClickedSubtask({});
   };
 
-  const handleDeleteStep = async (id) => {
+  const handleDeleteStep = async (id: any) => {
     await deleteSubtask({
       id,
     });
@@ -187,7 +187,7 @@ const TodoDrawer = (props) => {
     onClickedSteps(data.subtask);
   };
 
-  const handleCheckedStep = async (clickedStep) => {
+  const handleCheckedStep = async (clickedStep: any) => {
     await editSubtask({
       id: clickedStep.id,
       marked_as_completed: clickedStep.marked_as_completed
@@ -210,7 +210,7 @@ const TodoDrawer = (props) => {
     onClickedTodo(data);
   };
 
-  const handleOpenChange = (key, value) => {
+  const handleOpenChange = (key: any, value: any) => {
     const map = {
       [DROPDOWN_TYPE.REMINDER]: 'reminder',
       [DROPDOWN_TYPE.DUE_DATE]: 'due_date',
@@ -222,7 +222,7 @@ const TodoDrawer = (props) => {
     setDropdownOpen(newDPO);
   };
 
-  const handleDropdownQuickshortSelect = async (key, value) => {
+  const handleDropdownQuickshortSelect = async (key: any, value: any) => {
     const map = {
       [DROPDOWN_TYPE.REMINDER]: 'reminder',
       [DROPDOWN_TYPE.DUE_DATE]: 'due_date',
@@ -237,14 +237,14 @@ const TodoDrawer = (props) => {
     handleOpenChange(DROPDOWN_TYPE.REMINDER, false);
   };
 
-  const onPickDateOk = (key, value) => {
+  const onPickDateOk = (key: any, value: any) => {
     handleDropdownQuickshortSelect(
       key,
       `${value.format('YYYY-MM-DD HH:mm')}:00`
     );
   };
 
-  const handlePickACategoryChange = async (value) => {
+  const handlePickACategoryChange = async (value: any) => {
     await onUpdateTodo({
       id: clickedTodo.id,
       // TODO: why return ['', xx] whether accosiated with select options
@@ -254,7 +254,7 @@ const TodoDrawer = (props) => {
     onClickedTodo(data);
   };
 
-  const handleNoteInputChange = async (e) => {
+  const handleNoteInputChange = async (e: any) => {
     const value = e.target.value;
     const newClickedTodo = { ...clickedTodo };
     newClickedTodo.note = value;
@@ -270,7 +270,7 @@ const TodoDrawer = (props) => {
     onClickedTodo(data);
   };
 
-  const handleFileUpload = async (file) => {
+  const handleFileUpload = async (file: any) => {
     if (file) {
       const formData = new FormData();
       formData.append('id', clickedTodo.id);
@@ -322,14 +322,12 @@ const TodoDrawer = (props) => {
             onChange={completeTodoInDrawer}
           />
           <div
-            className={`content ${
-              clickedTodo.marked_as_completed ? 'completed' : 'uncompleted'
-            }`}
+            className={`content ${clickedTodo.marked_as_completed ? 'completed' : 'uncompleted'
+              }`}
           >
             {todoContentFocus ? (
               <Input
                 autoFocus
-                autosize
                 value={clickedTodo.content}
                 onChange={handleTodoContentInput}
                 onBlur={handleTodoContentBlur}
@@ -356,7 +354,7 @@ const TodoDrawer = (props) => {
         </div>
         <div className="add-step">
           <div className="steps">
-            {clickedSteps.map((item, index) => {
+            {clickedSteps.map((item: any, index: any) => {
               return (
                 <div key={item.id} className="edited-step">
                   <Checkbox
@@ -364,7 +362,6 @@ const TodoDrawer = (props) => {
                     onChange={() => handleCheckedStep(item)}
                   />
                   <Input
-                    autosize="true"
                     value={item.content}
                     onChange={(e) => handleEditStepInput(index, e.target.value)}
                     onBlur={handleEditStep}
@@ -387,7 +384,6 @@ const TodoDrawer = (props) => {
           <div className="new-step">
             <Checkbox checked={false} />
             <Input
-              autosize="true"
               value={addedStep}
               placeholder="Add step"
               onChange={handleAddStepInput}
@@ -409,9 +405,8 @@ const TodoDrawer = (props) => {
           )}
         />
         <span
-          className={`text ${
-            clickedTodo.added_my_day === ADDED_MY_DAY ? 'added' : ''
-          }`}
+          className={`text ${clickedTodo.added_my_day === ADDED_MY_DAY ? 'added' : ''
+            }`}
         >
           {clickedTodo.added_my_day === ADDED_MY_DAY
             ? 'Added to My Day'
@@ -434,7 +429,7 @@ const TodoDrawer = (props) => {
       <div className="date-reminder">
         <Dropdown
           placement="bottom"
-          trigger="click"
+          trigger={"click" as any}
           dropdownRender={() => (
             <div className="reminder-dropdown">
               <div className="title">Reminder</div>
@@ -506,18 +501,15 @@ const TodoDrawer = (props) => {
                 className={`time-text ${clickedTodo.reminder ? 'setted' : ''}`}
               >
                 {clickedTodo.reminder
-                  ? `Remind me at ${
-                      reminderHour > 12 ? reminderHour - 12 : reminderHour
-                    }${
-                      reminderMinute > 0
-                        ? ':' +
-                          `${
-                            reminderMinute > 10
-                              ? reminderMinute
-                              : `0${reminderMinute}`
-                          }`
-                        : ''
-                    } ${reminderHour > 12 ? 'pm' : 'am'}`
+                  ? `Remind me at ${reminderHour > 12 ? reminderHour - 12 : reminderHour
+                  }${reminderMinute > 0
+                    ? ':' +
+                    `${reminderMinute > 10
+                      ? reminderMinute
+                      : `0${reminderMinute}`
+                    }`
+                    : ''
+                  } ${reminderHour > 12 ? 'pm' : 'am'}`
                   : 'Remind me'}
               </span>
               {clickedTodo.reminder && (
@@ -544,7 +536,7 @@ const TodoDrawer = (props) => {
         </Dropdown>
         <Dropdown
           placement="bottom"
-          trigger="click"
+          trigger={"click" as any}
           dropdownRender={() => (
             <div className="due-date-dropdown">
               <div className="title">Due</div>
@@ -588,7 +580,7 @@ const TodoDrawer = (props) => {
               <div className="custom-pick">
                 <DatePicker
                   placeholder="Pick a date"
-                  onChange={(value) =>
+                  onChange={(value: any) =>
                     handleDropdownQuickshortSelect(
                       DROPDOWN_TYPE.DUE_DATE,
                       value.format('YYYY-MM-DD')
@@ -694,17 +686,17 @@ const TodoDrawer = (props) => {
           fileList={
             clickedTodo.file
               ? [
-                  {
-                    uid: clickedTodo.id,
-                    name: clickedTodo.file.replace(
-                      // eslint-disable-next-line max-len
-                      `${BASE_URL}todo-attachment/${clickedTodo.id}/`,
-                      ''
-                    ),
-                    status: 'done',
-                    url: clickedTodo.file,
-                  },
-                ]
+                {
+                  uid: clickedTodo.id,
+                  name: clickedTodo.file.replace(
+                    // eslint-disable-next-line max-len
+                    `${BASE_URL}todo-attachment/${clickedTodo.id}/`,
+                    ''
+                  ),
+                  status: 'done',
+                  url: clickedTodo.file,
+                },
+              ]
               : []
           }
           beforeUpload={handleFileUpload}

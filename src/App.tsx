@@ -23,7 +23,7 @@ import useGlobalContextDispatch from './hooks/use-global-context-dispatch';
 
 import './App.scss';
 
-const ProtectedRoute = ({ isAllowed, children, redirectPath = '/login' }) => {
+const ProtectedRoute = ({ isAllowed, children, redirectPath = '/login' }: any) => {
   if (!isAllowed) {
     return <Navigate to={redirectPath} replace />;
   }
@@ -33,10 +33,10 @@ const ProtectedRoute = ({ isAllowed, children, redirectPath = '/login' }) => {
 
 function App() {
   const values = useGlobalContextDispatch();
-  const { authenticatedLoading, userInfo, onUserInfoChange } = values;
+  const { authenticatedLoading, userInfo, onUserInfoChange } = values as any;
   const [api, contextHolder] = notification.useNotification();
 
-  const openNotification = (todoItem, index) => {
+  const openNotification = (todoItem: any, index: any) => {
     return new Promise((resolve, reject) => {
       try {
         const time = index * 500;
@@ -50,7 +50,7 @@ function App() {
             description: '',
             duration: 0,
           });
-          resolve();
+          resolve(null);
         }, time);
       } catch (error) {
         reject(error);
@@ -104,7 +104,7 @@ function App() {
   const roles = ['admin'];
 
   return (
-    <TodoContext.Provider value={values}>
+    <TodoContext.Provider value={values as any}>
       <Router>
         <Routes>
           <Route element={<ProtectedRoute isAllowed={userInfo.username} />}>
