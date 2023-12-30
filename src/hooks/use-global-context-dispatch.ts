@@ -11,7 +11,7 @@ const useGlobalContextDispatch = () => {
   const [otherlist, setOtherList] = React.useState([]);
   const [todo, setTodo] = React.useState([]);
   const [searchText, setSearchText] = React.useState('');
-  const [todoId, setTodoId] = React.useState(undefined);
+  const [todoId, setTodoId] = React.useState<number | undefined>(undefined);
   const [listItemInfo, setListItemInfo] = React.useState({
     id: 1,
     name: 'My Day',
@@ -30,12 +30,15 @@ const useGlobalContextDispatch = () => {
     }
   };
 
-  const onFetchTodo = async (params: any) => {
-    params = {
+  const onFetchTodo = async (params: {
+    list_id: number,
+    content: string
+  }) => {
+    const newParams = {
       id: todoId,
       ...params,
     };
-    const res = await fetchTodoList(params) as any;
+    const res = await fetchTodoList(newParams) as any;
     setTodo(res.list);
   };
 

@@ -46,6 +46,7 @@ import listSvg from '@assets/images/list.svg';
 import getDateDayText from '@/utils/get-date-day-text';
 
 import TodoDrawer from './todo-drawer';
+import { EditTodoParamsType } from '@/types/todo-api';
 
 const COLOR_TEXT = {
   [TAG_BG_COLOR_MAP.ORANGE]: 'orange catory',
@@ -99,7 +100,7 @@ const Todo = () => {
     });
   };
 
-  const updateTodo = async (todoInfo = {}) => {
+  const updateTodo = async (todoInfo: EditTodoParamsType) => {
     const originClikedTodo = _.omit(clickedTodo, [
       'reminder',
       'due_date',
@@ -198,7 +199,7 @@ const Todo = () => {
     setDrawerOpen(true);
   };
 
-  const handleMarkedAsImportant = async (item: any) => {
+  const handleMarkedAsImportant = async (item: EditTodoParamsType) => {
     updateTodo({
       ..._.omit(item, ['update_time', 'create_time']),
       marked_as_important:
@@ -208,7 +209,7 @@ const Todo = () => {
     });
   };
 
-  const handleCompleteChange = async (item: any) => {
+  const handleCompleteChange = async (item: EditTodoParamsType) => {
     updateTodo({
       ..._.omit(item, ['update_time', 'create_time']),
       marked_as_completed:
@@ -486,7 +487,7 @@ const Todo = () => {
 
     if (e.keyPath.includes('remove_due_date')) {
       updateTodo({
-        due_date: null,
+        due_date: '',
       });
     }
 

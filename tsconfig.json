@@ -27,7 +27,8 @@
       "@hooks/*": ["./src/hooks/*"],
       "@utils/*": ["./src/utils/*"],
       "@styles/*": ["./src/styles/*"],
-      "@types/*": ["./src/types/*"]
+      "@types/*": ["./src/types/*"],
+      "@enum/*": ["./src/enum/*"]
     }
   },
   "include": ["src", "vite.config.mts", "vite-env.d.ts"]
