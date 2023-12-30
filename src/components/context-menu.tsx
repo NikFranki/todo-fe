@@ -1,5 +1,6 @@
 import React from 'react';
 import { Menu } from 'antd';
+import { MenuInfo } from 'rc-menu/lib/interface';
 
 const ContextMenu = (props: any) => {
   const {
@@ -9,8 +10,8 @@ const ContextMenu = (props: any) => {
     onMenuClick,
   } = props;
 
-  const handleMenuClick = async (e: any) => {
-    onMenuClick?.(e);
+  const handleMenuClick = async (info: MenuInfo) => {
+    onMenuClick?.(info);
   };
 
   return (
