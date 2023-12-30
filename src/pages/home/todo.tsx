@@ -66,7 +66,7 @@ const Todo = () => {
 
   const TODO_CONTEXT_MENU_HEIGHT = 327;
   const { visible, points, setPoints, onContextMenuOpen } = useContextMenu({
-    onOpen: ({ x, y }: any) => {
+    onOpen: ({ x, y }: { x: number; y: number }) => {
       setPoints({
         x,
         y:

@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 
-const useContextMenu = ({ onOpen }: any = {}) => {
+interface ContextMenuParamsType {
+  onOpen?: ({ x, y }: {
+    x: number;
+    y: number;
+  }) => void
+}
+
+const useContextMenu = ({ onOpen }: ContextMenuParamsType = {}) => {
   const [visible, setVisible] = useState(false);
   const [points, setPoints] = useState({
     x: 0,
@@ -18,7 +25,7 @@ const useContextMenu = ({ onOpen }: any = {}) => {
     setVisible(false);
   };
 
-  const handleContextMenuOpen = (e: any) => {
+  const handleContextMenuOpen = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setVisible(true);
     if (onOpen) {
       onOpen({
