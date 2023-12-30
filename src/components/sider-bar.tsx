@@ -32,7 +32,7 @@ const SiderBar = () => {
 
   const [editInfo, setEditInfo] = React.useState({
     editable: false,
-    clikedId: null,
+    clikedId: '',
     reListName: '',
   });
 
@@ -113,7 +113,7 @@ const SiderBar = () => {
     setEditInfo({
       ...editInfo,
       editable: false,
-      clikedId: null,
+      clikedId: '',
       reListName: '',
     });
     if (listItemInfo.id === item.id) {

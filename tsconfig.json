@@ -26,7 +26,8 @@
       "@constant/*": ["./src/constant/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@utils/*": ["./src/utils/*"],
-      "@styles/*": ["./src/styles/*"]
+      "@styles/*": ["./src/styles/*"],
+      "@types/*": ["./src/types/*"]
     }
   },
   "include": ["src", "vite.config.mts", "vite-env.d.ts"]
