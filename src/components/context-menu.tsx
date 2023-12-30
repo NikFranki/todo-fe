@@ -2,7 +2,12 @@ import React from 'react';
 import { Menu } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
 
-const ContextMenu = (props: any) => {
+const ContextMenu = (props: {
+  items: any;
+  visible: boolean;
+  points: { x: number; y: number };
+  onMenuClick?: (info: MenuInfo) => void;
+}) => {
   const {
     items,
     visible,
