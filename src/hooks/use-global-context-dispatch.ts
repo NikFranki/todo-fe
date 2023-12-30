@@ -3,15 +3,52 @@ import React from 'react';
 import { fetchTodoList } from '@api/todo';
 import { searchUser } from '@api/user';
 import { fetchList } from '@api/list';
-import { TODO_RESPONSE_TYPE } from '@/types/todo-api';
+import { Todo_List_Item } from '@/types/todo-api';
 import { ListItemType } from '@/types/list-api';
 
+export interface ValuesType {
+  userInfo: {
+    username: string;
+    avatar: string;
+  };
+  list: ListItemType[];
+  todo: Todo_List_Item[];
+  todoId: string;
+  searchText: string;
+  fixedList: ListItemType[];
+  otherlist: ListItemType[];
+  listItemInfo: {
+    id: number;
+    name: string;
+  };
+  authenticatedLoading: boolean;
+  onUserInfoChange: () => Promise<void>;
+  onFetchList: () => Promise<void>;
+  onFetchTodo: (params: {
+    list_id: number;
+    content: string;
+  }) => Promise<void>;
+  onSetTodoId: (todoId: string) => void;
+  onSetSearchText: (searchText: string) => void;
+  onSetListItemInfo: (info: {
+    id: number;
+    name: string;
+  }) => void;
+};
+
+
 const useGlobalContextDispatch = () => {
-  const [userInfo, setUserInfo] = React.useState({});
+  const [userInfo, setUserInfo] = React.useState<{
+    username: string;
+    avatar: string;
+  }>({
+    username: '',
+    avatar: ''
+  });
   const [list, setList] = React.useState<ListItemType[]>([]);
   const [fixedList, setFixedList] = React.useState<ListItemType[]>([]);
   const [otherlist, setOtherList] = React.useState<ListItemType[]>([]);
-  const [todo, setTodo] = React.useState<TODO_RESPONSE_TYPE['list']>([]);
+  const [todo, setTodo] = React.useState<Todo_List_Item[]>([]);
   const [searchText, setSearchText] = React.useState('');
   const [todoId, setTodoId] = React.useState('');
   const [listItemInfo, setListItemInfo] = React.useState({

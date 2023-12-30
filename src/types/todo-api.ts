@@ -22,10 +22,10 @@ export interface EditTodoParamsType {
 export interface TODO_RESPONSE_TYPE {
   code: number;
   message: string;
-  list: List[];
+  list: Todo_List_Item[];
 }
 
-interface List {
+export interface Todo_List_Item {
   id: string;
   content: string;
   user_id: string;

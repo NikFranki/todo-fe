@@ -20,10 +20,18 @@ import Home from './pages/home';
 import Profile from './pages/profile';
 import ErrorPage from './error-page';
 import useGlobalContextDispatch from './hooks/use-global-context-dispatch';
+import type { ValuesType } from './hooks/use-global-context-dispatch';
 
 import './App.scss';
+import { EditTodoParamsType } from './types/todo-api';
 
-const ProtectedRoute = ({ isAllowed, children, redirectPath = '/login' }: any) => {
+const ProtectedRoute = (
+  {
+    isAllowed,
+    children,
+    redirectPath = '/login'
+  }: { isAllowed: boolean; children?: JSX.Element; redirectPath?: string }
+) => {
   if (!isAllowed) {
     return <Navigate to={redirectPath} replace />;
   }
@@ -33,10 +41,10 @@ const ProtectedRoute = ({ isAllowed, children, redirectPath = '/login' }: any) =
 
 function App() {
   const values = useGlobalContextDispatch();
-  const { authenticatedLoading, userInfo, onUserInfoChange } = values as any;
+  const { authenticatedLoading, userInfo, onUserInfoChange } = values as ValuesType;
   const [api, contextHolder] = notification.useNotification();
 
-  const openNotification = (todoItem: any, index: any) => {
+  const openNotification = (todoItem: EditTodoParamsType, index: number) => {
     return new Promise((resolve, reject) => {
       try {
         const time = index * 500;
@@ -104,10 +112,10 @@ function App() {
   const roles = ['admin'];
 
   return (
-    <TodoContext.Provider value={values as any}>
+    <TodoContext.Provider value={values}>
       <Router>
         <Routes>
-          <Route element={<ProtectedRoute isAllowed={userInfo.username} />}>
+          <Route element={<ProtectedRoute isAllowed={!!userInfo.username} />}>
             <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
           </Route>
           <Route
@@ -116,7 +124,7 @@ function App() {
               <ProtectedRoute
                 redirectPath="/"
                 isAllowed={
-                  userInfo.username &&
+                  !!userInfo.username &&
                   permissions.includes('analyze') &&
                   roles.includes('admin')
                 }
