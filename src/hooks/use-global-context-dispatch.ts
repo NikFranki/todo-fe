@@ -3,15 +3,16 @@ import React from 'react';
 import { fetchTodoList } from '@api/todo';
 import { searchUser } from '@api/user';
 import { fetchList } from '@api/list';
+import { TODO_RESPONSE_TYPE } from '@/types/todo-api';
 
 const useGlobalContextDispatch = () => {
   const [userInfo, setUserInfo] = React.useState({});
   const [list, setList] = React.useState([]);
   const [fixedList, setFixedList] = React.useState([]);
   const [otherlist, setOtherList] = React.useState([]);
-  const [todo, setTodo] = React.useState([]);
+  const [todo, setTodo] = React.useState<TODO_RESPONSE_TYPE['list']>([]);
   const [searchText, setSearchText] = React.useState('');
-  const [todoId, setTodoId] = React.useState<number | undefined>(undefined);
+  const [todoId, setTodoId] = React.useState('');
   const [listItemInfo, setListItemInfo] = React.useState({
     id: 1,
     name: 'My Day',
@@ -38,19 +39,22 @@ const useGlobalContextDispatch = () => {
       id: todoId,
       ...params,
     };
-    const res = await fetchTodoList(newParams) as any;
+    const res = await fetchTodoList(newParams);
     setTodo(res.list);
   };
 
-  const onSetTodoId = (todoId: any) => {
+  const onSetTodoId = (todoId: string) => {
     setTodoId(todoId);
   };
 
-  const onSetListItemInfo = (listId: any) => {
-    setListItemInfo(listId);
+  const onSetListItemInfo = (info: {
+    id: number;
+    name: string;
+  }) => {
+    setListItemInfo(info);
   };
 
-  const onSetSearchText = (searchText: any) => {
+  const onSetSearchText = (searchText: string) => {
     setSearchText(searchText);
   };
 

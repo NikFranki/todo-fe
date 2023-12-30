@@ -18,3 +18,37 @@ export interface EditTodoParamsType {
   update_time?: string;
   subtask?: any[];
 }
+
+export interface TODO_RESPONSE_TYPE {
+  code: number;
+  message: string;
+  list: List[];
+}
+
+interface List {
+  id: string;
+  content: string;
+  user_id: string;
+  list_id: number;
+  added_my_day: number;
+  marked_as_important: number;
+  marked_as_completed: number;
+  reminder: string;
+  due_date: string;
+  repeated: number;
+  file: any;
+  note: string;
+  category: string;
+  create_time: string;
+  update_time: string;
+  subtask: Subtask[];
+}
+
+interface Subtask {
+  id: number;
+  content: string;
+  todo_id: string;
+  marked_as_completed: number;
+  create_time: string;
+  update_time: string;
+}
