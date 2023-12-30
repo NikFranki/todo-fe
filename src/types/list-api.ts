@@ -1,4 +1,4 @@
-export interface ListResponseType {
+export interface ListItemType {
   id: number;
   name: string;
   index_order: number;
@@ -6,4 +6,10 @@ export interface ListResponseType {
   create_time: string;
   update_time: string;
   number: number;
+}
+
+export interface LIST_RESPONSE_TYPE {
+  code: number;
+  message: string;
+  list: ListItemType[];
 }

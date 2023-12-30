@@ -4,12 +4,13 @@ import { fetchTodoList } from '@api/todo';
 import { searchUser } from '@api/user';
 import { fetchList } from '@api/list';
 import { TODO_RESPONSE_TYPE } from '@/types/todo-api';
+import { ListItemType } from '@/types/list-api';
 
 const useGlobalContextDispatch = () => {
   const [userInfo, setUserInfo] = React.useState({});
-  const [list, setList] = React.useState([]);
-  const [fixedList, setFixedList] = React.useState([]);
-  const [otherlist, setOtherList] = React.useState([]);
+  const [list, setList] = React.useState<ListItemType[]>([]);
+  const [fixedList, setFixedList] = React.useState<ListItemType[]>([]);
+  const [otherlist, setOtherList] = React.useState<ListItemType[]>([]);
   const [todo, setTodo] = React.useState<TODO_RESPONSE_TYPE['list']>([]);
   const [searchText, setSearchText] = React.useState('');
   const [todoId, setTodoId] = React.useState('');
@@ -59,7 +60,7 @@ const useGlobalContextDispatch = () => {
   };
 
   const onFetchList = async () => {
-    const res = await fetchList({}) as any;
+    const res = await fetchList({});
     setFixedList(res.list.slice(0, 5));
     setOtherList(res.list.slice(5));
     setList(res.list);
