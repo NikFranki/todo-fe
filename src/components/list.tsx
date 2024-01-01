@@ -7,8 +7,27 @@ import { ItemTypes, FIXED_LIST_ITEM_TASKS } from '@constant/index';
 import { updateListByDragAndDrop } from '@api/list';
 
 import ListItem from './list-item';
+import { ListItemType } from '@/types/list-api';
 
-const List = (props: any) => {
+interface PropsType {
+  sbotherList: ListItemType[];
+  editInfo: {
+    editable: boolean;
+    clikedId: string;
+    reListName: string;
+  };
+  handleListItemClick: (item: ListItemType) => void;
+  handleContextMenu: (e: any, item: any) => void;
+  handleReListNameEnter: (e: any, item: any) => Promise<void>;
+  setEditInfo: React.Dispatch<React.SetStateAction<{
+    editable: boolean;
+    clikedId: string;
+    reListName: string;
+  }>>;
+  setSbotherlist: React.Dispatch<React.SetStateAction<ListItemType[]>>;
+}
+
+const List = (props: PropsType) => {
   const {
     sbotherList,
     editInfo,
@@ -22,8 +41,8 @@ const List = (props: any) => {
   const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
 
   const findCard = React.useCallback(
-    (id: any) => {
-      const card = sbotherList.filter((c: any) => c.id === id)[0];
+    (id: number) => {
+      const card = sbotherList.filter((c) => c.id === id)[0];
       return {
         card,
         index: sbotherList.indexOf(card),
@@ -32,7 +51,7 @@ const List = (props: any) => {
     [sbotherList]
   );
   const moveCard = React.useCallback(
-    async (id: any, atIndex: any) => {
+    async (id: number, atIndex: number) => {
       const { card, index } = findCard(id);
       setSbotherlist(
         update(sbotherList, {
@@ -46,12 +65,12 @@ const List = (props: any) => {
     [findCard, sbotherList, setSbotherlist]
   );
   const moveEnd = React.useCallback(
-    async (prevIndex: any, currIndex: any) => {
+    async (prevIndex: number, currIndex: number) => {
       const startIndex = Math.min(prevIndex, currIndex);
       const endIndex = Math.max(prevIndex, currIndex);
       const newSBotherList = sbotherList
         .slice(startIndex, endIndex + 1)
-        .map((item: any, index: any) => {
+        .map((item, index) => {
           // due to fixed list, it has 5 five items, so here shoule be started with plus 6
           item.index_order = index + startIndex + FIXED_LIST_ITEM_TASKS + 1;
           return item;
@@ -65,7 +84,7 @@ const List = (props: any) => {
 
   return (
     <div ref={drop} className="other-list list-wrapper">
-      {sbotherList.map((listItem: any) => {
+      {sbotherList.map((listItem) => {
         const listItemProps = {
           listItem,
           editInfo,

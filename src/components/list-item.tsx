@@ -6,7 +6,23 @@ import { Input } from 'antd';
 import { ItemTypes } from '@constant/index';
 import listSvg from '@assets/images/list.svg';
 
-const ListItem = (props: any) => {
+interface PropsType {
+  listItem: any;
+  editInfo: any;
+  handleListItemClick: any;
+  handleContextMenu: any;
+  handleReListNameEnter: any;
+  setEditInfo: any;
+  moveCard: (id: any, atIndex: any) => Promise<void>;
+  findCard: (id: any) => {
+    card: any;
+    index: any;
+  };
+  moveEnd: (prevIndex: any, currIndex: any) => Promise<void>;
+}
+
+
+const ListItem = (props: PropsType) => {
   const {
     listItem,
     editInfo,
@@ -41,16 +57,16 @@ const ListItem = (props: any) => {
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.CARD,
-      hover({ id: draggedId }: { id: any }) {
+      hover({ id: draggedId }: { id: number; }) {
         if (draggedId !== id) {
           const { index: overIndex } = findCard(id);
           moveCard(draggedId, overIndex);
         }
       },
-      drop(item: any) {
+      drop(item: { originalIndex: number; }) {
         moveEnd(item.originalIndex, originalIndex);
       },
-      collect: (monitor: any) => ({
+      collect: (monitor: { isOver: () => void; canDrop: () => void; }) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
       }),

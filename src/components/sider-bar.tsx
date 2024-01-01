@@ -25,10 +25,11 @@ import plusSvg from '@assets/images/plus.svg';
 import List from './list';
 
 import './sider-bar.scss';
+import { ListItemType } from '@/types/list-api';
 
 const SiderBar = () => {
   const [sbfixedList, setSbfixedlist] = React.useState([]);
-  const [sbotherList, setSbotherlist] = React.useState([]);
+  const [sbotherList, setSbotherlist] = React.useState<ListItemType[]>([]);
 
   const [editInfo, setEditInfo] = React.useState({
     editable: false,
@@ -98,7 +99,7 @@ const SiderBar = () => {
     });
   };
 
-  const handleListItemClick = (item: any) => {
+  const handleListItemClick = (item: ListItemType) => {
     onFetchTodo({
       list_id: item.id,
     });
