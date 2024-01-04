@@ -11,4 +11,7 @@ export const register = (params: FormData): Promise<{
 
 export const searchUser = (params = {}) => instance.post('/user/searchUser', params);
 
-export const updateUser = (params: FormData) => instance.post('/user/update', params);
+export const updateUser = (params: FormData): Promise<{
+  code: number;
+  message: string;
+}> => instance.post('/user/update', params);

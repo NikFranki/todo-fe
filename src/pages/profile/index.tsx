@@ -49,14 +49,14 @@ const Profile = () => {
   const { userInfo, onUserInfoChange } = useGlobalContextInfo();
   const { username, avatar: userInfoAvatar } = userInfo;
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: { username: string; avatar: RcFile | null }) => {
     values.avatar = avatar;
     const formData = new FormData();
     formData.append('username', values.username);
     if (values.avatar) {
       formData.append('avatar', values.avatar);
     }
-    const res = await updateUser(formData) as any;
+    const res = await updateUser(formData);
     if (res.code !== 200) {
       message.error(res.message);
       return { ok: false };
