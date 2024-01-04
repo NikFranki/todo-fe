@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 
 export const BASE_URL =
   // eslint-disable-next-line no-undef
@@ -16,10 +16,10 @@ const instance = axios.create({
 
 // Add a request interceptor
 instance.interceptors.request.use(
-  function (config: any) {
+  function (config: AxiosRequestConfig) {
     // Do something before request is sent
     config.headers = { gfg_token_header_key: localStorage.getItem('token') };
-    return config;
+    return config as InternalAxiosRequestConfig<AxiosRequestConfig>;
   },
   function (error) {
     // Do something with request error
