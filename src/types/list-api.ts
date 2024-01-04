@@ -1,3 +1,5 @@
+import { JsxElement } from "typescript";
+
 export interface ListItemType {
   id: number;
   name: string;
@@ -6,6 +8,7 @@ export interface ListItemType {
   create_time: string;
   update_time: string;
   number: number;
+  icon?: JSX.Element;
 }
 
 export interface LIST_RESPONSE_TYPE {

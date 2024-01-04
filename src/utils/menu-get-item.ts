@@ -3,10 +3,10 @@ function getItem(
   key: string,
   icon?: any,
   children?: {
+    label: string;
     key: string;
     icon?: any;
     children?: any;
-    label: string;
     type?: string;
   }[],
   type?: string

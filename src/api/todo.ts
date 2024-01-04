@@ -8,7 +8,7 @@ export const fetchTodoList = (params: {
   id: string | undefined;
 }): Promise<TODO_RESPONSE_TYPE> => instance.post('/todo/list', params);
 
-export const fetchTodoItem = (params: { id: number }) =>
+export const fetchTodoItem = (params: { id: string }) =>
   instance.post('/todo/get_list_by_id', params);
 
 export const addTodo = (params: {
