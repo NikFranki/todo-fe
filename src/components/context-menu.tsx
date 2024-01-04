@@ -1,9 +1,12 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
+import { MenuItemType, SubMenuType } from 'antd/es/menu/hooks/useItems';
+
+export type MyMenuItemType = MenuItemType | SubMenuType;
 
 const ContextMenu = (props: {
-  items: any;
+  items: MyMenuItemType[];
   visible: boolean;
   points: { x: number; y: number };
   onMenuClick?: (info: MenuInfo) => void;

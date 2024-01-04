@@ -1,11 +1,11 @@
 function getItem(
   label: string,
   key: string,
-  icon?: any,
+  icon?: JSX.Element,
   children?: {
     label: string;
     key: string;
-    icon?: any;
+    icon?: JSX.Element;
     children?: any;
     type?: string;
   }[],

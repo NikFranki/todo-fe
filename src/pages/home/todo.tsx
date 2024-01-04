@@ -5,7 +5,7 @@ import Icon, { DownOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 
-import ContextMenu from '@components/context-menu';
+import ContextMenu, { MyMenuItemType } from '@components/context-menu';
 import { fetchTodoItem, addTodo, editTodo, deleteTodo } from '@api/todo';
 import useGlobalContextInfo from '@/hooks/use-global-context-info';
 import useContextMenu from '@hooks/use-context-menu';
@@ -445,7 +445,7 @@ const Todo = () => {
       'delete',
       <Icon component={() => <img src={deleteSvg} />} />
     ),
-  ];
+  ] as MyMenuItemType[];
   const handleMenuClick = async (info: MenuInfo) => {
     if (info.keyPath.includes('added_my_day')) {
       updateTodo({
