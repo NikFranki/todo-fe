@@ -15,8 +15,8 @@ const Login = () => {
 
   const { onUserInfoChange } = useGlobalContextInfo();
 
-  const onFinish = async (values: any) => {
-    const res = await login(values) as any;
+  const onFinish = async (values: { username: string; password: string; }) => {
+    const res = await login(values);
     if (res.code !== 200) {
       message.error(res.message);
       return { ok: false };
