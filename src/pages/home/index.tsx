@@ -28,7 +28,7 @@ function Home() {
     await onFetchList();
   };
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const content = e.target.value;
     onSetSearchText(content);
     onFetchTodo({ content });
