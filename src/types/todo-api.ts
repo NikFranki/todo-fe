@@ -11,7 +11,8 @@ export interface EditTodoParamsType {
   reminder?: string;
   due_date?: string;
   repeated?: number;
-  file?: File;
+  file?: File | string | null;
+  removed_file?: string;
   note?: string;
   category?: string;
   create_time?: string;
@@ -36,7 +37,7 @@ export interface Todo_List_Item {
   reminder: string;
   due_date: string;
   repeated: number;
-  file: File;
+  file?: string;
   note: string;
   category: string;
   create_time: string;
@@ -44,7 +45,7 @@ export interface Todo_List_Item {
   subtask: Subtask[];
 }
 
-interface Subtask {
+export interface Subtask {
   id: number;
   content: string;
   todo_id: string;

@@ -1,4 +1,4 @@
-const downloadFile = (data: any, name = 'todos.xlsx') => {
+const downloadFile = (data: Blob, name = 'todos.xlsx') => {
   const url = URL.createObjectURL(data);
   const aTag = document.createElement('a');
   aTag.setAttribute('download', name);

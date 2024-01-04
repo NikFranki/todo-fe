@@ -1,16 +1,14 @@
-function getItem(
-  label: string,
-  key: string,
-  icon?: JSX.Element,
-  children?: {
-    label: string;
-    key: string;
-    icon?: JSX.Element;
-    children?: any;
-    type?: string;
-  }[],
-  type?: string
-) {
+interface ParamsType {
+  label: string;
+  key: string;
+  icon?: JSX.Element;
+  children?: ParamsType[];
+  type?: string;
+}
+
+function getItem(obj: ParamsType) {
+  const { label, key, icon, children, type } = obj;
+
   return {
     key,
     icon,
@@ -19,4 +17,5 @@ function getItem(
     type,
   };
 }
+
 export default getItem;

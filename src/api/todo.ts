@@ -23,7 +23,7 @@ export const editTodo = (params: EditTodoParamsType | FormData) => instance.post
 
 export const importTodo = (params: FormData) => instance.post('/todo/import', params);
 
-export const exportTodo = () =>
+export const exportTodo = (): Promise<Blob> =>
   instance.get('/todo/export', { responseType: 'blob' });
 
 export const deleteTodo = (params: { id: string }) => instance.post('/todo/delete', params);

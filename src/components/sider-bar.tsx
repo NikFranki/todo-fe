@@ -228,7 +228,7 @@ const SiderBar = () => {
         />
       </div>
       <ContextMenu
-        items={[getItem('Delete', 'delete'), getItem('Edit', 'edit')]}
+        items={[getItem({ label: 'Delete', key: 'delete' }), getItem({ label: 'Edit', key: 'edit' })]}
         visible={visible}
         points={points}
         onMenuClick={handleMenuClick}

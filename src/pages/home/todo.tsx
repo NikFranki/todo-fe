@@ -46,7 +46,7 @@ import listSvg from '@assets/images/list.svg';
 import getDateDayText from '@/utils/get-date-day-text';
 
 import TodoDrawer from './todo-drawer';
-import { EditTodoParamsType, Todo_List_Item } from '@/types/todo-api';
+import { EditTodoParamsType, Subtask, Todo_List_Item } from '@/types/todo-api';
 import { MenuInfo } from 'rc-menu/lib/interface';
 
 const COLOR_TEXT = {
@@ -63,7 +63,7 @@ const Todo = () => {
   const [clickedTodo, setClickedTodo] = React.useState<Todo_List_Item>({} as Todo_List_Item);
   const inputRef = React.useRef<InputRef | null>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [clickedSteps, setClickedSteps] = React.useState([]);
+  const [clickedSteps, setClickedSteps] = React.useState<Subtask[]>([]);
 
   const TODO_CONTEXT_MENU_HEIGHT = 327;
   const { visible, points, setPoints, onContextMenuOpen } = useContextMenu({
@@ -391,59 +391,75 @@ const Todo = () => {
   });
   const moveToSubItems = [...decoratedTasklist, ...decoratedOtherlist]
     .filter((item) => item.id !== listItemInfo.id)
-    .map((item) => getItem(item.name, `${item.id}`, item.icon));
+    .map((item) => getItem({ label: item.name, key: `${item.id}`, icon: item.icon }));
   const items = [
     getItem(
-      clickedTodo.added_my_day === ADDED_MY_DAY
-        ? 'Remove from My Day'
-        : 'Add to My Day',
-      'added_my_day',
-      <Icon component={() => <img src={myDaySmallSvg} />} />
+      {
+        label: clickedTodo.added_my_day === ADDED_MY_DAY
+          ? 'Remove from My Day'
+          : 'Add to My Day',
+        key: 'added_my_day',
+        icon: <Icon component={() => <img src={myDaySmallSvg} />} />
+      }
     ),
     getItem(
-      clickedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
-        ? 'Mark as important'
-        : 'Remove importance',
-      'marked_as_important',
-      <Icon component={() => <img src={imporantSvg} />} />
+      {
+        label: clickedTodo.marked_as_important === MARKED_AS_UNIMPORTANT
+          ? 'Mark as important'
+          : 'Remove importance',
+        key: 'marked_as_important',
+        icon: <Icon component={() => <img src={imporantSvg} />} />
+      }
     ),
     getItem(
-      clickedTodo.marked_as_completed === MARKED_AS_COMPLETED
-        ? 'Mark as not completed'
-        : 'Mark as completed',
-      'marked_as_completed',
-      <Icon component={() => <img src={checkedGreySvg} />} />
+      {
+        label: clickedTodo.marked_as_completed === MARKED_AS_COMPLETED
+          ? 'Mark as not completed'
+          : 'Mark as completed',
+        key: 'marked_as_completed',
+        icon: <Icon component={() => <img src={checkedGreySvg} />} />
+      }
     ),
     { type: 'divider' },
     getItem(
-      'Due today',
-      'due_today',
-      <Icon component={() => <img src={dueTodaySvg} />} />
+      {
+        label: 'Due today',
+        key: 'due_today',
+        icon: <Icon component={() => <img src={dueTodaySvg} />} />
+      }
     ),
     getItem(
-      'Due tomorrow',
-      'due_tomorrow',
-      <Icon component={() => <img src={dueTomorrowSvg} />} />
+      {
+        label: 'Due tomorrow',
+        key: 'due_tomorrow',
+        icon: <Icon component={() => <img src={dueTomorrowSvg} />} />
+      }
     ),
     clickedTodo.due_date
       ? getItem(
-        'Remove due date',
-        'remove_due_date',
-        <Icon component={() => <img src={removeDueDateSvg} />} />
+        {
+          label: 'Remove due date',
+          key: 'remove_due_date',
+          icon: <Icon component={() => <img src={removeDueDateSvg} />} />
+        }
       )
       : null,
     { type: 'divider' },
     getItem(
-      'Move task to...',
-      'move',
-      <Icon component={() => <img src={moveToSvg} />} />,
-      moveToSubItems
+      {
+        label: 'Move task to...',
+        key: 'move',
+        icon: <Icon component={() => <img src={moveToSvg} />} />,
+        children: moveToSubItems
+      }
     ),
     { type: 'divider' },
     getItem(
-      'Delete',
-      'delete',
-      <Icon component={() => <img src={deleteSvg} />} />
+      {
+        label: 'Delete',
+        key: 'delete',
+        icon: <Icon component={() => <img src={deleteSvg} />} />
+      }
     ),
   ] as MyMenuItemType[];
   const handleMenuClick = async (info: MenuInfo) => {
