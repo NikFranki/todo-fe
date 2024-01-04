@@ -1,24 +1,33 @@
 import React from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import { DropTargetHookSpec, FactoryOrInstance, useDrag, useDrop } from 'react-dnd';
 
 import { Input } from 'antd';
 
 import { ItemTypes } from '@constant/index';
 import listSvg from '@assets/images/list.svg';
+import { ListItemType } from '@/types/list-api';
 
 interface PropsType {
-  listItem: any;
-  editInfo: any;
-  handleListItemClick: any;
-  handleContextMenu: any;
-  handleReListNameEnter: any;
-  setEditInfo: any;
-  moveCard: (id: any, atIndex: any) => Promise<void>;
-  findCard: (id: any) => {
-    card: any;
-    index: any;
+  listItem: ListItemType;
+  editInfo: {
+    editable: boolean;
+    clikedId: number;
+    reListName: string;
   };
-  moveEnd: (prevIndex: any, currIndex: any) => Promise<void>;
+  handleListItemClick: (item: ListItemType) => void;
+  handleContextMenu: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, item: ListItemType) => void;
+  handleReListNameEnter: (e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>, item: ListItemType) => Promise<void>;
+  setEditInfo: React.Dispatch<React.SetStateAction<{
+    editable: boolean;
+    clikedId: number;
+    reListName: string;
+  }>>;
+  moveCard: (id: number, atIndex: number) => Promise<void>;
+  findCard: (id: number) => {
+    card: ListItemType;
+    index: number;
+  };
+  moveEnd: (prevIndex: number, currIndex: number) => Promise<void>;
 }
 
 
@@ -70,7 +79,7 @@ const ListItem = (props: PropsType) => {
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
       }),
-    }) as any,
+    }) as DropTargetHookSpec<unknown, unknown, unknown>,
     [findCard, moveCard]
   );
   const opacity = isDragging ? 0 : 1;

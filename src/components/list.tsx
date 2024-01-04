@@ -13,15 +13,15 @@ interface PropsType {
   sbotherList: ListItemType[];
   editInfo: {
     editable: boolean;
-    clikedId: string;
+    clikedId: number;
     reListName: string;
   };
   handleListItemClick: (item: ListItemType) => void;
-  handleContextMenu: (e: React.MouseEvent<HTMLLIElement, MouseEvent>, item: ListItemType) => void;
-  handleReListNameEnter: (e: React.FocusEvent<HTMLInputElement>, item: ListItemType) => Promise<void>;
+  handleContextMenu: (e: React.MouseEvent<HTMLLIElement | HTMLDivElement, MouseEvent>, item: ListItemType) => void;
+  handleReListNameEnter: (e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>, item: ListItemType) => Promise<void>;
   setEditInfo: React.Dispatch<React.SetStateAction<{
     editable: boolean;
-    clikedId: string;
+    clikedId: number;
     reListName: string;
   }>>;
   setSbotherlist: React.Dispatch<React.SetStateAction<ListItemType[]>>;
