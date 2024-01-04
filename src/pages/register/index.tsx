@@ -42,9 +42,11 @@ const tailFormItemLayout = {
 const Register = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [avatar, setAvater] = React.useState(null);
+  const [avatar, setAvater] = React.useState<File | null>(null);
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (
+    values: { username: string; password: string; repassword: string; avatar: File | null }
+  ) => {
     values.avatar = avatar;
     const formData = new FormData();
     formData.append('username', values.username);
@@ -53,7 +55,7 @@ const Register = () => {
     if (values.avatar) {
       formData.append('avatar', values.avatar);
     }
-    const res = await register(formData) as any;
+    const res = await register(formData);
     if (res.code !== 200) {
       message.error(res.message);
       return { ok: false };
@@ -147,7 +149,7 @@ const Register = () => {
               listType="picture-card"
               maxCount={1}
               accept=".jpg, .png"
-              beforeUpload={(file: any) => {
+              beforeUpload={(file) => {
                 if (file) {
                   setAvater(file);
                 }

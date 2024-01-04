@@ -4,7 +4,10 @@ export const login = (params: { username: string; password: string; }) => instan
 
 export const logout = (params = {}) => instance.post('/user/logout', params);
 
-export const register = (params: FormData) => instance.post('/user/register', params);
+export const register = (params: FormData): Promise<{
+  code: number;
+  message: string;
+}> => instance.post('/user/register', params);
 
 export const searchUser = (params = {}) => instance.post('/user/searchUser', params);
 
