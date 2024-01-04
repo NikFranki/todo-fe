@@ -1,10 +1,11 @@
 import React from 'react';
 
 import Icon from '@ant-design/icons';
-import { Space, Input, Divider, Button } from 'antd';
+import { Space, Input, Divider, Button, InputRef } from 'antd';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { MenuInfo } from 'rc-menu/lib/interface';
 
 import _ from 'lodash';
 
@@ -28,12 +29,12 @@ import './sider-bar.scss';
 import { ListItemType } from '@/types/list-api';
 
 const SiderBar = () => {
-  const [sbfixedList, setSbfixedlist] = React.useState([]);
+  const [sbfixedList, setSbfixedlist] = React.useState<ListItemType[]>([]);
   const [sbotherList, setSbotherlist] = React.useState<ListItemType[]>([]);
 
   const [editInfo, setEditInfo] = React.useState({
     editable: false,
-    clikedId: '',
+    clikedId: -1,
     reListName: '',
   });
 
@@ -48,31 +49,31 @@ const SiderBar = () => {
     onFetchList,
     onFetchTodo,
     onSetListItemInfo,
-  } = useGlobalContextInfo() as any;
+  } = useGlobalContextInfo();
 
-  const listFactor = list.reduce((acc: any, prev: any) => {
+  const listFactor = list.reduce((acc, prev) => {
     acc += `${prev.id}-${prev.name}-${prev.number}`;
     return acc;
   }, '');
   React.useEffect(() => {
     if (!list.length) return;
-    const newFixedList = fixedList.map((item: any) => {
+    const newFixedList = fixedList.map((item) => {
       return {
         ...item,
-        icon: (LIST_ICON_MAP as any)[item.id],
+        icon: LIST_ICON_MAP[item.id as keyof typeof LIST_ICON_MAP],
       };
     });
     setSbfixedlist(newFixedList);
 
     setSbotherlist(
-      otherlist.map((item: any) => {
+      otherlist.map((item) => {
         return _.omit(item, 'icon');
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listFactor]);
 
-  const handleFixedItemClick = (item: any) => {
+  const handleFixedItemClick = (item: ListItemType) => {
     onFetchTodo({
       list_id: item.id,
     });
@@ -83,7 +84,7 @@ const SiderBar = () => {
   };
 
   const renderFixedList = () => {
-    return sbfixedList.map((item: any) => {
+    return sbfixedList.map((item) => {
       return (
         <div key={item.id} className="shortcut-menu">
           <Button
@@ -108,24 +109,25 @@ const SiderBar = () => {
       name: item.name,
     });
   };
-  const handleReListNameEnter = async (e: any, item: any) => {
-    await updateList({ id: item.id, name: e.target.value });
+  const handleReListNameEnter = async (e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>, item: ListItemType) => {
+    const value = (e.target as HTMLInputElement).value;
+    await updateList({ id: item.id, name: value });
     await onFetchList();
     setEditInfo({
       ...editInfo,
       editable: false,
-      clikedId: '',
+      clikedId: -1,
       reListName: '',
     });
     if (listItemInfo.id === item.id) {
       onSetListItemInfo({
         id: item.id,
-        name: e.target.value,
+        name: value,
       });
     }
   };
 
-  const handleContextMenu = (e: any, item: any) => {
+  const handleContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, item: ListItemType) => {
     e.preventDefault();
     onContextMenuOpen(e);
 
@@ -136,21 +138,21 @@ const SiderBar = () => {
       reListName: item.name,
     });
   };
-  const handleMenuClick = async (e: any) => {
-    if (e.keyPath.includes('delete')) {
+  const handleMenuClick = async (info: MenuInfo) => {
+    if (info.keyPath.includes('delete')) {
       const deletedIndex = list.findIndex(
-        (item: any) => item.id === editInfo.clikedId
+        (item) => item.id === editInfo.clikedId
       );
       const currentListItem = list[deletedIndex - 1];
       await deleteList({
         id: editInfo.clikedId,
       });
-      const deletedIndexOrder = (sbotherList as any).find(
-        (item: any) => item.id === editInfo.clikedId
-      ).index_order;
+      const deletedIndexOrder = sbotherList.find(
+        (item) => item.id === editInfo.clikedId
+      )?.index_order as number;
       const newSBotherList = sbotherList
         .slice(deletedIndex - 5 + 1)
-        .map((item: any, index) => {
+        .map((item, index) => {
           item.index_order = index + deletedIndexOrder;
           return item;
         });
@@ -167,23 +169,25 @@ const SiderBar = () => {
         name: currentListItem.name,
       });
     }
-    if (e.keyPath.includes('edit')) {
+    if (info.keyPath.includes('edit')) {
       setEditInfo({ ...editInfo, editable: true });
     }
   };
 
   const [listName, setListName] = React.useState('');
-  const inputRef = React.useRef<any>(null);
-  const handleInput = (e: any) => {
+  const inputRef = React.useRef<InputRef | null>(null);
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setListName(e.target.value);
   };
-  const handlePressEnter = async (e: any) => {
-    await addList({ name: e.target.value });
+  const handlePressEnter = async () => {
+    if (!inputRef.current?.input?.value) return;
+
+    await addList({ name: inputRef.current?.input?.value });
     await onFetchList();
     setListName('');
-    inputRef.current.blur();
+    inputRef.current?.blur();
     setTimeout(() => {
-      const listElement = document.querySelector('.other-list')?.parentElement as any;
+      const listElement = document.querySelector('.other-list')?.parentElement as HTMLUListElement;
       listElement.scrollTop = listElement?.scrollHeight;
     }, 50);
   };

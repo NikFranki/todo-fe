@@ -5,9 +5,9 @@ export const fetchList = (params = {}): Promise<LIST_RESPONSE_TYPE> => instance.
 
 export const addList = (params: { name: string; }) => instance.post('/list/add', params);
 
-export const updateList = (params: { id: string, name: string }) => instance.post('/list/update', params);
+export const updateList = (params: { id: number, name: string }) => instance.post('/list/update', params);
 
 export const updateListByDragAndDrop = (params: { list: ListItemType[] }) =>
   instance.post('/list/update-by-drag-and-drop', params);
 
-export const deleteList = (params: { id: string }) => instance.post('/list/delete', params);
+export const deleteList = (params: { id: number }) => instance.post('/list/delete', params);
