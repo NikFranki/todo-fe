@@ -15,7 +15,7 @@ import {
   updateListByDragAndDrop,
   deleteList,
 } from '@api/list';
-import useContextInfo from '@hooks/use-context-info';
+import useGlobalContextInfo from '@/hooks/use-global-context-info';
 import getItem from '@utils/menu-get-item';
 import useContextMenu from '@hooks/use-context-menu';
 import { LIST_ICON_MAP } from '@constant/index';
@@ -48,7 +48,7 @@ const SiderBar = () => {
     onFetchList,
     onFetchTodo,
     onSetListItemInfo,
-  } = useContextInfo() as any;
+  } = useGlobalContextInfo() as any;
 
   const listFactor = list.reduce((acc: any, prev: any) => {
     acc += `${prev.id}-${prev.name}-${prev.number}`;

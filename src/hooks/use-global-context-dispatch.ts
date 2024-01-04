@@ -6,7 +6,7 @@ import { fetchList } from '@api/list';
 import { Todo_List_Item } from '@/types/todo-api';
 import { ListItemType } from '@/types/list-api';
 
-export interface ValuesType {
+export interface GlobalContextType {
   userInfo: {
     username: string;
     avatar: string;
@@ -25,8 +25,8 @@ export interface ValuesType {
   onUserInfoChange: () => Promise<void>;
   onFetchList: () => Promise<void>;
   onFetchTodo: (params: {
-    list_id: number;
-    content: string;
+    list_id?: number;
+    content?: string;
   }) => Promise<void>;
   onSetTodoId: (todoId: string) => void;
   onSetSearchText: (searchText: string) => void;
@@ -70,8 +70,8 @@ const useGlobalContextDispatch = () => {
   };
 
   const onFetchTodo = async (params: {
-    list_id: number,
-    content: string
+    list_id?: number,
+    content?: string
   }) => {
     const newParams = {
       id: todoId,

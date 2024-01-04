@@ -13,14 +13,14 @@ import { LoadingOutlined } from '@ant-design/icons';
 import io from 'socket.io-client';
 
 import { BASE_URL } from '@utils/request';
-import TodoContext from './utils/todo-context';
+import GlobalContext from './utils/global-context';
 import Register from './pages/register';
 import Login from './pages/login';
 import Home from './pages/home';
 import Profile from './pages/profile';
 import ErrorPage from './error-page';
 import useGlobalContextDispatch from './hooks/use-global-context-dispatch';
-import type { ValuesType } from './hooks/use-global-context-dispatch';
+import type { GlobalContextType } from './hooks/use-global-context-dispatch';
 
 import './App.scss';
 import { EditTodoParamsType } from './types/todo-api';
@@ -41,7 +41,7 @@ const ProtectedRoute = (
 
 function App() {
   const values = useGlobalContextDispatch();
-  const { authenticatedLoading, userInfo, onUserInfoChange } = values as ValuesType;
+  const { authenticatedLoading, userInfo, onUserInfoChange } = values as GlobalContextType;
   const [api, contextHolder] = notification.useNotification();
 
   const openNotification = (todoItem: EditTodoParamsType, index: number) => {
@@ -112,7 +112,7 @@ function App() {
   const roles = ['admin'];
 
   return (
-    <TodoContext.Provider value={values}>
+    <GlobalContext.Provider value={values}>
       <Router>
         <Routes>
           <Route element={<ProtectedRoute isAllowed={!!userInfo.username} />}>
@@ -138,7 +138,7 @@ function App() {
         </Routes>
       </Router>
       {contextHolder}
-    </TodoContext.Provider>
+    </GlobalContext.Provider>
   );
 }
 

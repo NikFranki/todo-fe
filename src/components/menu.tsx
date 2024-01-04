@@ -6,14 +6,14 @@ import { Dropdown, Space, Avatar, message, Upload } from 'antd';
 import { logout } from '@api/user';
 import { importTodo, exportTodo } from '@api/todo';
 import downloadFile from '@utils/download-file';
-import TodoContext from '@utils/todo-context';
 
 import './menu.scss';
+import useGlobalContextInfo from '@/hooks/use-global-context-info';
 
 const Menu = () => {
   const navigate = useNavigate();
 
-  const { userInfo } = React.useContext<any>(TodoContext);
+  const { userInfo } = useGlobalContextInfo();
   const { username, avatar } = userInfo;
   const userLogined = userInfo.username;
 

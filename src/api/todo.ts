@@ -3,8 +3,8 @@ import { EditTodoParamsType, TODO_RESPONSE_TYPE } from '@/types/todo-api';
 import instance from '@utils/request';
 
 export const fetchTodoList = (params: {
-  list_id: number;
-  content: string;
+  list_id?: number;
+  content?: string;
   id: string | undefined;
 }): Promise<TODO_RESPONSE_TYPE> => instance.post('/todo/list', params);
 

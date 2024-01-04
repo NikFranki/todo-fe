@@ -8,7 +8,7 @@ import _ from 'lodash';
 import Menu from '@components/menu';
 import Todo from './todo';
 import SiderBar from '@components/sider-bar';
-import useContextInfo from '@hooks/use-context-info';
+import useGlobalContextInfo from '@/hooks/use-global-context-info';
 import { FIXED_LIST_ITEM_MY_DAY } from '@constant/index';
 
 import './home.scss';
@@ -16,7 +16,7 @@ import './home.scss';
 const { Header, Footer, Sider, Content } = Layout;
 
 function Home() {
-  const { onFetchTodo, onFetchList, onSetSearchText } = useContextInfo() as any;
+  const { onFetchTodo, onFetchList, onSetSearchText } = useGlobalContextInfo();
 
   React.useEffect(() => {
     sequenceRequest();

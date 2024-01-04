@@ -4,15 +4,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 
-import TodoContext from '@utils/todo-context';
+import GlobalContext from '@/utils/global-context';
 import { login } from '@api/user';
 
 import './index.scss';
+import useGlobalContextInfo from '@/hooks/use-global-context-info';
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const { onUserInfoChange } = React.useContext(TodoContext) as any;
+  const { onUserInfoChange } = useGlobalContextInfo();
 
   const onFinish = async (values: any) => {
     const res = await login(values) as any;

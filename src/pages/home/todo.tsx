@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 import ContextMenu from '@components/context-menu';
 import { fetchTodoItem, addTodo, editTodo, deleteTodo } from '@api/todo';
-import useContextInfo from '@hooks/use-context-info';
+import useGlobalContextInfo from '@/hooks/use-global-context-info';
 import useContextMenu from '@hooks/use-context-menu';
 import getItem from '@utils/menu-get-item';
 import {
@@ -86,10 +86,10 @@ const Todo = () => {
     onFetchTodo,
     onFetchList,
     onSetTodoId,
-  } = useContextInfo() as any;
+  } = useGlobalContextInfo();
 
   React.useEffect(() => {
-    onSetTodoId(undefined);
+    onSetTodoId('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Upload, message } from 'antd';
 
-import TodoContext from '@utils/todo-context';
 import { updateUser } from '@api/user';
 
 import './index.scss';
+import type { RcFile } from 'antd/es/upload';
+import useGlobalContextInfo from '@/hooks/use-global-context-info';
 
 const formItemLayout = {
   labelCol: {
@@ -43,9 +44,9 @@ const tailFormItemLayout = {
 const Profile = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [avatar, setAvater] = React.useState(null);
+  const [avatar, setAvater] = React.useState<RcFile | null>(null);
 
-  const { userInfo, onUserInfoChange } = React.useContext(TodoContext) as any;
+  const { userInfo, onUserInfoChange } = useGlobalContextInfo();
   const { username, avatar: userInfoAvatar } = userInfo;
 
   const onFinish = async (values: any) => {
@@ -121,7 +122,7 @@ const Profile = () => {
             listType="picture-card"
             maxCount={1}
             accept=".jpg, .png"
-            beforeUpload={(file: any) => {
+            beforeUpload={(file: RcFile) => {
               if (file) {
                 console.log('file', file);
                 setAvater(file);
