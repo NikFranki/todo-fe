@@ -115,7 +115,8 @@ const TodoDrawer = (props: TodoDrawerProps) => {
     [x: string]: boolean;
   }>({});
   const [addedStep, setAddedStep] = React.useState('');
-  const [clickedSubtask, setClickedSubtask] = React.useState<Subtask>({} as Subtask);
+  const [clickedSubtask, setClickedSubtask] =
+    React.useState<Subtask>({} as Subtask);
   const [todoContentFocus, setTodoContentFocus] = React.useState(false);
 
   const closeDrawer = () => {
@@ -275,7 +276,9 @@ const TodoDrawer = (props: TodoDrawerProps) => {
     onClickedTodo(data);
   };
 
-  const handleNoteInputChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleNoteInputChange = async (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const value = e.target.value;
     const newClickedTodo = { ...clickedTodo };
     newClickedTodo.note = value;
@@ -343,8 +346,8 @@ const TodoDrawer = (props: TodoDrawerProps) => {
             onChange={completeTodoInDrawer}
           />
           <div
-            className={`content ${clickedTodo.marked_as_completed ? 'completed' : 'uncompleted'
-              }`}
+            // eslint-disable-next-line max-len
+            className={`content ${clickedTodo.marked_as_completed ? 'completed' : 'uncompleted'}`}
           >
             {todoContentFocus ? (
               <Input
@@ -426,8 +429,8 @@ const TodoDrawer = (props: TodoDrawerProps) => {
           )}
         />
         <span
-          className={`text ${clickedTodo.added_my_day === ADDED_MY_DAY ? 'added' : ''
-            }`}
+          // eslint-disable-next-line max-len
+          className={`text ${clickedTodo.added_my_day === ADDED_MY_DAY ? 'added' : ''}`}
         >
           {clickedTodo.added_my_day === ADDED_MY_DAY
             ? 'Added to My Day'
@@ -522,8 +525,8 @@ const TodoDrawer = (props: TodoDrawerProps) => {
                 className={`time-text ${clickedTodo.reminder ? 'setted' : ''}`}
               >
                 {clickedTodo.reminder
-                  ? `Remind me at ${reminderHour > 12 ? reminderHour - 12 : reminderHour
-                  }${reminderMinute > 0
+                  // eslint-disable-next-line max-len
+                  ? `Remind me at ${reminderHour > 12 ? reminderHour - 12 : reminderHour}${reminderMinute > 0
                     ? ':' +
                     `${reminderMinute > 10
                       ? reminderMinute
@@ -660,7 +663,10 @@ const TodoDrawer = (props: TodoDrawerProps) => {
           <div
             className="notice-text"
             onClick={() => {
-              handleDropdownQuickshortSelect(DROPDOWN_TYPE.REPEATED, `${REPEATED}`);
+              handleDropdownQuickshortSelect(
+                DROPDOWN_TYPE.REPEATED,
+                `${REPEATED}`
+              );
             }}
           >
             <span

@@ -41,7 +41,11 @@ const ProtectedRoute = (
 
 function App() {
   const values = useGlobalContextDispatch();
-  const { authenticatedLoading, userInfo, onUserInfoChange } = values as GlobalContextType;
+  const {
+    authenticatedLoading,
+    userInfo,
+    onUserInfoChange
+  } = values as GlobalContextType;
   const [api, contextHolder] = notification.useNotification();
 
   const openNotification = (todoItem: EditTodoParamsType, index: number) => {
@@ -75,7 +79,7 @@ function App() {
     });
 
     socketInstance.on('todo-message', (data) => {
-      let chain = Promise.resolve();
+      const chain = Promise.resolve();
       if (Array.isArray(data) && data.length) {
         data.forEach((todoItem, index) => {
           chain.then(() => openNotification(todoItem, index));

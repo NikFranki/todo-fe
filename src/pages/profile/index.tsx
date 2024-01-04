@@ -49,7 +49,9 @@ const Profile = () => {
   const { userInfo, onUserInfoChange } = useGlobalContextInfo();
   const { username, avatar: userInfoAvatar } = userInfo;
 
-  const onFinish = async (values: { username: string; avatar: RcFile | null }) => {
+  const onFinish = async (
+    values: { username: string; avatar: RcFile | null }
+  ) => {
     values.avatar = avatar;
     const formData = new FormData();
     formData.append('username', values.username);

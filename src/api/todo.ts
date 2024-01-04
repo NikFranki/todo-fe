@@ -19,16 +19,20 @@ export const addTodo = (params: {
   content: string;
 }) => instance.post('/todo/add', params);
 
-export const editTodo = (params: EditTodoParamsType | FormData) => instance.post('/todo/update', params);
+export const editTodo = (params: EditTodoParamsType | FormData) =>
+  instance.post('/todo/update', params);
 
-export const importTodo = (params: FormData) => instance.post('/todo/import', params);
+export const importTodo = (params: FormData) =>
+  instance.post('/todo/import', params);
 
 export const exportTodo = (): Promise<Blob> =>
   instance.get('/todo/export', { responseType: 'blob' });
 
-export const deleteTodo = (params: { id: string }) => instance.post('/todo/delete', params);
+export const deleteTodo = (params: { id: string }) =>
+  instance.post('/todo/delete', params);
 
-export const addSubtask = (params: { todo_id: string; content: string }) => instance.post('/subtask/add', params);
+export const addSubtask = (params: { todo_id: string; content: string }) =>
+  instance.post('/subtask/add', params);
 
 export const editSubtask = (params: {
   id: number;

@@ -25,7 +25,9 @@ const useContextMenu = ({ onOpen }: ContextMenuParamsType = {}) => {
     setVisible(false);
   };
 
-  const handleContextMenuOpen = (e: React.MouseEvent<HTMLLIElement | HTMLDivElement, MouseEvent>) => {
+  const handleContextMenuOpen = (
+    e: React.MouseEvent<HTMLLIElement | HTMLDivElement, MouseEvent>
+  ) => {
     setVisible(true);
     if (onOpen) {
       onOpen({

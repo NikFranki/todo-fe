@@ -17,8 +17,15 @@ interface PropsType {
     reListName: string;
   };
   handleListItemClick: (item: ListItemType) => void;
-  handleContextMenu: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, item: ListItemType) => void;
-  handleReListNameEnter: (e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>, item: ListItemType) => Promise<void>;
+  handleContextMenu: (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    item: ListItemType
+  ) => void;
+  handleReListNameEnter: (
+    e: React.FocusEvent<HTMLInputElement>
+      | React.KeyboardEvent<HTMLInputElement>,
+    item: ListItemType
+  ) => Promise<void>;
   setEditInfo: React.Dispatch<React.SetStateAction<{
     editable: boolean;
     clikedId: number;

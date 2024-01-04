@@ -10,7 +10,7 @@
     "coverage": "vitest run --coverage --watch=false",
     "deploy": "gh-pages -d build",
     "publish": "npm run build && npm run deploy",
-    "eslint": "npx eslint src/* --fix",
+    "eslint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
     "prettier": "npx prettier src/* --write"
   },
   "browserslist": {
@@ -31,6 +31,8 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/react": "^18.2.46",
     "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "antd": "^5.10.1",
     "axios": "^1.5.1",

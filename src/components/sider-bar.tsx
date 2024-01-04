@@ -109,7 +109,11 @@ const SiderBar = () => {
       name: item.name,
     });
   };
-  const handleReListNameEnter = async (e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>, item: ListItemType) => {
+  const handleReListNameEnter = async (
+    e: React.FocusEvent<HTMLInputElement>
+      | React.KeyboardEvent<HTMLInputElement>,
+    item: ListItemType
+  ) => {
     const value = (e.target as HTMLInputElement).value;
     await updateList({ id: item.id, name: value });
     await onFetchList();
@@ -127,7 +131,10 @@ const SiderBar = () => {
     }
   };
 
-  const handleContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, item: ListItemType) => {
+  const handleContextMenu = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    item: ListItemType
+  ) => {
     e.preventDefault();
     onContextMenuOpen(e);
 
@@ -187,6 +194,7 @@ const SiderBar = () => {
     setListName('');
     inputRef.current?.blur();
     setTimeout(() => {
+      // eslint-disable-next-line max-len
       const listElement = document.querySelector('.other-list')?.parentElement as HTMLUListElement;
       listElement.scrollTop = listElement?.scrollHeight;
     }, 50);
@@ -228,7 +236,12 @@ const SiderBar = () => {
         />
       </div>
       <ContextMenu
-        items={[getItem({ label: 'Delete', key: 'delete' }), getItem({ label: 'Edit', key: 'edit' })]}
+        items={
+          [
+            getItem({ label: 'Delete', key: 'delete' }),
+            getItem({ label: 'Edit', key: 'edit' })
+          ]
+        }
         visible={visible}
         points={points}
         onMenuClick={handleMenuClick}

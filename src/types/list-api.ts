@@ -1,5 +1,3 @@
-import { JsxElement } from "typescript";
-
 export interface ListItemType {
   id: number;
   name: string;

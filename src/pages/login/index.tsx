@@ -4,7 +4,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 
-import GlobalContext from '@/utils/global-context';
 import { login } from '@api/user';
 
 import './index.scss';

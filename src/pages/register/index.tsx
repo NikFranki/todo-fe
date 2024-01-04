@@ -45,7 +45,12 @@ const Register = () => {
   const [avatar, setAvater] = React.useState<File | null>(null);
 
   const onFinish = async (
-    values: { username: string; password: string; repassword: string; avatar: File | null }
+    values: {
+      username: string;
+      password: string;
+      repassword: string;
+      avatar: File | null
+    }
   ) => {
     values.avatar = avatar;
     const formData = new FormData();

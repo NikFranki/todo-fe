@@ -60,7 +60,8 @@ const COLOR_TEXT = {
 
 const Todo = () => {
   const [addedContent, setAddedContent] = React.useState('');
-  const [clickedTodo, setClickedTodo] = React.useState<Todo_List_Item>({} as Todo_List_Item);
+  const [clickedTodo, setClickedTodo] =
+    React.useState<Todo_List_Item>({} as Todo_List_Item);
   const inputRef = React.useRef<InputRef | null>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [clickedSteps, setClickedSteps] = React.useState<Subtask[]>([]);
@@ -187,7 +188,10 @@ const Todo = () => {
     );
   };
 
-  const handleContextMenu = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, item: Todo_List_Item) => {
+  const handleContextMenu = (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    item: Todo_List_Item
+  ) => {
     e.preventDefault();
     onContextMenuOpen(e);
     setClickedTodo(item);
@@ -238,8 +242,8 @@ const Todo = () => {
           onChange={() => handleCompleteChange(item)}
         />
         <div
-          className={`content ${item.marked_as_completed ? 'completed' : 'uncompleted'
-            }`}
+          // eslint-disable-next-line max-len
+          className={`content ${item.marked_as_completed ? 'completed' : 'uncompleted'}`}
           onClick={() => handleTodoItemClick(item)}
         >
           <span className="text">{item.content}</span>
@@ -295,6 +299,7 @@ const Todo = () => {
                       className="circle"
                       style={{
                         borderColor: TAG_TEXT_COLOR_MAP[row],
+                        // eslint-disable-next-line max-len
                         backgroundColor: (TAG_BG_COLOR_MAP)[row as keyof typeof TAG_BG_COLOR_MAP],
                       }}
                     ></span>
@@ -391,7 +396,10 @@ const Todo = () => {
   });
   const moveToSubItems = [...decoratedTasklist, ...decoratedOtherlist]
     .filter((item) => item.id !== listItemInfo.id)
-    .map((item) => getItem({ label: item.name, key: `${item.id}`, icon: item.icon }));
+    .map(
+      (item) =>
+        getItem({ label: item.name, key: `${item.id}`, icon: item.icon })
+    );
   const items = [
     getItem(
       {
