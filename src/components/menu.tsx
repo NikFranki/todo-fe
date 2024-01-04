@@ -9,6 +9,8 @@ import downloadFile from '@utils/download-file';
 
 import './menu.scss';
 import useGlobalContextInfo from '@/hooks/use-global-context-info';
+import { RcFile } from 'antd/es/upload';
+import { ItemType } from 'antd/es/menu/hooks/useItems';
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -27,8 +29,8 @@ const Menu = () => {
     try {
       await logout({});
       navigate('/login', { replace: true });
-    } catch (error: any) {
-      message.error(error.message);
+    } catch (error: unknown) {
+      message.error((error as Error)?.message);
     }
   };
 
@@ -39,7 +41,7 @@ const Menu = () => {
       maxCount: 1,
       accept: '.xlsx',
       withCredentials: true,
-      beforeUpload: async (file: any) => {
+      beforeUpload: async (file: RcFile) => {
         if (file) {
           const formData = new FormData();
           formData.append('todos', file);
@@ -90,7 +92,7 @@ const Menu = () => {
         label: <Link to="/profile">Profile</Link>,
         key: '4',
       },
-    ] as any;
+    ] as ItemType[];
 
   return (
     <div className="header-menu-wrapper">
